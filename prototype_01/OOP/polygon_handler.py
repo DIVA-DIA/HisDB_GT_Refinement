@@ -35,6 +35,7 @@ class Polygon():
         image.show()
 
     def draw_polygon_with_boundary_box(self):
+        pass
 
     # helper-method to make the coordinates fit the image
     def _center_polygon(self, polygon = None):
@@ -55,22 +56,27 @@ class BoundaryBox():
     _dimensions = None
 
     def __init__(self, polygon):
+        """
+        Creates a boundary box for any polygon given. Polygon needn't be centered.
+        :param polygon: list of tuples [(x1,y1),(x2,y2),(x3,y3),...,(x1,y1)]
+        """
         self.create_boundary_box(polygon)
 
     def create_boundary_box(self, polygon):
-        min_x = 10000000
+
+        min_x = float("inf")
         max_x = 0
-        min_y = 10000000
+        min_y = float("inf")
         max_y = 0
         for coord in polygon:
             if coord[0] < min_x:
-                min_x = coord[0]
+                min_x = int(coord[0])
             elif coord[0] > max_x:
-                max_x = coord[0]
+                max_x = int(coord[0])
             if coord[1] < min_y:
-                min_y = coord[1]
+                min_y = int(coord[1])
             elif coord[1] > max_y:
-                max_y = coord[1]
+                max_y = int(coord[1])
 
         assert min_x and max_x and min_y and max_y is not None
         assert (min_x <= max_x) and (min_y <= max_y)
