@@ -34,7 +34,7 @@ class Drawer():
         :param drawer: ImageDraw object to draw the line
         :return:
         """
-        drawer.line((p1,p2), fill=COLOR, width=0)
+        drawer.line((p1,p2), fill=COLOR, width=5)
 
     def display_drawing(self):
         self.image.show()

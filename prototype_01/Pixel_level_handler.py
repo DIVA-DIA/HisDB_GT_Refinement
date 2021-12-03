@@ -37,43 +37,78 @@ from numpy import asarray
 import numpy as np
 
 
-# TODO: Als erstes werde ich ein pixel-base image lesen und eine geschickte Datenstruktur entwickeln.
+# TODO: Als erstes werde ich ein pixel-based image lesen und eine geschickte Datenstruktur entwickeln.
 # TODO: Einen Algorithmus schreiben, der durch jedes Pixel im Bild durchgeht, es kategorisiert und überprüft, ob es in einem Polygon ist.
 
 
 def read_pixel_level_gt(image_path: Path):
-    # store png as numpy array
-    # go through the numpy array and store the different colors
+    # show original image and get unique pixels
     rgb = Image.open(image_path).convert("RGB")
     img_asarray = asarray(rgb)
-    img_asarray_to_white = set_background_to_white(img_asarray)
-    print(img_asarray_to_white.ndim)
-    print(img_asarray_to_white.shape)
-    print(get_unique_pixels(img_asarray_to_white))
+    img = Image.fromarray(img_asarray, "RGB")
+    img.show()
+
+    #print("Unique pixel after processing: \n" + str(get_unique_pixels(img_asarray)))
+
+    # illustrate all the different colors
+    img_asarray = replace_color(img_asarray, [0, 0, 1],[0, 0, 0]) # set background to black
+    img_asarray = replace_color(img_asarray, [0, 0, 2], [122, 0, 0]) # set comments to dark red
+    img_asarray = replace_color(img_asarray, [0, 0, 4], [0, 122, 0]) # set decorations to dark green
+    img_asarray = replace_color(img_asarray, [0, 0, 8], [0, 0, 122])  # set main text body to dark blue
+    img_asarray = replace_color(img_asarray, [0, 0, 6], [122, 122, 0])  # comments + decoration to dark yellow
+    img_asarray = replace_color(img_asarray, [0, 0, 10], [122, 0, 122])  # set main text body + comments to dark pink
+    img_asarray = replace_color(img_asarray, [0, 0, 12], [0, 122, 122])  # set main text body + decoration to dark Türkis
+    img_asarray = replace_color(img_asarray, [0, 0, 12], [122, 122, 122])  # set main text body + decoration + comment to grey
+
+    img_asarray = replace_color(img_asarray, [128, 0, 2], [255, 0, 0]) # set comments to bright red
+    img_asarray = replace_color(img_asarray, [128, 0, 4], [0, 255, 0]) # set decorations to bright green
+    img_asarray = replace_color(img_asarray, [128, 0, 8], [0, 0, 255])  # set main text body to bright blue
+    img_asarray = replace_color(img_asarray, [128, 0, 6], [255, 255, 0])  # comments + decoration to bright yellow
+    img_asarray = replace_color(img_asarray, [128, 0, 10], [255, 0, 255])  # set main text body + comments to bright pink
+    img_asarray = replace_color(img_asarray, [128, 0, 12], [0, 255, 255])  # set main text body + decoration to bright Türkis
+    img_asarray = replace_color(img_asarray, [128, 0, 12], [255, 255, 255])  # set main text body + decoration + comment to white
+    img = Image.fromarray(img_asarray, "RGB")
+    img.save("Output/with_all_different_colors_01.png")
+    img.show()
+    #print("Unique pixel after processing: \n" + str(get_unique_pixels(img_asarray)))
+
+    print("Dimensions: " + str(img_asarray.ndim))
+    print("Shape: " + str(img_asarray.shape))
+    print("Array: " + str(img_asarray))
     print(rgb.getpixel((10, 23)))
+
+    # works fine :)
+
+
+def crop_image(img: Image):
+    crop_area = (1500, 1500, 2000, 2000)
+    cropped_img = img.crop(crop_area)
+    cropped_img.show()
+    cropped_img.save("Input/pixel_level_small.png")
 
 
 def get_unique_pixels(img_asarray: np.ndarray):
     return np.unique(img_asarray.reshape(-1, img_asarray.shape[2]), axis=0)
 
 
-# make all background pixels white
 def set_background_to_white(img_asarray: np.ndarray):
-    for y in img_asarray:
-        for x in y:
-            img_asarray[y][x] = np.where(img_asarray[y][x] == [0,0,1], [255,255,255],img_asarray[y][x])
+    mask = np.all(img_asarray == [0, 0, 1], axis=-1)
+    img_asarray[mask] = [255, 255, 255]
     return img_asarray
 
-def set_background_to_white(img_asarray: np.ndarray):
-    for y in img_asarray:
-        for x in y:
-            if img_asarray[y][x] == [0,0,1]:
-                img_asarray[y][x] = [255,255,255]
+def replace_color(img_asarray : np.ndarray, old_color : list, new_color : list):
+    """
+    Changes the color of a given pixel in an image to a given color
+    :param img_asarray: RGB encoded image as array
+    :param old_color: [R,G,B]
+    :param new_color: [R,G,B]
+    :return:
+    """
+    mask = np.all(img_asarray == old_color, axis=-1)
+    img_asarray[mask] = new_color
     return img_asarray
 
-def set_background_to_white(img_asarray: np.ndarray):
-    return [[color := [255,255,255] for color in x if color == [0,0,1]] for x in img_asarray]
 
 if __name__ == '__main__':
-    pixel_level_gt = Path("../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0102v_max.png")
+    pixel_level_gt = Path("../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0098v_max.png")
     read_pixel_level_gt(pixel_level_gt)
