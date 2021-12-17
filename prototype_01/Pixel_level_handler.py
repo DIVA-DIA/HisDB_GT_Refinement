@@ -91,11 +91,6 @@ def get_unique_pixels(img_asarray: np.ndarray):
     return np.unique(img_asarray.reshape(-1, img_asarray.shape[2]), axis=0)
 
 
-def set_background_to_white(img_asarray: np.ndarray):
-    mask = np.all(img_asarray == [0, 0, 1], axis=-1)
-    img_asarray[mask] = [255, 255, 255]
-    return img_asarray
-
 def replace_color(img_asarray : np.ndarray, old_color : list, new_color : list):
     """
     Changes the color of a given pixel in an image to a given color
