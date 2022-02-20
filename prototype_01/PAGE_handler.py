@@ -34,6 +34,6 @@ def draw_polygons(output_path: Path):
 
 if __name__ == '__main__':
     PAGE_xml = Path("../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0098v_max.xml")
-    output_path = Path("Output/First_color_manipulations/drawn_polygons.png")
+    output_path = Path("Output/First_color_manipulations/filled_polygons.png")
     get_polygons_from_xml(PAGE_xml)
     draw_polygons(output_path)

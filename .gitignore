@@ -137,4 +137,9 @@ dmypy.json
 **/.vscode
 
 # JetBrains
+*.jpg
+*.png
+*.gif
+.DS_Store
 .idea/
+/prototype_01/Output/

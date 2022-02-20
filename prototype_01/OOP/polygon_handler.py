@@ -93,6 +93,7 @@ class Polygon():
         return self.polygon[item]
 
 class BoundaryBox():
+    # you could just use the "getbox()" method
     _coords = None
     _dimensions = None
 

@@ -58,7 +58,7 @@ def read_pixel_level_gt(image_path: Path):
     img_asarray = replace_color(img_asarray, [0, 0, 6], [122, 122, 0])  # comments + decoration to dark yellow
     img_asarray = replace_color(img_asarray, [0, 0, 10], [122, 0, 122])  # set main text body + comments to dark pink
     img_asarray = replace_color(img_asarray, [0, 0, 12], [0, 122, 122])  # set main text body + decoration to dark Türkis
-    img_asarray = replace_color(img_asarray, [0, 0, 12], [122, 122, 122])  # set main text body + decoration + comment to grey
+    # img_asarray = replace_color(img_asarray, [0, 0, 12], [122, 122, 122])  # set main text body + decoration + comment to grey -> doesn't make any sense because 0,0,12 is already used
 
     img_asarray = replace_color(img_asarray, [128, 0, 2], [255, 0, 0]) # set comments to bright red
     img_asarray = replace_color(img_asarray, [128, 0, 4], [0, 255, 0]) # set decorations to bright green
@@ -66,11 +66,11 @@ def read_pixel_level_gt(image_path: Path):
     img_asarray = replace_color(img_asarray, [128, 0, 6], [255, 255, 0])  # comments + decoration to bright yellow
     img_asarray = replace_color(img_asarray, [128, 0, 10], [255, 0, 255])  # set main text body + comments to bright pink
     img_asarray = replace_color(img_asarray, [128, 0, 12], [0, 255, 255])  # set main text body + decoration to bright Türkis
-    img_asarray = replace_color(img_asarray, [128, 0, 12], [255, 255, 255])  # set main text body + decoration + comment to white
+    # img_asarray = replace_color(img_asarray, [128, 0, 12], [255, 255, 255])  # set main text body + decoration + comment to white -> doesn't make any sense because 128,0,12 is already used
     img = Image.fromarray(img_asarray, "RGB")
-    img.save("Output/with_all_different_colors_01.png")
+    img.save("Output/with_all_different_colors_02.png")
     img.show()
-    #print("Unique pixel after processing: \n" + str(get_unique_pixels(img_asarray)))
+    print("Unique pixel after processing: \n" + str(get_unique_pixels(img_asarray)))
 
     print("Dimensions: " + str(img_asarray.ndim))
     print("Shape: " + str(img_asarray.shape))
@@ -105,5 +105,6 @@ def replace_color(img_asarray : np.ndarray, old_color : list, new_color : list):
 
 
 if __name__ == '__main__':
+    #pixel_level_gt = Path("Output/Resizing/resized02(pixel_based)_factor_by_4_minority_wins.jpg")
     pixel_level_gt = Path("../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0098v_max.png")
     read_pixel_level_gt(pixel_level_gt)

@@ -1,6 +1,7 @@
 # This class serves the purpose of drawing lines on new instance pillow Image
 
 from PIL import Image, ImageDraw
+from typing import Type
 
 COLOR = "red"
 
@@ -34,7 +35,12 @@ class Drawer():
         :param drawer: ImageDraw object to draw the line
         :return:
         """
-        drawer.line((p1,p2), fill=COLOR, width=5)
+        drawer.line((p1,p2), fill=COLOR, width=1)
+
+    def draw_polygon(self, polygon):
+        drawer = ImageDraw.Draw(self.image)
+        drawer.polygon(polygon, fill =(255, 128,0), outline =(255, 128,0))
+
 
     def display_drawing(self):
         self.image.show()

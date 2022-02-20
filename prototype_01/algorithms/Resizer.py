@@ -41,6 +41,7 @@ class MajorityWins(ResizingStrategy):
         return img_as_array.reshape((x, resize_factor,
                                      y, resize_factor, 3)).max(3).max(1)
 
+
 class MinorityWins(ResizingStrategy):
 
     def __init__(self):
@@ -53,6 +54,35 @@ class MinorityWins(ResizingStrategy):
         return img_as_array.reshape((x, resize_factor,
                                      y, resize_factor, 3)).min(3).min(1)
 
+
+class MeanWins(ResizingStrategy):
+    # TODO: Implementation for Mean fails, I assume because it outputs floats.
+    def __init__(self):
+        super().__init__()
+        # self.resize_factor = resize_factor
+
+    def resize(self, img_as_array, resize_factor):
+        x = 6496 // resize_factor
+        y = 4872 // resize_factor
+
+        return img_as_array.reshape((x, resize_factor,
+                                     y, resize_factor, 3)).mean(axis=3, dtype=int).mean(axis=1, dtype=int)
+
+
+class FlexibleResizer(ResizingStrategy):
+    # TODO: Finish FlexibleResizer and test it.
+    def __init__(self):
+        super().__init__()
+        pass
+
+    def resize(self, img_as_array, resize_factor):
+        pass
+
+    def flexibel_resize(self, im: Image, number_rows: int, number_col: int):
+        nR0 = len(im)  # source number of rows
+        nC0 = len(im[0])  # source number of columns
+        return [[im[int(nR0 * r / number_rows)][int(nC0 * c / number_col)]
+                 for c in range(number_col)] for r in range(number_rows)]
 
 
 class Resizer():
@@ -94,16 +124,10 @@ if __name__ == '__main__':
     # print(np.zeros(shape, dtype=int))
 
     # client code
-    source_img_path = Path("../../CB55/img/public-test/e-codices_fmb-cb-0055_0098v_max.jpg")
+    source_img_path = Path("../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0098v_max.png")
     source_img = Image.open(source_img_path)
-    resizer = NaiveResizer(source_img, MajorityWins())
-    img_asarray = resizer.resize(4)
+    resizer = NaiveResizer(source_img, MeanWins())
+    img_asarray = resizer.resize(8)
     img = Image.fromarray(img_asarray)
     img.show()
-    img.save(Path("../Output/Resizing/resized01_factor_by_4_Majority_wins.jpg"))
-    source_img = Image.open(source_img_path)
-    resizer = NaiveResizer(source_img, MinorityWins())
-    img_asarray = resizer.resize(4)
-    img = Image.fromarray(img_asarray)
-    img.show()
-    img.save(Path("../Output/Resizing/resized01_factor_by_4_minority_wins.jpg"))
+    img.save(Path("../Output/Resizing/resized02(pixel_based)_factor_by_8_minority_wins.jpg"))

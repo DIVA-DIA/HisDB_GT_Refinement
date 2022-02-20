@@ -10,13 +10,15 @@ from PIL import Image, ImageDraw
 def overlay_img_with_xml(image_path: Path, xml_path: Path, output_path: Path):
     output_path.mkdir(exist_ok=True)
     polygons = get_polygons_from_xml(xml_path=xml_path)
-    colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (255, 0, 255), (0, 255, 255), (255,255,255)]
+    # colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (255, 0, 255), (0, 255, 255), (255,255,255)]
+    colors = [(240, 60, 60)]
     with Image.open(str(image_path)) as f:
         for i, polygon in enumerate(polygons):
             img = ImageDraw.Draw(f)
             color = colors[i % len(colors)]
             img.line(polygon, fill=color, width=1)
-        f.save(output_path / 'output_for_presentation.png')
+            #img.polygon(polygon, fill = color, outline = color)
+        f.save(output_path / 'e-codices_fmb-cb-0055_0098v_max_outlined.png')
 
 
 # get the polygons from the xml
@@ -49,12 +51,14 @@ if __name__ == '__main__':
 
     original_png = Path("../../CB55/img/public-test/e-codices_fmb-cb-0055_0098v_max.jpg")
     xml_gt = Path("../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0098v_max.xml")
-    pixel_level_gt = ("../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0098v_max.png")
+    pixel_level_gt = Path("../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0098v_max.png")
+    white_background = Path("../Input/White_Background.png")
     all_different_colors = Path("../Input/with_all_different_colors_02.png")
-    output = Path("../Output")
+    output = Path("../Output/polygons_outlined")
+
 
     # CB55 img public test with PAGE-gt
     # overlay_img_with_xml(original_png,xml_gt,output) # ever line a different color
 
     # CB55 pixel-level-gt
-    overlay_img_with_xml(all_different_colors, xml_gt, output)
+    overlay_img_with_xml(white_background, xml_gt, output)
