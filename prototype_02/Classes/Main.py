@@ -47,6 +47,7 @@ def save_images_as(images, OutputDirectory: Path, format: str):
 
 
 if __name__ == '__main__':
+    # TODO: measure performance
 
     # input
     public_test = Path("../../CB55/img/public-test/")
@@ -68,24 +69,22 @@ if __name__ == '__main__':
     print(path_to_xml_gt)
 
 
-
     # resize all pixel based images and save them as pixel_based_GT
-    resized = resize_px_images(images=images)
-    #save_images_as(images=resized, OutputDirectory=intermediate_result, format="png")
+    resized_pixel_gt = resize_px_images(images=images)
+    # TODO: resize polygons here and not within the overlay img_with_xml method -> question: should I make a collection
+    #  MyPolygons and a collection MyImages -> both could have the resize method and implement it differently.
+    # resized_polygons = resize(my_polygons)
 
-    # get directories of the new intermediate result and
-    #path_to_pixel_based_gt: List[str] = sorted(os.listdir(intermediate_result))
-    #assert len(path_to_pixel_based_gt) == len(path_to_xml_gt)
-
+    # fill polygons and mask with pixel_gt so only pixel within the polygon are corlored
 
     # TODO: create class or script called OverLayer -> combines the lists and does logic on them
     # call the overlay_xml_with_img in PageOntoImage that resizes the polyons
     i = 0
     final_images = []
-    for img in resized:
+    for img in resized_pixel_gt:
         final_images.append(overlay_img_with_xml(img,
                              xml_path=Path(xml_gt / path_to_xml_gt[i]), output_path=output_path,
                              resize_factor=RESIZE_FACTOR))
         i = i + 1
-    save_images_as(final_images,output_path,"gif")
+    save_images_as(final_images,output_path,"png")
 
