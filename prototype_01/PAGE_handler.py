@@ -1,5 +1,5 @@
 # This class is inspired by Lars' page onto_image script
-# It stores the polygones from the PAGE-documents (xml) in lists
+# It stores the polygons from the PAGE-documents (xml) in lists
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET

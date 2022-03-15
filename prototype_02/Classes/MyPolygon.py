@@ -3,6 +3,8 @@
 # Given a point, it should be able to check for whether or not it's within the polygon.
 # Important: Polygons must be closed path (first and last point must be the same)
 from PIL import Image, ImageDraw
+from pathlib import Path
+
 
 # TODO: make every manipulation manipulate polygon and don't create copies of polygon such as centered_polygon. Just center it directly.
 def resize_polygon(polygon, resize_factor):

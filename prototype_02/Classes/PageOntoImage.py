@@ -3,6 +3,9 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 import re
 import logging
+import datetime
+from typing import List, Tuple
+from xml.dom import minidom
 
 import numpy as np
 from PIL import Image, ImageDraw
@@ -14,12 +17,13 @@ from HisDB_GT_Refinement.prototype_02.Classes.ColorPalette import create_color_p
 # draws the polygons onto the image
 from HisDB_GT_Refinement.prototype_02.Classes.MyPolygon import Polygon
 
-def overlay_img_with_xml(image: Image, xml_path: Path, output_path: Path, resize_factor):
+
+# TODO: This method is flawed because it isn't generic. instead of xml_path, polygons would be nice.
+def overlay_img_with_xml(image: Image, polygons: List[List[Tuple]], output_path: Path):
     output_path.mkdir(exist_ok=True)
-    polygons = get_polygons_from_xml(xml_path=xml_path)
-    resized_polygons = rescale_all_polygons(polygons, resize_factor)
-    colors = create_color_palette(len(resized_polygons))
-    for i, polygon in enumerate(resized_polygons):
+    #polygons = get_polygons_from_xml(xml_path=xml_path)
+    colors = create_color_palette(len(polygons))
+    for i, polygon in enumerate(polygons):
         drawn_image = ImageDraw.Draw(image)
         color = colors[i]
         drawn_image.line(polygon, fill=color, width=1)
@@ -43,19 +47,68 @@ def get_polygons_from_xml(xml_path: Path):
         for text_line in text_region.findall(ns + 'TextLine'):
             polygon_text = text_line.find(ns + 'Coords').attrib['points']
             polygons.append([tuple(map(int, pr.split(','))) for pr in polygon_text.split(' ')])
-
     return polygons
 
     # TODO: write or find function that saves polygons as PAGE format
 
 
-def write_polygons_to_xml(xml_path: Path):
-    pass
+# reference: https://github.com/DIVA-DIA/Text-Line-Segmentation-Method-for-Medieval-Manuscripts/blob/master/src/line_segmentation/utils/XMLhandler.py
+def writePAGEfile(output_path, text_lines="", text_region_coords="not provided", baselines=None):
+    # Create root element and add the attributes
+    root = ET.Element("PcGts")
+    root.set("xmls", "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15")
+    root.set("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
+    root.set("xsi:schemaLocation", "http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd")
+
+    # Add metadata
+    metadata = ET.SubElement(root, "Metadata")
+    ET.SubElement(metadata, "Creator").text = "Michele Alberti, Vinaychandran Pondenkandath"
+    ET.SubElement(metadata, "Created").text = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+    ET.SubElement(metadata, "LastChange").text = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+
+    # Add page
+    page = ET.SubElement(root, "Page")
+
+    # Add TextRegion
+    textRegion = ET.SubElement(page, "TextRegion")
+    textRegion.set("id", "region_textline")
+    textRegion.set("custom", "0")
+
+    # Add Coords
+    ET.SubElement(textRegion, "Coords", points=text_region_coords)
+
+    # Add TextLine
+    for i, line in enumerate(text_lines):
+        textLine = ET.SubElement(textRegion, "TextLine", id="textline_{}".format(i), custom="0")
+        ET.SubElement(textLine, "Coords", points=line)
+        if baselines:
+            ET.SubElement(textLine, "Baseline", points=baselines[i])
+        else:
+            ET.SubElement(textLine, "Baseline", points="not provided")
+        textEquiv = ET.SubElement(textLine, "TextEquiv")
+        ET.SubElement(textEquiv, "Unicode")
+
+    # Add TextEquiv to textRegion
+    textEquiv = ET.SubElement(textRegion, "TextEquiv")
+    ET.SubElement(textEquiv, "Unicode")
+
+    #print(prettify(root))
+
+    # Save on file
+    file = open(output_path, "w")
+    file.write(prettify(root))
+    file.close()
+
+def prettify(elem):
+    """Return a pretty-printed XML string for the Element.
+    """
+    rough_string = ET.tostring(elem, 'utf-8')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="\t")
 
 
 def rescale_all_polygons(polygons, resize_factor):
     resized_polygons = []
-
     for polygon in polygons:
         my_polygon = MyPolygon.Polygon(polygon)
         new_polygon = MyPolygon.resize_polygon(polygon=my_polygon, resize_factor=resize_factor)

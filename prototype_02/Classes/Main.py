@@ -4,13 +4,19 @@ import os
 from PIL import Image
 from typing import List
 import numpy as np
+from PIL.ImageDraw import ImageDraw
 
-from HisDB_GT_Refinement.prototype_02.Classes.PageOntoImage import overlay_img_with_xml
+from HisDB_GT_Refinement.prototype_02.Classes.PageOntoImage import overlay_img_with_xml, get_polygons_from_xml, \
+    rescale_all_polygons
 from HisDB_GT_Refinement.prototype_02.Classes.PixelResizer import MinorityWins, NaiveResizer, MajorityWins
+import time
 from datetime import datetime
+
+from HisDB_GT_Refinement.prototype_02.Classes.masker import replace_all_but
 
 RESIZE_FACTOR = 4  # cannot be 3
 RESIZING_STRATEGY = MajorityWins()
+TEXTLINE_FIll = (143, 232, 167)  # some random color I'm sure hasn't been assigned.
 
 
 def open_images(directory: Path):
@@ -29,7 +35,7 @@ def resize_px_images(images):
     for img in images:
         resizer = NaiveResizer(img=img, strategy=RESIZING_STRATEGY)
         img_as_array: np.array = resizer.resize(RESIZE_FACTOR)
-        resized.append(Image.fromarray(img_as_array).convert('P', palette=Image.ADAPTIVE, colors=256))
+        resized.append(Image.fromarray(img_as_array).convert('RGB'))
     return resized
 
 
@@ -47,7 +53,8 @@ def save_images_as(images, OutputDirectory: Path, format: str):
 
 
 if __name__ == '__main__':
-    # TODO: measure performance
+    start = time.time()
+    print("Program running")
 
     # input
     public_test = Path("../../CB55/img/public-test/")
@@ -57,34 +64,57 @@ if __name__ == '__main__':
 
     # output
     intermediate_result = Path("../Output/GT_1/Resized_PX_Based_GT/")
-    output_path = Path("../Output/GT_1/FINAL_GT_outline_1px_strategy_majority_wins/")
+    output_path = Path("../Output/GT_1/Masked_GT_Test/")
 
     # get all images
     images = open_images(pixel_level_gt)
 
-    # get all xml paths and store them as polygons
-    # TODO: refine MyPolygon to store the polygons with their original values, center=FALSE, add method to resize,
-    #  also handy to display boundary boxes
+    # get all xml paths
     path_to_xml_gt: List[str] = sorted(os.listdir(xml_gt))
-    print(path_to_xml_gt)
 
+    # open xml and extract the polygons in PAGEs
+    PAGEs = []  # 2 D array: [[Page1][Page2][..]]
+    for page in path_to_xml_gt:
+        path = Path(xml_gt / page)
+        polygons = get_polygons_from_xml(path)
+        PAGEs.append(polygons)
 
     # resize all pixel based images and save them as pixel_based_GT
     resized_pixel_gt = resize_px_images(images=images)
-    # TODO: resize polygons here and not within the overlay img_with_xml method -> question: should I make a collection
-    #  MyPolygons and a collection MyImages -> both could have the resize method and implement it differently.
-    # resized_polygons = resize(my_polygons)
 
-    # fill polygons and mask with pixel_gt so only pixel within the polygon are corlored
+    # resize polygons
+    resized_PAGEs = []
+    for page in PAGEs:
+        resized_polygons = rescale_all_polygons(page, RESIZE_FACTOR)
+        resized_PAGEs.append(resized_polygons)
 
-    # TODO: create class or script called OverLayer -> combines the lists and does logic on them
-    # call the overlay_xml_with_img in PageOntoImage that resizes the polyons
-    i = 0
+    # fill polygons and
+    PAGEs_filled_polygons = []  # list of images
+    for page in resized_PAGEs:
+        img = Image.new(mode="RGB", size=resized_pixel_gt[0].size)
+        draw = ImageDraw(img)
+        for polygon in page:
+            draw.polygon(polygon, TEXTLINE_FIll)
+        PAGEs_filled_polygons.append(img)
+
+    # mask with pixel_gt so only pixel within the polygon are colored
+    masked_gt = []
+    for i, img in enumerate(PAGEs_filled_polygons):
+        px_img = resized_pixel_gt[i]
+        redrawn = replace_all_but(keep_color=TEXTLINE_FIll, input=img, output=px_img)
+        masked_gt.append(Image.fromarray(redrawn).convert('RGB'))
+
+    # overlay img with xml
     final_images = []
-    for img in resized_pixel_gt:
-        final_images.append(overlay_img_with_xml(img,
-                             xml_path=Path(xml_gt / path_to_xml_gt[i]), output_path=output_path,
-                             resize_factor=RESIZE_FACTOR))
-        i = i + 1
-    save_images_as(final_images,output_path,"png")
+    for i, img in enumerate(masked_gt):
+        new_img = overlay_img_with_xml(img, resized_PAGEs[i], output_path=output_path)
+        final_images.append(img)
+        new_img.show()
 
+    # save as gif
+    save_images_as(final_images, output_path, "gif")
+
+    # TODO: save as PAGE
+
+    end = time.time()
+    print("Programm ended in {} seconds".format((end - start)))
