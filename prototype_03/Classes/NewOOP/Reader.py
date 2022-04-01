@@ -32,6 +32,7 @@ class Reader(Scalable):
         main_text = Textline.MainText()
         comments = Textline.CommentText()
         decorations = Textline.Decorations()
+        text_regions = Textline.TextRegions()
         # parse out the polygons
         i = 0 # for debugger
         for text_region in page_part:
@@ -44,11 +45,17 @@ class Reader(Scalable):
                 elif text_line.attrib.get("id").startswith("comment"):
                     comments.append_elem(Textline.CommentLine(MyPolygon.Polygon(polygon=self.str_to_polygon(polygon_text)), baseline=None))
             # must be in outer loop due to file structure
-            if "GraphicRegion" in str(text_region.tag):
-                polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
+            polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
+            if "TextRegion" in str(text_region.tag):
+                color = (0,255,255)
+                if text_region.attrib.get("id").startswith("region_textline"):
+                    color = (255,255,255)
+                text_regions.append_elem(
+                    Textline.TextRegionElement(MyPolygon.Polygon(polygon=self.str_to_polygon(polygon_text)), color))
+            elif "GraphicRegion" in str(text_region.tag):
                 decorations.append_elem(
                 Textline.DecorationElement(MyPolygon.Polygon(polygon=self.str_to_polygon(polygon_text))))
-        return [main_text,comments,decorations]
+        return [main_text,comments,decorations,text_regions]
 
 
     def str_to_polygon(self, polygon_str : str):
@@ -130,7 +137,7 @@ class Reader(Scalable):
 
 
 if __name__ == '__main__':
-    path = Path("../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0098v_max.xml")
+    path = Path("../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0105r_max.xml")
 
     page = Reader(path)
 

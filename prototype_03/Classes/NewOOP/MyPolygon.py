@@ -18,7 +18,7 @@ def resize_polygon(polygon, resize_factor):
     """
     return [tuple([int(elem / resize_factor) for elem in coord]) for coord in polygon]
 
-class Polygon(Scalable):
+class Polygon():
 
 
     # TODO: create setter method for polygon and make polygon private _polygon,
@@ -33,8 +33,8 @@ class Polygon(Scalable):
         if centerpolygon == True:
             self.polygon = self._center_polygon(polygon)
 
-    def draw(self, drawer: ImageDraw):
-        drawer.polygon(self.polygon, outline=(255, 22, 56), fill = None )
+    def draw(self, drawer: ImageDraw, outline=(255,125,0), fill=None):
+        drawer.polygon(self.polygon, outline=outline, fill=fill)
 
     # draws a given polygon. If none is given, it will draw whatever is in the instance variable
     def _draw_polygon(self, polygon=None):
@@ -74,9 +74,11 @@ class Polygon(Scalable):
         """
         return self.polygon[index]
 
-class BoundaryBox(Scalable):
-    def draw(self, drawer: ImageDraw):
-        drawer.rectangle(xy=[(self.get_min_x(),self.get_min_y()), (self.get_max_x(), self.get_max_y())], outline=(32, 22, 255))
+class BoundaryBox():
+
+    def draw(self, drawer: ImageDraw, outline=(0, 125, 255), fill=None):
+        drawer.rectangle(xy=[(self.get_min_x(),self.get_min_y()), (self.get_max_x(), self.get_max_y())],
+                         outline=outline, fill= fill)
 
     # you could just use the "getbox()" method
     _coords = None
