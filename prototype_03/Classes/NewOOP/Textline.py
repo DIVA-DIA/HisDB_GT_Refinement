@@ -2,22 +2,23 @@ from typing import Tuple, List
 
 from PIL import ImageDraw
 
-from HisDB_GT_Refinement.prototype_03.Classes.NewOOP import MyPolygon
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Scalable import Scalable
+from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.VectorObject import Polygon, BoundingBox, Line, XRegion
 
-
-# TODO implement draw and resize
+OFFSET = 50
+# TODO implement resize
 # TODO: Problem: sepcify color and fill for polygons boundary boxes, etc.
 #  Implement two interfaces: Drawable (draw method) interface and Scalable (scale) interface
 #  Implement the Command design pattern so the Drawable interface doesn't have to implement two different draw methods.
+# TODO: convert baseline to function -> instead of (x1,y1)(x2,y2) -> y = x*m + q
 class TextLine(Scalable):
 
-    def __init__(self, polygon: MyPolygon.Polygon):
+    def __init__(self, polygon: Polygon):
         self.outline = (255, 255, 255)  # white by default
         self.fill = None # no fill by default
         self.is_filled = False
-        self.polygon: MyPolygon.Polygon = polygon
-        self.boundary_box: MyPolygon.BoundaryBox = self.polygon.boundary_box
+        self.polygon: Polygon = polygon
+        self.boundary_box: BoundingBox = BoundingBox(polygon=polygon)
 
     def draw(self, drawer: ImageDraw):
         self.polygon.draw(drawer=drawer,outline=self.outline, fill=self.fill)
@@ -39,10 +40,14 @@ class TextLine(Scalable):
 class MainTextLine(TextLine):
 
 
-    def __init__(self, polygon, baseline):
+    def __init__(self, polygon: Polygon, baseline: Line):
         super().__init__(polygon)
-        self.baseline = baseline
+        self.xRegion: XRegion = XRegion(baseline, self.boundary_box)
         self.outline = (255, 0, 0)  # red
+
+    def draw(self, drawer: ImageDraw):
+        self.xRegion.draw(drawer=drawer, outline=self.outline)
+        super().draw(drawer)
 
 
 # Comment hat ein Polygon vom xml,
@@ -52,23 +57,31 @@ class MainTextLine(TextLine):
 class CommentLine(TextLine):
 
     # Assumption: Text_Region of Comments are equal to their boundary boxes.
-    def __init__(self, polygon, baseline):
+    def __init__(self, polygon: Polygon, baseline: Line):
         super().__init__(polygon)
-        self.baseline = baseline
+        # polygon
+        # bounding_box
+        # x-region
+        self.xRegion: XRegion = XRegion(baseline, self.boundary_box)
         self.outline = (0, 255, 0)  # green
+
+    def draw(self, drawer: ImageDraw):
+        self.xRegion.draw(drawer=drawer, outline=self.outline)
+        super().draw(drawer)
 
 # Decoration sind im xml als text-region gespeichert, dabei ist es einfach ein polygon (und nicht wirklich eine region)
 class DecorationElement(TextLine):
 
-    def __init__(self, polygon):
+    def __init__(self, polygon: Polygon):
         super().__init__(polygon)
         self.outline = (0, 0, 255)  # blue
 
 class TextRegionElement(TextLine):
 
-    def __init__(self, rectangle, color = (255, 0, 255)):
+    def __init__(self, rectangle: Polygon, color = (255, 0, 255)):
         super().__init__(polygon=rectangle)
         self.outline = color   # purple
+
 
 
 

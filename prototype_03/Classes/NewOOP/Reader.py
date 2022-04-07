@@ -4,7 +4,6 @@ import re
 import xml.etree.ElementTree as ET
 from typing import Tuple
 
-from HisDB_GT_Refinement.prototype_03.Classes.NewOOP import MyPolygon
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP import Textline
 
 from PIL import Image, ImageDraw
@@ -12,6 +11,8 @@ from PIL import Image, ImageDraw
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Scalable import Scalable
 
 # VectorBasedGT stores all information from the xmls. It also holds additional information, e.g. the
+from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.VectorObject import Polygon, Line
+
 
 class Reader(Scalable):
 
@@ -39,11 +40,13 @@ class Reader(Scalable):
             for text_line in text_region.findall(ns + 'TextLine'):
                 print(text_line.attrib)
                 i = i + 1
+                base_line_text = text_line.find(ns + 'Baseline').attrib['points']
+                baseline = Line([tuple(map(int, pr.split(','))) for pr in base_line_text.split(' ')])
                 polygon_text: str = text_line.find(ns + 'Coords').attrib['points']
                 if text_line.attrib.get("id").startswith("textline"):
-                    main_text.append_elem(Textline.MainTextLine(MyPolygon.Polygon(polygon=self.str_to_polygon(polygon_text)), baseline=None))
+                    main_text.append_elem(Textline.MainTextLine(Polygon(polygon=self.str_to_polygon(polygon_text)), baseline=baseline))
                 elif text_line.attrib.get("id").startswith("comment"):
-                    comments.append_elem(Textline.CommentLine(MyPolygon.Polygon(polygon=self.str_to_polygon(polygon_text)), baseline=None))
+                    comments.append_elem(Textline.CommentLine(Polygon(polygon=self.str_to_polygon(polygon_text)), baseline=baseline))
             # must be in outer loop due to file structure
             polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
             if "TextRegion" in str(text_region.tag):
@@ -51,10 +54,10 @@ class Reader(Scalable):
                 if text_region.attrib.get("id").startswith("region_textline"):
                     color = (255,255,255)
                 text_regions.append_elem(
-                    Textline.TextRegionElement(MyPolygon.Polygon(polygon=self.str_to_polygon(polygon_text)), color))
+                    Textline.TextRegionElement(Polygon(polygon=self.str_to_polygon(polygon_text)), color))
             elif "GraphicRegion" in str(text_region.tag):
                 decorations.append_elem(
-                Textline.DecorationElement(MyPolygon.Polygon(polygon=self.str_to_polygon(polygon_text))))
+                Textline.DecorationElement(Polygon(polygon=self.str_to_polygon(polygon_text))))
         return [main_text,comments,decorations,text_regions]
 
 
@@ -130,7 +133,7 @@ class Reader(Scalable):
         img.show()
 
     def draw(self, drawer: ImageDraw):
-        print("Draw method nocht nicht implementiert (@ PAGE(Scalable)")
+        pass
 
     def resize(self, size: Tuple):
         print("Resize method nocht nicht implementiert (@ PAGE(Scalable)")
