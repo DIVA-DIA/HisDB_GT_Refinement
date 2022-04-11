@@ -30,7 +30,7 @@ from abc import abstractmethod
 
 class VectorObject(Scalable):
 
-    def draw(self, drawer: ImageDraw):
+    def draw(self, drawer: ImageDraw, outline=(255,255,255), fill = None):
         pass
 
     def resize(self, size: Tuple):

@@ -110,6 +110,9 @@ class Text(Scalable):
         for elem in self.text_lines:
             elem.draw(drawer)
 
+    def __getitem__(self, index):
+        return self.text_lines[index]
+
 
 class MainText(Text):
 

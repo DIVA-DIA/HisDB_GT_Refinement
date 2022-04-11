@@ -14,15 +14,25 @@ from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Scalable import Scalable
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.VectorObject import Polygon, Line
 
 
-class Reader(Scalable):
+class VectorGT(Scalable):
 
     def __init__(self, path: Path):
-        self.textlines = self.get_text_line_from_xml(path) # should contain polygon & boundarybox
-        self.baselines = self.get_baselines_from_xml(path) # should contain baseline (x,y) coordinates
-        self.textregions = self.get_text_regions_xml(path) # should contain the regions
+        self.text_elements = self._read_xml(path)
+
+    def get_main_text_lines(self) -> Textline.MainText:
+        return self.text_elements[0]
+
+    def get_comments(self) -> Textline.CommentText:
+        return self.text_elements[1]
+
+    def get_decorations(self) -> Textline.Decorations:
+        return self.text_elements[2]
+
+    def get_text_regions(self) -> Textline.TextRegions:
+        return self.text_elements[3]
 
 
-    def read_xml(self, xml_path: Path):
+    def _read_xml(self, xml_path: Path):
         patt = re.compile('\{.*\}')
         # load xml
         tree = ET.parse(str(xml_path))
@@ -119,21 +129,18 @@ class Reader(Scalable):
                 bounding_boxes.append([tuple(map(int, pr.split(','))) for pr in polygon_text.split(' ')])
         return bounding_boxes
 
-    def show(self):
-        img = Image.new("RGB", (4872, 6496))
-        drawer = ImageDraw.Draw(img)
-        for baseline in self.baselines:
-            drawer.line(xy=baseline, fill=(255, 255, 255), width=2) # weiss
-
-        for region in self.textregions:
-            drawer.polygon(xy=region, outline=(255, 255, 0)) # gelb
-
-        for textline in self.textlines:
-            drawer.polygon(xy=textline, outline=(0, 255, 255)) # türkis
-        img.show()
-
     def draw(self, drawer: ImageDraw):
-        pass
+        for main_text_line in self.get_main_text_lines():
+            main_text_line.draw(drawer)
+
+        for comment in self.get_comments():
+            comment.draw(drawer)
+
+        for decoration in self.get_decorations():
+            decoration.draw(drawer) # türkis
+
+        for region in self.get_text_regions():
+            region.draw(drawer)
 
     def resize(self, size: Tuple):
         print("Resize method nocht nicht implementiert (@ PAGE(Scalable)")
@@ -142,12 +149,12 @@ class Reader(Scalable):
 if __name__ == '__main__':
     path = Path("../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0105r_max.xml")
 
-    page = Reader(path)
+    page = VectorGT(path)
 
     img = Image.new("RGB", (4872, 6496))
     drawer = ImageDraw.Draw(img)
 
-    text = page.read_xml(path)
+    text = VectorGT(path)
     for text_class in text:
         print(text_class.length())
         for elem in text_class.text_lines:
@@ -157,6 +164,6 @@ if __name__ == '__main__':
     img.show()
 
 
-    page.show()
+    page.draw(drawer)
 
 
