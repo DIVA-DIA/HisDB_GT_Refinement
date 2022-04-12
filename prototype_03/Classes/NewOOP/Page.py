@@ -3,9 +3,12 @@ from pathlib import Path
 
 from PIL import ImageDraw, Image
 
-from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Masking import MaskCollection
+from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Mask import TextLineMasker, Masker
+
+from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Mask import Mask
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Scalable import Scalable
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.VectorGT import VectorGT
+from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.VectorObject import Polygon, BoundingBox
 
 
 class Page(Scalable):
@@ -24,17 +27,34 @@ class Page(Scalable):
         self.pixel_gt: Image = Image.open(pixel_gt).convert("RGB")
         # TODO: it would be nicer to have a PAGE or VectorBasedGT class that contains all the information text_lines, bounding_boxes,
         self.vector_gt = VectorGT(page_gt)
-        self.mask_collection = MaskCollection()
-        # self.initialize_masks()
+        self.initialize_masks()
 
     def draw(self, drawer : ImageDraw):
         self.vector_gt.draw(drawer)
         print("Ergänze diese Methode.")
 
-    # def initialize_masks(self):
-    #     # TODO could be outfactored to a class called: MaskCreator
-    #     masks = []
-    #     for textlines in self.vector_gt.get_main_text_lines():
+    def initialize_masks(self):
+        # TODO could be outfactored to a class called: MaskCreator
+        global_mask = Mask()
+        masker = Masker()
+        for textlines in self.vector_gt.get_main_text_lines():
+            polygon = textlines.polygon.polygon
+            temp_mask: Mask = TextLineMasker(Polygon(polygon), global_mask).mask()
+            global_mask = masker.union(global_mask, temp_mask)
+
+        for comments in self.vector_gt.get_comments():
+            polygon = comments.polygon.polygon
+            temp_mask: Mask = TextLineMasker(Polygon(polygon), global_mask).mask()
+            global_mask = masker.union(global_mask, temp_mask)
+
+        global_mask.show()
+
+
+
+
+
+
+
 
 
 

@@ -57,14 +57,14 @@ if __name__ == '__main__':
     print("Program running")
 
     # input
-    public_test = Path("../../CB55/img/public-test/")
-    original_png = Path("../../CB55/img/public-test/")
-    xml_gt = Path("../../CB55/PAGE-gt/public-test/")
-    pixel_level_gt = Path("../../CB55/pixel-level-gt/public-test/")
+    public_test = Path("../../../CB55/img/public-test/")
+    original_png = Path("../../../CB55/img/public-test/")
+    xml_gt = Path("../../../CB55/PAGE-gt/public-test/")
+    pixel_level_gt = Path("../../../CB55/pixel-level-gt/public-test/")
 
     # output
     intermediate_result = Path("../Output/GT_1/Resized_PX_Based_GT_With_All_Pixels_Outside_Polygon_Set_To_Background/")
-    output_path = Path("../Output/GT_1/JPEG_VS_GIF/")
+    output_path = Path("../../Output/GT_1/JPEG_VS_GIF/")
 
     # get all images
     images = open_images(pixel_level_gt)

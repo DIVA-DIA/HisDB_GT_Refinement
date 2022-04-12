@@ -69,11 +69,11 @@ if __name__ == '__main__':
     #
     # overlay_img_with_xml(**args.__dict__)
 
-    original_png = Path("../../CB55/img/public-test/e-codices_fmb-cb-0055_0098v_max.jpg")
-    xml_gt = Path("../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0098v_max.xml")
-    pixel_level_gt = Path("../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0098v_max.png")
+    original_png = Path("../../../CB55/img/public-test/e-codices_fmb-cb-0055_0098v_max.jpg")
+    xml_gt = Path("../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0098v_max.xml")
+    pixel_level_gt = Path("../../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0098v_max.png")
     all_different_colors = Path("../Input/with_all_different_colors_02.png")
-    output = Path("../Output/polygons_different_colors_26.2/")
+    output = Path("../../Output/polygons_different_colors_26.2/")
 
     # CB55 img public test with PAGE-gt
     # overlay_img_with_xml(original_png,xml_gt,output) # ever line a different color

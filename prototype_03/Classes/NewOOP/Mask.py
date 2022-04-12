@@ -6,6 +6,7 @@ from abc import abstractmethod
 
 from PIL.ImageDraw import ImageDraw
 
+#from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.MaskingStrategy import Masker
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Scalable import Scalable
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.VectorObject import VectorObject, Polygon, Box, BoundingBox
 
@@ -19,7 +20,7 @@ class Mask(Scalable):
 
     def __init__(self, mask: np.ndarray = None):
         if mask is None:
-            self.mask = np.zeros(shape=shape, dtype=bool)
+            self.mask = np.zeros(shape=self.shape, dtype=bool)
         else:
             self.mask = mask
 
@@ -44,8 +45,8 @@ class Mask(Scalable):
 # For polygons, rectangles, etc.
 class ShapeMask(Mask):
 
-    def __init__(self, vector_obj: VectorObject):
-        super().__init__()
+    def __init__(self, vector_obj: VectorObject, mask: np.ndarray = None):
+        super().__init__(mask)
         self.vector_obj = vector_obj
         self.mask = self.make_mask(vector_obj=vector_obj)
 
@@ -74,17 +75,16 @@ class Masker:
         pass
 
 
+# Maybe a bit unnecessary to make an object everytime. It would be better to just have a static
+class TextLineMasker(Masker):
 
+    def __init__(self, text_line_polygon: Polygon, background: Mask):
+        self.text_mask: ShapeMask = ShapeMask(text_line_polygon)
+        self.background: Mask = background
 
-class MaskCollection(Scalable):
-
-    def __init__(self):
-        self.masks: List[Mask] = []
-
-    def add(self, mask: Mask):
-        self.masks.append(mask)
-
-
+    def mask(self) -> Mask:
+        mask: Mask = self.union(self.background, self.text_mask)
+        return mask
 
 
 
@@ -111,7 +111,7 @@ if __name__ == '__main__':
 
     #mask_1.show()
     #mask_2.show()
-    text_line_mask.show()
+    union_result.show()
 
     #union_result.show()
     #intersection_result.show()
