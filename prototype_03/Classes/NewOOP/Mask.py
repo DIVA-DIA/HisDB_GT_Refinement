@@ -8,6 +8,7 @@ from PIL.ImageDraw import ImageDraw
 
 #from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.MaskingStrategy import Masker
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Scalable import Scalable
+from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Textline import MainText, CommentText
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.VectorObject import VectorObject, Polygon, Box, BoundingBox
 
 
@@ -16,13 +17,16 @@ from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.VectorObject import VectorO
 class Mask(Scalable):
     # Masks must be binary
     mode = "1"
-    shape = (4872, 6496)
+    shape = (6496,4872)
 
     def __init__(self, mask: np.ndarray = None):
         if mask is None:
-            self.mask = np.zeros(shape=self.shape, dtype=bool)
+            self._initialize_mask()
         else:
             self.mask = mask
+
+    def _initialize_mask(self):
+        self.mask = np.zeros(shape=self.shape, dtype=bool)
 
     def show(self):
         """
@@ -57,6 +61,7 @@ class ShapeMask(Mask):
         img_as_array = np.asarray(img)
         return img_as_array
 
+
 class Masker:
     # TODO: make return type same as input type
     def union(self, mask1: Mask, mask2: Mask) -> Mask:
@@ -75,16 +80,52 @@ class Masker:
         pass
 
 
-# Maybe a bit unnecessary to make an object everytime. It would be better to just have a static
-class TextLineMasker(Masker):
+# extends the mask, holds a masker
+class TextLineMask(Mask):
 
-    def __init__(self, text_line_polygon: Polygon, background: Mask):
-        self.text_mask: ShapeMask = ShapeMask(text_line_polygon)
-        self.background: Mask = background
+    def __init__(self, main_text: MainText, comments: CommentText):
+        self._main_text: MainText = main_text
+        self._comments: CommentText = comments
+        super().__init__()
+        self._initialize_mask()
 
-    def mask(self) -> Mask:
-        mask: Mask = self.union(self.background, self.text_mask)
-        return mask
+    def _initialize_mask(self):
+        global_mask: Mask = Mask()
+        masker = Masker()
+        for textlines in self._main_text:
+            polygon: Polygon = textlines.polygon
+            temp_mask: Mask = masker.union(mask1=ShapeMask(polygon), mask2=global_mask)
+            global_mask = masker.union(global_mask, temp_mask)
+
+        for comments in self._comments:
+            polygon: Polygon = comments.polygon
+            temp_mask: Mask = masker.union(mask1=ShapeMask(polygon), mask2=global_mask)
+            global_mask = masker.union(global_mask, temp_mask)
+        self.mask = global_mask.mask
+
+class ASC_DESC_Mask(Mask):
+
+    def __init__(self, main_text: MainText, comments: CommentText):
+        self._main_text: MainText = main_text
+        self._comments: CommentText = comments
+        super().__init__()
+        self._initialize_mask()
+
+    def _initialize_mask(self):
+        global_mask: Mask = Mask()
+        masker = Masker()
+        for textlines in self._main_text:
+            polygon: Polygon = textlines.polygon
+            temp_mask: Mask = masker.union(mask1=ShapeMask(polygon), mask2=global_mask)
+            asc_mask: Mask = masker.union()
+            global_mask = masker.union(global_mask, temp_mask)
+
+        for comments in self._comments:
+            polygon: Polygon = comments.polygon
+            temp_mask: Mask = masker.union(mask1=ShapeMask(polygon), mask2=global_mask)
+            global_mask = masker.union(global_mask, temp_mask)
+        self.mask = global_mask.mask
+
 
 
 

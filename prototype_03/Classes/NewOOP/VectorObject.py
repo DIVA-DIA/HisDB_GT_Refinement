@@ -30,6 +30,11 @@ from abc import abstractmethod
 
 class VectorObject(Scalable):
 
+    def __init__(self, xy: List[Tuple]):
+        self.xy = xy
+
+    # TODO: Implement a BoundingBox method which creates a boundingbox for every Vector
+
     def draw(self, drawer: ImageDraw, outline=(255,255,255), fill = None):
         pass
 
@@ -44,7 +49,8 @@ class Polygon(VectorObject):
         Polygon given must be closed.
         :param polygon: List of tuples [(x1,y1),(x2,y2),(x3,y3),...,(x1,y1)]
         """
-        self.polygon = polygon
+        super().__init__(polygon)
+
 
     # to allow flawless iteration over all coordinates of the polygon
     def __getitem__(self, index):
@@ -52,12 +58,12 @@ class Polygon(VectorObject):
         :param index: int
         :return: point as tuple (x,y) at index
         """
-        return self.polygon[index]
+        return self.xy[index]
 
     # you intuitively solved the Liskov Substitution Problem:
     # https://stackoverflow.com/questions/6034662/python-method-overriding-does-signature-matter
     def draw(self, drawer: ImageDraw, outline=(255, 125, 0), fill=None):
-        drawer.polygon(self.polygon, outline=outline, fill=fill)
+        drawer.polygon(self.xy, outline=outline, fill=fill)
 
     def resize(self, size: Tuple):
         pass
@@ -72,33 +78,33 @@ class Box(VectorObject):
     # box is not a rectangle, but a polygon with four coordinates
 
     def __init__(self, xy: List[Tuple]):
+        super().__init__(xy)
         assert len(xy) == 4
-        self.box = xy
 
     def get_min_x(self):
         min_x = float("inf")
-        for coord in self.box:
+        for coord in self.xy:
             if coord[0] < min_x:
                 min_x = int(coord[0])
         return min_x
 
     def get_min_y(self):
         min_y = float("inf")
-        for coord in self.box:
+        for coord in self.xy:
             if coord[1] < min_y:
                 min_y = int(coord[1])
         return min_y
 
     def get_max_x(self):
         max_x = 0
-        for coord in self.box:
+        for coord in self.xy:
             if coord[0] > max_x:
                 max_x = int(coord[0])
         return max_x
 
     def get_max_y(self):
         max_y = 0
-        for coord in self.box:
+        for coord in self.xy:
             if coord[1] > max_y:
                 max_y = int(coord[1])
         return max_y
@@ -107,19 +113,19 @@ class Box(VectorObject):
 class Line(VectorObject):
 
     def __init__(self, xy: List[Tuple]):
-        self.line = xy
-        self.line.sort(key=lambda x: x[0])
-        assert self.line[0][0] < self.line[1][0]
+        super().__init__(xy)
+        self.xy.sort(key=lambda x: x[0])
+        assert self.xy[0][0] < self.xy[1][0]
         assert len(xy) == 2
 
     def get_min_x_coord(self):
-        return self.line[0]
+        return self.xy[0]
 
     def get_max_x_coord(self):
-        return self.line[1]
+        return self.xy[1]
 
     def __getitem__(self, index):
-        return self.line[index]
+        return self.xy[index]
 
 
 class BoundingBox(Box):
@@ -166,13 +172,16 @@ class XRegion(VectorObject):
         self.x_region = self._set_x_region()  # [[(x1,y1),(x2,y2)][(x3,y3),(x4,y4)]]
         self.ascender_region = self._set_ascender_region()
         self.descender_region = self._set_descender_region()
+        super().__init__(self.x_region.xy) # TODO: Noch nicht gut implementiert.
+                                            # Diese klasse macht noch gerade herzlich wenig sinn
+
 
     def _set_topline(self):
         return Line([tuple((x, y - self.x_hight)) for x, y in self.baseline])
 
     def _set_x_region(self):
-        sorted_baseline = [self.baseline.line[1], self.baseline.line[0]]
-        topline = self.topline.line
+        sorted_baseline = [self.baseline.xy[1], self.baseline.xy[0]]
+        topline = self.topline.xy
         concatenated = topline + sorted_baseline
         return Box(concatenated)
 
@@ -199,11 +208,11 @@ class XRegion(VectorObject):
         return region
 
     def draw(self, drawer: ImageDraw, outline=(0, 125, 255), fill=None):
-        drawer.polygon(xy=self.boundingbox.box,
+        drawer.polygon(xy=self.boundingbox.xy,
                          outline=outline)
-        drawer.polygon(xy=self.ascender_region.box, outline=(125, 125, 255), fill=(125, 125, 255))
-        drawer.polygon(xy=self.descender_region.box, outline=(125, 170, 255), fill = (125, 170, 255))
-        drawer.polygon(xy=self.x_region.box, outline=(125, 155, 255), fill=(125, 155, 255))
+        drawer.polygon(xy=self.ascender_region.xy, outline=(125, 125, 255), fill=(125, 125, 255))
+        drawer.polygon(xy=self.descender_region.xy, outline=(125, 170, 255), fill = (125, 170, 255))
+        drawer.polygon(xy=self.x_region.xy, outline=(125, 155, 255), fill=(125, 155, 255))
 
     def resize(self, size: Tuple):
         pass

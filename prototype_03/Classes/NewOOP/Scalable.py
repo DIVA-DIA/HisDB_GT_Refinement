@@ -2,6 +2,8 @@ from abc import abstractmethod
 from typing import Tuple
 from PIL import ImageDraw
 # Interface for all scalable objects in this project
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.ImageDimension import ImageDimension
+
 
 class Scalable():
 
@@ -17,7 +19,7 @@ class Scalable():
     # TODO there should
 
     @abstractmethod
-    def resize(self, size : Tuple):
+    def resize(self, target_dim: ImageDimension):
         """
         :param size: (x,y)
         """
