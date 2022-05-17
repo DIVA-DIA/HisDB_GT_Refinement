@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+import operator
+from dataclasses import dataclass, replace
 from typing import Any, Tuple
 
 
@@ -17,6 +18,19 @@ class ImageDimension:
 
     def scale_factor(self, other: Any):
         return self.width / other.width, self.height / other.height
+
+    def scale(self, scale_factor: Tuple[float,float]):
+        height = round(operator.truediv(self.height, scale_factor[1]))
+        width = round(operator.truediv(self.width, scale_factor[0]))
+        return ImageDimension(width=width, height=height)
+
+    def __eq__(self, other):
+        if type(self) is type(other):
+            if self.height == other.height:
+                if self.width == other.width:
+                    return True
+        else:
+            return False
 
 
 

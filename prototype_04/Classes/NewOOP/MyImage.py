@@ -4,6 +4,7 @@
 
 # TODO: Soll ich alles so implementieren, dass stets eine Kopie erstellt wird (z.B. beim Binarisieren, Reskalieren, etc.)
 #   oder das Original manipulieren?
+import operator
 from pathlib import Path
 from typing import Tuple, Any
 
@@ -17,22 +18,29 @@ from scipy.ndimage import gaussian_filter
 
 
 class MyImage(Scalable):
-    def __init__(self, img: Image):
-        self._img: Image = img
+    def __init__(self, img_path: Path):
+        self._img: Image = Image.open(img_path).convert("RGB")
 
-    def resize(self, target_dim: ImageDimension):
-        self._img = self._img.resize(size=target_dim.to_tuple(), resample=Image.BICUBIC, box=None, reducing_gap=None)
+    def resize(self, scale_factor: Tuple[float,float]):
+        img_dimension: ImageDimension = self.get_dimension()
+        target_dimension = tuple(round(operator.truediv(r,t)) for r,t in zip(img_dimension.to_tuple(),scale_factor))
+        self._img = self._img.resize(size=target_dimension, resample=Image.BICUBIC, box=None, reducing_gap=None)
 
     def crop(self, target_dim: ImageDimension, cut_left: bool = True):
         box = self._get_crop_coordinates(target_dim=target_dim, cut_left=cut_left)
         self._img = self._img.crop(box=box)
+
+    def get_dimension(self) -> ImageDimension:
+        img_dim: ImageDimension = ImageDimension(width=self._img.size[0],height=self._img.size[1])
+        return img_dim
+
 
     def show(self):
         self._img.show()
 
     def _get_crop_coordinates(self, target_dim: ImageDimension,
                               cut_left) -> Tuple[Any, Any, Any, Any]:
-        # TODO: cut_left could be determined algorithmically
+        # TODO: cut_left can be determined algorithmically for RawImage, but not for PixelLevelGT
         source_dim = ImageDimension(width=self._img.width, height=self._img.height)
         if target_dim is None or cut_left is None:
             raise ValueError("target_dim or cut_left is None.")
@@ -67,23 +75,25 @@ class MyImage(Scalable):
 
 class RAWImage(MyImage):
 
-    def __init__(self, img: Image):
-        super().__init__(img)
+    def __init__(self, img_path: Path):
+        super().__init__(img_path)
 
 
 class PixelGT(MyImage):
     sigma = 3
     truncate = 9
 
-    def __init__(self, img: Image):
-        super().__init__(img)
+    def __init__(self, img_path: Image):
+        super().__init__(img_path)
 
 
-    def resize(self, target_dim: ImageDimension):
+    def resize(self, scale_factor: Tuple[float,float]):
         bin_img_array = self._hisdb_to_bin_img()
         self._img = Image.fromarray(gaussian_filter(bin_img_array, sigma=self.sigma, truncate=self.truncate))
-        super().resize(target_dim=target_dim)
+        super().resize(scale_factor=scale_factor)
         self._img.convert(mode="L")
+        self.show()
+        self._img = Image.fromarray(self.binarize())
 
     def _hisdb_to_bin_img(self) -> np.array:
         img_array = np.asarray(self._img)
@@ -103,25 +113,24 @@ class PixelGT(MyImage):
 
 if __name__ == '__main__':
     target_dimension = ImageDimension(width=700, height=1500)
+    scale_factor = (3,2)
 
     original = Path("../../../CB55/img/public-test/e-codices_fmb-cb-0055_0105r_max.jpg")
     pixelGT = Path("../../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0105r_max.png")
-    # Test MYImage cropping (durch instanzierung von RAWImage)
+    #Test MYImage cropping (durch instanzierung von RAWImage)
     img = Image.open(original).convert("RGB")
-    diva_img = RAWImage(img=img)
+    diva_img = RAWImage(original)
     diva_img.crop(target_dim=target_dimension,cut_left=False)
     diva_img.show()
 
     bin_img = Image.fromarray(diva_img.binarize()).show()
 
     # Test RAWImage Resizing
-    img = Image.open(original).convert("RGB")
-    diva_img = RAWImage(img=img)
-    diva_img.resize(target_dimension)
+    diva_img = RAWImage(img_path=original)
+    diva_img.resize(scale_factor)
     diva_img.show()
 
-    # Test PixelGT reskalierung
-    img = Image.open(pixelGT).convert("RGB")
-    pixelGt = PixelGT(img)
-    pixelGt.resize(target_dimension)
+    #Test PixelGT reskalierung
+    pixelGt = PixelGT(pixelGT)
+    pixelGt.resize(scale_factor)
     pixelGt.show()
