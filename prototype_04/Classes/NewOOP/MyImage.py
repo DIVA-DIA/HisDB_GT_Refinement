@@ -6,12 +6,12 @@
 #   oder das Original manipulieren?
 import operator
 from pathlib import Path
-from typing import Tuple, Any
+from typing import Tuple, Any, Dict
 
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Scalable import Scalable
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.ImageDimension import ImageDimension
 import numpy as np
-from PIL import Image, ImageOps, ImageDraw
+from PIL import Image, ImageOps, ImageDraw, ImageFont
 from skimage.filters.thresholding import threshold_otsu, threshold_niblack, threshold_sauvola
 
 from scipy.ndimage import gaussian_filter
@@ -85,30 +85,66 @@ class PixelGT(MyImage):
 
     def __init__(self, img_path: Image):
         super().__init__(img_path)
-
+        self.bin_images: Dict = self._hisdb_to_bin_images()
 
     def resize(self, scale_factor: Tuple[float,float]):
-        bin_img_array = self._hisdb_to_bin_img()
-        self._img = Image.fromarray(gaussian_filter(bin_img_array, sigma=self.sigma, truncate=self.truncate))
-        super().resize(scale_factor=scale_factor)
-        self._img.convert(mode="L")
-        self.show()
-        self._img = Image.fromarray(self.binarize())
+        new_images: Dict = {}
+        for key,value in self.bin_images.items():
+            self._img = Image.fromarray(gaussian_filter(value, sigma=self.sigma, truncate=self.truncate))
+            super().resize(scale_factor=scale_factor)
+            self._img.convert(mode="L")
+            new_images[key] = Image.fromarray(self.binarize())
+        self.bin_images = new_images
 
-    def _hisdb_to_bin_img(self) -> np.array:
+    def draw_with_keys(self):
+        for key, value in self.bin_images.items():
+            img = Image.fromarray(np.asarray(value))
+            draw = ImageDraw.Draw(img)
+        # font = ImageFont.truetype(<font-file>, <font-size>)
+            font = ImageFont.truetype("/System/Library/Fonts/Avenir Next.ttc", 100)
+        # draw.text((x, y),"Sample Text",(r,g,b))
+            draw.text(xy=(50, 100), text=f"Key: {key}", fill="white", font=font)
+            img.show()
+
+    # def _hisdb_to_bin_img(self) -> np.array:
+    #     img_array = np.asarray(self._img)
+    #     # remove border pixels
+    #     img_array_classes = img_array[:, :, 2]  # -> 1-D array: nimmt das letzte element des jeweiligen tripplets
+    #     img_array_border = np.logical_not(img_array[:, :,
+    #                                       0] > 0)  # -> 1D-array: macht einen binären array und stellt TRUE überall wo eine 0 in der ersten spalte (index = 0) vorkommt
+    #     blue_chan_img = np.where(img_array_border, img_array_classes,
+    #                              0)  # -> 1D-array: überall wo eine null steht, wird die klasse behalten, überall wo text ist, wird 0 übernommen.
+    #     blue_chan_img = np.where(blue_chan_img[:, :] == 1, 0, blue_chan_img)
+    #     blue_chan_img = np.where(blue_chan_img[:, :] > 0, 255, blue_chan_img)
+    #     bin_image_array = np.empty(blue_chan_img.shape)
+    #     bin_image_array.fill(255)
+    #     # TODO: ich könnte eigentlich eine Mask-Klasse erstellen hier. Das könnte noch praktisch sein.
+    #     return np.where(np.logical_not(blue_chan_img), bin_image_array, 0)
+
+    def _hisdb_to_bin_images(self) -> Dict[int, np.ndarray]:
+        """
+        Find out the different classes that are encoded in the image and convert them to binary images.
+        :param image: PIL image
+        :return: array of binary images
+        """
         img_array = np.asarray(self._img)
         # remove border pixels
-        img_array_classes = img_array[:, :, 2]  # -> 1-D array: nimmt das letzte element des jeweiligen tripplets
-        img_array_border = np.logical_not(img_array[:, :,
-                                          0] > 0)  # -> 1D-array: macht einen binären array und stellt TRUE überall wo eine 0 in der ersten spalte (index = 0) vorkommt
-        blue_chan_img = np.where(img_array_border, img_array_classes,
-                                 0)  # -> 1D-array: überall wo eine null steht, wird die klasse behalten, überall wo text ist, wird 0 übernommen.
-        blue_chan_img = np.where(blue_chan_img[:, :] == 1, 0, blue_chan_img)
-        blue_chan_img = np.where(blue_chan_img[:, :] > 0, 255, blue_chan_img)
-        bin_image_array = np.empty(blue_chan_img.shape)
-        bin_image_array.fill(255)
-        # TODO: ich könnte eigentlich eine Mask-Klasse erstellen hier. Das könnte noch praktisch sein.
-        return np.where(np.logical_not(blue_chan_img), bin_image_array, 0)
+        img_array_classes = img_array[:, :, 2]
+        # 1: background, 2: comment, 4: decoration, 8: maintext
+        # 6: comment + decoration, 12: maintext + decoration
+        categories = np.unique(img_array_classes)[1:]
+        bin_images = {}
+        for category in categories:
+            # remove border pixels
+            array_border = np.logical_not(img_array[:, :, 0] > 0)
+            blue_chan = np.where(array_border, img_array_classes, 0)
+
+            # set pixel which are equal to category to 255
+            blue_chan = np.where(blue_chan[:, :] == category, 255, 0)
+
+            bin_images[category] = blue_chan.astype(np.uint8)
+        return bin_images
+
 
 
 if __name__ == '__main__':
@@ -133,4 +169,5 @@ if __name__ == '__main__':
     #Test PixelGT reskalierung
     pixelGt = PixelGT(pixelGT)
     pixelGt.resize(scale_factor)
-    pixelGt.show()
+    #pixelGt.show()
+    pixelGt.draw_with_keys()
