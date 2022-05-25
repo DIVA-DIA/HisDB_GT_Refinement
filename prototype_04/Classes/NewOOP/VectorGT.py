@@ -3,7 +3,7 @@ import operator
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
-from typing import Tuple
+from typing import Tuple, List
 
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP import TextObjects
 
@@ -13,6 +13,7 @@ from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.ImageDimension import Image
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.Scalable import Scalable
 
 # VectorBasedGT stores all information from the xmls. It also holds additional information, e.g. the
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.TextObjects import Layout
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.VectorObject import Polygon, Line
 
 
@@ -20,7 +21,7 @@ class VectorGT(Scalable):
 
     def __init__(self, path: Path):
         self.img_dimension: ImageDimension = None
-        self.text_elements = self._read_xml(path)
+        self.text_elements: List[Layout] = self._read_xml(path)
 
     def get_main_text_lines(self) -> TextObjects.MainText:
         return self.text_elements[0]
@@ -111,54 +112,13 @@ class VectorGT(Scalable):
         self.img_dimension = self.img_dimension.scale(scale_factor)
 
 
-    def crop(self, target_dim: ImageDimension):
-        cropped_elements = []
-        maintext = TextObjects.MainText()
-        comments = TextObjects.CommentText()
-        decorations = TextObjects.Decorations()
-        text_regions = TextObjects.TextRegions()
+    def crop(self, target_dim: ImageDimension, cut_left: bool):
+        for elem in self.text_elements:
+            elem.crop(source_dim=self.img_dimension,target_dim=target_dim,cut_left=cut_left)
 
-        main_text_lines = self.get_main_text_lines()
-        for main_text_line in main_text_lines:
-            polygon_as_tuple_array = [tuple(map(operator.truediv, t, self.img_dimension.scale_factor(target_dim)))
-                                      for t in main_text_line.polygon.xy]
-            baseline_as_tuple_array = [tuple(map(operator.truediv, t, self.img_dimension.scale_factor(target_dim)))
-                                       for t in main_text_line.xRegion.baseline.xy]
-            polygon_as_tuple_array = [tuple(map(round, t)) for t in polygon_as_tuple_array]
-            baseline_as_tuple_array = [tuple(map(round, t)) for t in baseline_as_tuple_array]
-            maintext.append_elem(TextObjects.MainTextLine(Polygon(polygon_as_tuple_array),
-                                                          Line(baseline_as_tuple_array)))
 
-        comment_lines = self.get_comments()
-        for comment_line in comment_lines:
-            polygon_as_tuple_array = [tuple(map(operator.truediv, t, self.img_dimension.scale_factor(target_dim)))
-                                      for t in comment_line.polygon.xy]
-            baseline_as_tuple_array = [tuple(map(operator.truediv, t, self.img_dimension.scale_factor(target_dim)))
-                                       for t in comment_line.xRegion.baseline.xy]
-            polygon_as_tuple_array = [tuple(map(round, t)) for t in polygon_as_tuple_array]
-            baseline_as_tuple_array = [tuple(map(round, t)) for t in baseline_as_tuple_array]
-            comments.append_elem(TextObjects.CommentLine(Polygon(polygon_as_tuple_array),
-                                                          Line(baseline_as_tuple_array)))
 
-        decoration_elems = self.get_decorations()
-        for decoration in decoration_elems:
-            polygon_as_tuple_array = [tuple(map(operator.truediv, t, self.img_dimension.scale_factor(target_dim)))
-                                      for t in decoration.polygon.xy]
-            polygon_as_tuple_array = [tuple(map(round, t)) for t in polygon_as_tuple_array]
-            decorations.append_elem(TextObjects.DecorationElement(Polygon(polygon_as_tuple_array)))
-
-        text_region_elems = self.get_text_regions()
-        for region in text_region_elems:
-            polygon_as_tuple_array = [tuple(map(operator.truediv, t, self.img_dimension.scale_factor(target_dim)))
-                                      for t in region.polygon.xy]
-            polygon_as_tuple_array = [tuple(map(round, t)) for t in polygon_as_tuple_array]
-            text_regions.append_elem(TextObjects.TextRegionElement(Polygon(polygon_as_tuple_array)))
-
-        self.img_dimension = target_dim
-        self.text_elements = [maintext,comments,decorations,text_regions]
-
-    def show(self):
-        img = Image.new("RGB", (self.img_dimension.to_tuple()))
+    def show(self, img: Image):
         drawer = ImageDraw.Draw(img)
         self.draw(drawer)
         img.show()

@@ -4,6 +4,7 @@ from typing import Tuple, List
 
 from PIL.ImageDraw import ImageDraw
 
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.Scalable import Scalable
 from abc import abstractmethod
 
@@ -42,6 +43,16 @@ class VectorObject(Scalable):
     def resize(self, scale_factor: Tuple[float,float]):
         self.xy = [tuple(map(operator.truediv, t, scale_factor)) for t in self.xy]
         self.xy = [tuple(map(round, t)) for t in self.xy]
+
+    def crop(self, source_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
+        difference = source_dim.difference(target_dim)
+        if not cut_left:
+            difference = (0, difference[1])
+        self.xy = self._find_and_scale_points(difference)
+
+    def _find_and_scale_points(self, difference: Tuple[float, float]):
+        return [tuple(map(operator.sub, t, difference)) for t in self.xy]
+
 
 
 class Polygon(VectorObject):

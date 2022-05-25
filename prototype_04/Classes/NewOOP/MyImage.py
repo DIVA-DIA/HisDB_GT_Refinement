@@ -16,30 +16,31 @@ from skimage.filters.thresholding import threshold_otsu, threshold_niblack, thre
 
 from scipy.ndimage import gaussian_filter
 
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.layout_classes import LayoutClasses
+
 
 class MyImage(Scalable):
     def __init__(self, img_path: Path):
         self._img: Image = Image.open(img_path).convert("RGB")
 
-    def resize(self, scale_factor: Tuple[float,float]):
+    def resize(self, scale_factor: Tuple[float, float]):
         img_dimension: ImageDimension = self.get_dimension()
-        target_dimension = tuple(round(operator.truediv(r,t)) for r,t in zip(img_dimension.to_tuple(),scale_factor))
+        target_dimension = tuple(round(operator.truediv(r, t)) for r, t in zip(img_dimension.to_tuple(), scale_factor))
         self._img = self._img.resize(size=target_dimension, resample=Image.BICUBIC, box=None, reducing_gap=None)
 
-    def crop(self, target_dim: ImageDimension, cut_left: bool = True):
+    def crop(self, target_dim: ImageDimension, cut_left: bool):
         box = self._get_crop_coordinates(target_dim=target_dim, cut_left=cut_left)
         self._img = self._img.crop(box=box)
 
     def get_dimension(self) -> ImageDimension:
-        img_dim: ImageDimension = ImageDimension(width=self._img.size[0],height=self._img.size[1])
+        img_dim: ImageDimension = ImageDimension(width=self._img.size[0], height=self._img.size[1])
         return img_dim
-
 
     def show(self):
         self._img.show()
 
     def _get_crop_coordinates(self, target_dim: ImageDimension,
-                              cut_left) -> Tuple[Any, Any, Any, Any]:
+                              cut_left: bool) -> Tuple[Any, Any, Any, Any]:
         # TODO: cut_left can be determined algorithmically for RawImage, but not for PixelLevelGT
         source_dim = ImageDimension(width=self._img.width, height=self._img.height)
         if target_dim is None or cut_left is None:
@@ -78,6 +79,19 @@ class RAWImage(MyImage):
     def __init__(self, img_path: Path):
         super().__init__(img_path)
 
+    def get_cut_side(self) -> bool:
+        """
+        Returns the orientation of the Page. If the page is left-oriented return true,
+        if it's right-oriented return false.
+        :return: bool
+        """
+        img_left = np.array(self._img)[:, :3, :]
+        img_right = np.array(self._img)[:, -3:, :]
+        amount_black_left = np.where(np.all(img_left < (10, 10, 10), axis=1))[0].size
+        amount_black_right = np.where(np.all(img_right < (10, 10, 10), axis=1))[0].size
+
+        return amount_black_left > amount_black_right
+
 
 class PixelGT(MyImage):
     sigma = 3
@@ -87,9 +101,9 @@ class PixelGT(MyImage):
         super().__init__(img_path)
         self.bin_images: Dict = self._hisdb_to_bin_images()
 
-    def resize(self, scale_factor: Tuple[float,float]):
+    def resize(self, scale_factor: Tuple[float, float]):
         new_images: Dict = {}
-        for key,value in self.bin_images.items():
+        for key, value in self.bin_images.items():
             self._img = Image.fromarray(gaussian_filter(value, sigma=self.sigma, truncate=self.truncate))
             super().resize(scale_factor=scale_factor)
             self._img.convert(mode="L")
@@ -97,12 +111,16 @@ class PixelGT(MyImage):
         self.bin_images = new_images
 
     def draw_with_keys(self):
+        """
+        mahlt die Keys auf die verschiedenen Layerklassen, ohne diese zu manipulieren. Dient also nur zu illustrationszwecken.
+        :return:
+        """
         for key, value in self.bin_images.items():
             img = Image.fromarray(np.asarray(value))
             draw = ImageDraw.Draw(img)
-        # font = ImageFont.truetype(<font-file>, <font-size>)
-            font = ImageFont.truetype("/System/Library/Fonts/Avenir Next.ttc", 100)
-        # draw.text((x, y),"Sample Text",(r,g,b))
+            # font = ImageFont.truetype(<font-file>, <font-size>)
+            font = ImageFont.truetype("/System/Library/Fonts/Avenir Next.ttc", 50)
+            # draw.text((x, y),"Sample Text",(r,g,b))
             draw.text(xy=(50, 100), text=f"Key: {key}", fill="white", font=font)
             img.show()
 
@@ -142,21 +160,20 @@ class PixelGT(MyImage):
             # set pixel which are equal to category to 255
             blue_chan = np.where(blue_chan[:, :] == category, 255, 0)
 
-            bin_images[category] = blue_chan.astype(np.uint8)
+            bin_images[LayoutClasses(category)] = blue_chan.astype(np.uint8)
         return bin_images
-
 
 
 if __name__ == '__main__':
     target_dimension = ImageDimension(width=700, height=1500)
-    scale_factor = (3,2)
+    scale_factor = (3, 2)
 
     original = Path("../../../CB55/img/public-test/e-codices_fmb-cb-0055_0105r_max.jpg")
     pixelGT = Path("../../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0105r_max.png")
-    #Test MYImage cropping (durch instanzierung von RAWImage)
+    # Test MYImage cropping (durch instanzierung von RAWImage)
     img = Image.open(original).convert("RGB")
     diva_img = RAWImage(original)
-    diva_img.crop(target_dim=target_dimension,cut_left=False)
+    diva_img.crop(target_dim=target_dimension, cut_left=False)
     diva_img.show()
 
     bin_img = Image.fromarray(diva_img.binarize()).show()
@@ -166,8 +183,8 @@ if __name__ == '__main__':
     diva_img.resize(scale_factor)
     diva_img.show()
 
-    #Test PixelGT reskalierung
+    # Test PixelGT reskalierung
     pixelGt = PixelGT(pixelGT)
     pixelGt.resize(scale_factor)
-    #pixelGt.show()
+    # pixelGt.show()
     pixelGt.draw_with_keys()

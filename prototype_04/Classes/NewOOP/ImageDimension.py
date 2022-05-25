@@ -17,7 +17,7 @@ class ImageDimension:
         return self.width, self.height
 
     def scale_factor(self, other: Any):
-        return self.width / other.width, self.height / other.height
+        return self.width / other.width, self.height / other.height # TODO: ImageDimension zurück geben, braucht es nicht mehr
 
     def scale(self, scale_factor: Tuple[float,float]):
         height = round(operator.truediv(self.height, scale_factor[1]))
