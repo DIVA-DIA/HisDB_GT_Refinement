@@ -3,7 +3,7 @@ import operator
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP import TextObjects
 
@@ -15,25 +15,25 @@ from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.Scalable import Scalable
 # VectorBasedGT stores all information from the xmls. It also holds additional information, e.g. the
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.TextObjects import Layout
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.VectorObject import Polygon, Line
-
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.layout_classes import LayoutClasses
 
 class VectorGT(Scalable):
 
     def __init__(self, path: Path):
         self.img_dimension: ImageDimension = None
-        self.text_elements: List[Layout] = self._read_xml(path)
+        self.text_elements: Dict[LayoutClasses, Layout] = self._read_xml(path)
 
     def get_main_text_lines(self) -> TextObjects.MainText:
-        return self.text_elements[0]
+        return self.text_elements.get(LayoutClasses.MAINTEXT)
 
     def get_comments(self) -> TextObjects.CommentText:
-        return self.text_elements[1]
+        return self.text_elements.get(LayoutClasses.COMMENT)
 
     def get_decorations(self) -> TextObjects.Decorations:
-        return self.text_elements[2]
+        return self.text_elements.get(LayoutClasses.DECORATION)
 
     def get_text_regions(self) -> TextObjects.TextRegions:
-        return self.text_elements[3]
+        return self.text_elements.get(LayoutClasses.TEXT_REGIONS)
 
     def _read_xml(self, xml_path: Path):
         patt = re.compile('\{.*\}')
@@ -43,16 +43,21 @@ class VectorGT(Scalable):
         ns = patt.match(
             root.tag).group()  # group returns the different submatches of the regex match (https://www.geeksforgeeks.org/re-matchobject-group-function-in-python-regex/)
         page_part = root[1]
+        # initialize all the text Regions
         main_text = TextObjects.MainText()
         comments = TextObjects.CommentText()
         decorations = TextObjects.Decorations()
         text_regions = TextObjects.TextRegions()
+        # initialize dictionary
+        text_elements: Dict = {}
         # parse out the polygons
         i = 0  # for debugger
         if "Page" in str(page_part.tag):
             img_dimension = ImageDimension(width=int(page_part.attrib["imageWidth"]),
                                            height=int(page_part.attrib["imageHeight"]))
             self.img_dimension = img_dimension
+        else:
+            raise AttributeError("Didn't find any attribute: 'Page' and couldn't instantiate the ImageDimension")
         for text_region in page_part:
             for text_line in text_region.findall(ns + 'TextLine'):
                 print(text_line.attrib)
@@ -77,7 +82,10 @@ class VectorGT(Scalable):
             elif "GraphicRegion" in str(text_region.tag):
                 decorations.append_elem(
                     TextObjects.DecorationElement(Polygon(polygon=self.str_to_polygon(polygon_text))))
-        return [main_text, comments, decorations, text_regions]
+        return {LayoutClasses.MAINTEXT: main_text,
+                LayoutClasses.COMMENT: comments,
+                LayoutClasses.DECORATION: decorations,
+                LayoutClasses.TEXT_REGIONS: text_regions}
 
     def str_to_polygon(self, polygon_str: str):
         return [tuple(map(int, pr.split(','))) for pr in polygon_str.split(' ')]
@@ -141,9 +149,9 @@ if __name__ == '__main__':
     #         print(elem.polygon.xy)
 
     # TODO: adjust the x-height
-    target_dim = ImageDimension(2000, 3000)
-    scale_factor = page.img_dimension.scale_factor(target_dim)
-    page.resize(scale_factor=scale_factor)
+    #target_dim = ImageDimension(2000, 3000)
+   #scale_factor = page.img_dimension.scale_factor(target_dim)
+    #page.resize(scale_factor=scale_factor)
 
     page.draw(drawer)
     img.show()

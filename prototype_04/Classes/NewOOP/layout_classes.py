@@ -14,6 +14,8 @@ class LayoutClasses(Enum):
     COMMENT_AND_MAINTEXT = 10
     MAINTEXT_AND_DECORATION = 12
     MAINTEXT_AND_DECORATION_AND_COMMENT = 14
+    TEXT_REGIONS = 255
 
     def __str__(self):
+        """ Prettier layout than the default __str__ of Enum implementation provides."""
         return "%s: %s" % (self._name_, self._value_)
