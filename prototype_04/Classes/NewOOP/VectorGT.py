@@ -67,10 +67,10 @@ class VectorGT(Scalable):
                 polygon_text: str = text_line.find(ns + 'Coords').attrib['points']
                 if text_line.attrib.get("id").startswith("textline"):
                     main_text.append_elem(
-                        TextObjects.MainTextLine(Polygon(polygon=self.str_to_polygon(polygon_text)), baseline=baseline))
+                        TextObjects.MainTextLine(Polygon(polygon=self._str_to_polygon(polygon_text)), baseline=baseline))
                 elif text_line.attrib.get("id").startswith("comment"):
                     comments.append_elem(
-                        TextObjects.CommentLine(Polygon(polygon=self.str_to_polygon(polygon_text)), baseline=baseline))
+                        TextObjects.CommentLine(Polygon(polygon=self._str_to_polygon(polygon_text)), baseline=baseline))
             # must be in outer loop due to file structure
             polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
             if "TextRegion" in str(text_region.tag):
@@ -78,33 +78,26 @@ class VectorGT(Scalable):
                 if text_region.attrib.get("id").startswith("region_textline"):
                     color = (255, 255, 255)
                 text_regions.append_elem(
-                    TextObjects.TextRegionElement(Polygon(polygon=self.str_to_polygon(polygon_text)), color))
+                    TextObjects.TextRegionElement(Polygon(polygon=self._str_to_polygon(polygon_text)), color))
             elif "GraphicRegion" in str(text_region.tag):
                 decorations.append_elem(
-                    TextObjects.DecorationElement(Polygon(polygon=self.str_to_polygon(polygon_text))))
+                    TextObjects.DecorationElement(Polygon(polygon=self._str_to_polygon(polygon_text))))
         return {LayoutClasses.MAINTEXT: main_text,
                 LayoutClasses.COMMENT: comments,
                 LayoutClasses.DECORATION: decorations,
                 LayoutClasses.TEXT_REGIONS: text_regions}
 
-    def str_to_polygon(self, polygon_str: str):
+    def _str_to_polygon(self, polygon_str: str):
         return [tuple(map(int, pr.split(','))) for pr in polygon_str.split(' ')]
 
     def get_dimension(self) -> ImageDimension:
         return self.img_dimension
 
     def draw(self, drawer: ImageDraw):
-        for main_text_line in self.get_main_text_lines():
-            main_text_line.draw(drawer)
+        for key in self.text_elements:
+            for elem in self.text_elements[key]:
+                elem.draw(drawer=drawer)
 
-        for comment in self.get_comments():
-            comment.draw(drawer)
-
-        for decoration in self.get_decorations():
-            decoration.draw(drawer)  # türkis
-
-        for region in self.get_text_regions():
-            region.draw(drawer)
 
     def set_filled(self, fill: Tuple[float,float,float] = None):
         for main_text_line in self.get_main_text_lines():
@@ -114,15 +107,17 @@ class VectorGT(Scalable):
             comment.set_fill(fill)
 
     def resize(self, scale_factor: Tuple[float,float]):
-        for elem in self.text_elements:
-            for vector_obj in elem:
-                vector_obj.resize(scale_factor=scale_factor)
+        for key in self.text_elements:
+            for elem in self.text_elements[key]:
+                elem.resize(scale_factor=scale_factor)
         self.img_dimension = self.img_dimension.scale(scale_factor)
 
 
     def crop(self, target_dim: ImageDimension, cut_left: bool):
-        for elem in self.text_elements:
-            elem.crop(source_dim=self.img_dimension,target_dim=target_dim,cut_left=cut_left)
+        for key in self.text_elements:
+            for elem in self.text_elements[key]:
+                elem.crop(source_dim=self.img_dimension,target_dim=target_dim,cut_left=cut_left)
+        self.img_dimension = target_dim
 
 
 
@@ -149,9 +144,11 @@ if __name__ == '__main__':
     #         print(elem.polygon.xy)
 
     # TODO: adjust the x-height
-    #target_dim = ImageDimension(2000, 3000)
-   #scale_factor = page.img_dimension.scale_factor(target_dim)
-    #page.resize(scale_factor=scale_factor)
+    target_dim = ImageDimension(2000, 3000)
+    scale_factor = page.img_dimension.scale_factor(target_dim)
+    page.resize(scale_factor=scale_factor)
+
+    #page.crop(target_dim=target_dim, cut_left=True)
 
     page.draw(drawer)
     img.show()
