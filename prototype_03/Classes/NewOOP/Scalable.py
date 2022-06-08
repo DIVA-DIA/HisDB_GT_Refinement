@@ -1,8 +1,7 @@
 from abc import abstractmethod
-from typing import Tuple
 from PIL import ImageDraw
 # Interface for all scalable objects in this project
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.ImageDimension import ImageDimension
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.ImageDimension import ImageDimension
 
 
 class Scalable():

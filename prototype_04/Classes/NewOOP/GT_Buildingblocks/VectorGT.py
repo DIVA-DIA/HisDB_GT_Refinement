@@ -1,21 +1,20 @@
 # opens xml
-import operator
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
-from typing import Tuple, List, Dict
+from typing import Tuple, Dict
 
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP import TextObjects
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks import TextObjects
 
 from PIL import Image, ImageDraw
 
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.Scalable import Scalable
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.ImageDimension import ImageDimension
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.Interfaces.Scalable import Scalable
 
 # VectorBasedGT stores all information from the xmls. It also holds additional information, e.g. the
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.TextObjects import Layout
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.VectorObject import Polygon, Line
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.layout_classes import LayoutClasses
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.TextObjects import Layout
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.VectorObject import Polygon, Line
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.layout_classes import LayoutClasses
 
 class VectorGT(Scalable):
 
@@ -128,7 +127,7 @@ class VectorGT(Scalable):
 
 
 if __name__ == '__main__':
-    path = Path("../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0105r_max.xml")
+    path = Path("../../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0105r_max.xml")
 
     page = VectorGT(path)
     page.set_filled(fill=None)

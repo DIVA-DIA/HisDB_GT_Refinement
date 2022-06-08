@@ -17,8 +17,8 @@ class Page(Scalable):
         """
         Initialize ground truth container.
         :param img: Original Image
-        :param pixel_gt: Pixel based GT
-        :param page: PAGE GT
+        :param pixel_gt: Pixel based GT_Buildingblocks
+        :param page: PAGE GT_Buildingblocks
         """
         self.original_path: Path = original
         self.pixel_gt: Path = pixel_gt

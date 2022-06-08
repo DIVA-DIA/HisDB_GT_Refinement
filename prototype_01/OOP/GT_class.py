@@ -1,4 +1,4 @@
-# soll die Klassen des GT repräsentieren
+# soll die Klassen des GT_Buildingblocks repräsentieren
 
 # TODO: Überlege, ob es Sinn macht die Klassen als classes zu speichern. Falls ja, den Code ergänzen.
 

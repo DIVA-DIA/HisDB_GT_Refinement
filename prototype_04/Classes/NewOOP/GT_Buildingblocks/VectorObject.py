@@ -4,9 +4,8 @@ from typing import Tuple, List
 
 from PIL.ImageDraw import ImageDraw
 
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.Scalable import Scalable
-from abc import abstractmethod
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.ImageDimension import ImageDimension
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.Interfaces.Scalable import Scalable
 
 
 # It could make sense to use the ImagePath.Path object -> however, the functionalities are limited and it implies a certain risk
@@ -38,7 +37,7 @@ class VectorObject(Scalable):
     # TODO: Implement a BoundingBox method which creates a boundingbox for every Vector
 
     def draw(self, drawer: ImageDraw, outline=(255,255,255), fill = None):
-        pass
+        drawer.polygon(xy=self.xy, outline=outline,fill=fill)
 
     def resize(self, scale_factor: Tuple[float,float]):
         self.xy = [tuple(map(operator.truediv, t, scale_factor)) for t in self.xy]
@@ -168,66 +167,5 @@ class BoundingBox(Box):
 
 
 
-# storing multiple VectorObjects.
-class XRegion(Scalable):
-    # not that the x region always intersects perfectly with the bounding_box because they share the same max_x and min_x
 
-    def __init__(self, baseline: Line, bbox: BoundingBox, x_hight=45):
-        self.x_hight = x_hight
-        self.boundingbox: BoundingBox = bbox
-        self.baseline: Line = baseline  # [(x1,y1),(x2,y2)]
-        self.topline: Line = self._set_topline()  # [(x3,y3),(x4,y4)]
-        self.x_region = self._set_x_region()  # [[(x1,y1),(x2,y2)][(x3,y3),(x4,y4)]]
-        self.ascender_region = self._set_ascender_region()
-        self.descender_region = self._set_descender_region()
-        #super().__init__(self.x_region.xy) # TODO: Noch nicht gut implementiert.
-                                            # Diese klasse macht noch gerade herzlich wenig sinn
-
-
-    def _set_topline(self):
-        return Line([tuple((x, y - self.x_hight)) for x, y in self.baseline])
-
-    def _set_x_region(self):
-        sorted_baseline = [self.baseline.xy[1], self.baseline.xy[0]]
-        topline = self.topline.xy
-        concatenated = topline + sorted_baseline
-        return Box(concatenated)
-
-    def _set_ascender_region(self):
-        min_x = self.boundingbox.get_min_x()
-        min_y = self.boundingbox.get_min_y()
-        max_x = self.boundingbox.get_max_x()
-        region = Box([(min_x, min_y),  # left top corner
-                  (max_x, min_y),  # right top corner
-                  (self.topline.get_max_x_coord()),  # right bottom corner
-                  (self.topline.get_min_x_coord())  # left bottom corner
-                  ])
-        return region
-
-    def _set_descender_region(self):
-        min_x = self.boundingbox.get_min_x()
-        max_x = self.boundingbox.get_max_x()
-        max_y = self.boundingbox.get_max_y()
-        region = Box([(self.topline.get_min_x_coord()),  # left top corner
-                     (self.topline.get_max_x_coord()),  # right top corner
-                     (max_x, max_y),  # right bottom corner
-                     (min_x, max_y)  # left bottom corner
-        ])
-        return region
-
-    def draw(self, drawer: ImageDraw, outline=(0, 125, 255), fill=None):
-        drawer.polygon(xy=self.boundingbox.xy,
-                         outline=outline)
-        drawer.polygon(xy=self.ascender_region.xy, outline=(125, 125, 255), fill=None)
-        drawer.polygon(xy=self.descender_region.xy, outline=(125, 170, 255), fill = None)
-        drawer.polygon(xy=self.x_region.xy, outline=(125, 155, 255), fill=None)
-
-    def resize(self, scale_factor: Tuple[float, float]):
-        self.x_hight = round(operator.truediv(self.x_hight,scale_factor[1]))
-        #self.boundingbox.resize(scale_factor) -> wurde schon reskaliert! nicht noch einmal reskalieren :)
-        self.baseline.resize(scale_factor)
-        self.topline.resize(scale_factor)
-        self.x_region.resize(scale_factor)
-        self.ascender_region.resize(scale_factor)
-        self.descender_region.resize(scale_factor)
 

@@ -9,14 +9,15 @@ from pathlib import Path
 from typing import Tuple, Any, Dict
 
 from HisDB_GT_Refinement.prototype_03.Classes.NewOOP.Scalable import Scalable
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.ImageDimension import ImageDimension
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.ImageDimension import ImageDimension
 import numpy as np
 from PIL import Image, ImageOps, ImageDraw, ImageFont
 from skimage.filters.thresholding import threshold_otsu, threshold_niblack, threshold_sauvola
 
 from scipy.ndimage import gaussian_filter
 
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.layout_classes import LayoutClasses
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.Layer import Layer
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.layout_classes import LayoutClasses
 
 
 class MyImage(Scalable):
@@ -99,15 +100,15 @@ class PixelGT(MyImage):
 
     def __init__(self, img_path: Image):
         super().__init__(img_path)
-        self.bin_images: Dict = self._hisdb_to_bin_images()
+        self.bin_images: Dict[LayoutClasses,Layer] = self._hisdb_to_bin_images()
 
     def resize(self, scale_factor: Tuple[float, float]):
-        new_images: Dict = {}
+        new_images: Dict[LayoutClasses,Layer] = {}
         for key, value in self.bin_images.items():
-            self._img = Image.fromarray(gaussian_filter(value, sigma=self.sigma, truncate=self.truncate))
+            self._img = Image.fromarray(gaussian_filter(value.layer, sigma=self.sigma, truncate=self.truncate))
             super().resize(scale_factor=scale_factor)
             self._img.convert(mode="L")
-            new_images[key] = Image.fromarray(self.binarize())
+            new_images[key] = Layer(self.binarize())
         self.bin_images = new_images
 
     def draw_with_keys(self):
@@ -116,7 +117,7 @@ class PixelGT(MyImage):
         :return:
         """
         for key, value in self.bin_images.items():
-            img = Image.fromarray(np.asarray(value))
+            img = Image.fromarray(value.layer)
             draw = ImageDraw.Draw(img)
             # font = ImageFont.truetype(<font-file>, <font-size>)
             font = ImageFont.truetype("/System/Library/Fonts/Avenir Next.ttc", 50)
@@ -139,11 +140,10 @@ class PixelGT(MyImage):
     #     # TODO: ich könnte eigentlich eine Mask-Klasse erstellen hier. Das könnte noch praktisch sein.
     #     return np.where(np.logical_not(blue_chan_img), bin_image_array, 0)
 
-    def _hisdb_to_bin_images(self) -> Dict[int, np.ndarray]:
+    def _hisdb_to_bin_images(self) -> Dict[LayoutClasses, Layer]:
         """
         Find out the different classes that are encoded in the image and convert them to binary images.
-        :param image: PIL image
-        :return: array of binary images
+        :return: dict of binary images Dict[LayoutClasses, Layer]
         """
         img_array = np.asarray(self._img)
         # remove border pixels
@@ -160,31 +160,8 @@ class PixelGT(MyImage):
             # set pixel which are equal to category to 255
             blue_chan = np.where(blue_chan[:, :] == category, 255, 0)
 
-            bin_images[LayoutClasses(category)] = blue_chan.astype(np.uint8)
+            bin_images[LayoutClasses(category)] = Layer(blue_chan.astype(np.uint8))
         return bin_images
 
 
-if __name__ == '__main__':
-    target_dimension = ImageDimension(width=700, height=1500)
-    scale_factor = (3, 2)
 
-    original = Path("../../../CB55/img/public-test/e-codices_fmb-cb-0055_0105r_max.jpg")
-    pixelGT = Path("../../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0105r_max.png")
-    # Test MYImage cropping (durch instanzierung von RAWImage)
-    img = Image.open(original).convert("RGB")
-    diva_img = RAWImage(original)
-    diva_img.crop(target_dim=target_dimension, cut_left=False)
-    diva_img.show()
-
-    bin_img = Image.fromarray(diva_img.binarize()).show()
-
-    # Test RAWImage Resizing
-    diva_img = RAWImage(img_path=original)
-    diva_img.resize(scale_factor)
-    diva_img.show()
-
-    # Test PixelGT reskalierung
-    pixelGt = PixelGT(pixelGT)
-    pixelGt.resize(scale_factor)
-    # pixelGt.show()
-    pixelGt.draw_with_keys()
