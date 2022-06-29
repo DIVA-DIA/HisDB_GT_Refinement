@@ -4,7 +4,7 @@ import re
 import xml.etree.ElementTree as ET
 from typing import Tuple, Dict
 
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks import TextObjects
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks import PageLayout
 
 from PIL import Image, ImageDraw
 
@@ -12,7 +12,6 @@ from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.ImageDime
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.Interfaces.Scalable import Scalable
 
 # VectorBasedGT stores all information from the xmls. It also holds additional information, e.g. the
-from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.TextObjects import Layout
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.VectorObject import Polygon, Line
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.layout_classes import LayoutClasses
 
@@ -20,18 +19,18 @@ class VectorGT(Scalable):
 
     def __init__(self, path: Path):
         self.img_dimension: ImageDimension = None
-        self.text_elements: Dict[LayoutClasses, Layout] = self._read_xml(path)
+        self.text_elements: Dict[LayoutClasses, PageLayout.Layout] = self._read_xml(path)
 
-    def get_main_text_lines(self) -> TextObjects.MainText:
+    def get_main_text_lines(self) -> PageLayout.MainText:
         return self.text_elements.get(LayoutClasses.MAINTEXT)
 
-    def get_comments(self) -> TextObjects.CommentText:
+    def get_comments(self) -> PageLayout.CommentText:
         return self.text_elements.get(LayoutClasses.COMMENT)
 
-    def get_decorations(self) -> TextObjects.Decorations:
+    def get_decorations(self) -> PageLayout.Decorations:
         return self.text_elements.get(LayoutClasses.DECORATION)
 
-    def get_text_regions(self) -> TextObjects.TextRegions:
+    def get_text_regions(self) -> PageLayout.TextRegions:
         return self.text_elements.get(LayoutClasses.TEXT_REGIONS)
 
     def _read_xml(self, xml_path: Path):
@@ -43,10 +42,10 @@ class VectorGT(Scalable):
             root.tag).group()  # group returns the different submatches of the regex match (https://www.geeksforgeeks.org/re-matchobject-group-function-in-python-regex/)
         page_part = root[1]
         # initialize all the text Regions
-        main_text = TextObjects.MainText()
-        comments = TextObjects.CommentText()
-        decorations = TextObjects.Decorations()
-        text_regions = TextObjects.TextRegions()
+        main_text = PageLayout.MainText()
+        comments = PageLayout.CommentText()
+        decorations = PageLayout.Decorations()
+        text_regions = PageLayout.TextRegions()
         # initialize dictionary
         text_elements: Dict = {}
         # parse out the polygons
@@ -66,10 +65,10 @@ class VectorGT(Scalable):
                 polygon_text: str = text_line.find(ns + 'Coords').attrib['points']
                 if text_line.attrib.get("id").startswith("textline"):
                     main_text.append_elem(
-                        TextObjects.MainTextLine(Polygon(polygon=self._str_to_polygon(polygon_text)), baseline=baseline))
+                        PageLayout.MainTextLine(Polygon(polygon=self._str_to_polygon(polygon_text)), baseline=baseline))
                 elif text_line.attrib.get("id").startswith("comment"):
                     comments.append_elem(
-                        TextObjects.CommentLine(Polygon(polygon=self._str_to_polygon(polygon_text)), baseline=baseline))
+                        PageLayout.CommentLine(Polygon(polygon=self._str_to_polygon(polygon_text)), baseline=baseline))
             # must be in outer loop due to file structure
             polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
             if "TextRegion" in str(text_region.tag):
@@ -77,10 +76,10 @@ class VectorGT(Scalable):
                 if text_region.attrib.get("id").startswith("region_textline"):
                     color = (255, 255, 255)
                 text_regions.append_elem(
-                    TextObjects.TextRegionElement(Polygon(polygon=self._str_to_polygon(polygon_text)), color))
+                    PageLayout.TextRegionElement(Polygon(polygon=self._str_to_polygon(polygon_text)), color))
             elif "GraphicRegion" in str(text_region.tag):
                 decorations.append_elem(
-                    TextObjects.DecorationElement(Polygon(polygon=self._str_to_polygon(polygon_text))))
+                    PageLayout.DecorationElement(Polygon(polygon=self._str_to_polygon(polygon_text))))
         return {LayoutClasses.MAINTEXT: main_text,
                 LayoutClasses.COMMENT: comments,
                 LayoutClasses.DECORATION: decorations,
@@ -135,7 +134,7 @@ if __name__ == '__main__':
     img = Image.new("RGB", page.img_dimension.to_tuple())
     drawer = ImageDraw.Draw(img)
 
-    # text = VectorGT(path)
+    # text = VectorGTRepresentation(path)
     # for text_class in text.text_elements:
     #     print(text_class.length())
     #     for elem in text_class.text_lines:

@@ -3,6 +3,7 @@ from typing import Tuple, List
 
 from PIL import ImageDraw
 
+from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.Layer import AscenderLayer
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.Interfaces.Scalable import Scalable
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.VectorObject import Polygon, BoundingBox, Line, Box
 from HisDB_GT_Refinement.prototype_04.Classes.NewOOP.GT_Buildingblocks.ImageDimension import ImageDimension
@@ -16,7 +17,7 @@ OFFSET = 50
 #  Implement the Command design pattern so the Drawable interface doesn't have to implement two different draw methods.
 # TODO: convert baseline to function -> instead of (x1,y1)(x2,y2) -> y = x*m + q
 class PageElement(Scalable):
-    # TextObject bildet alles ab, was ein VektorGroundTruth beinhalten kann.
+    # PageElement bildet alles ab, was ein VektorGroundTruth beinhalten kann.
     def __init__(self, polygon: Polygon):
         self.outline = (255, 255, 255)  # white by default
         self.fill = None  # no fill by default
@@ -34,6 +35,12 @@ class PageElement(Scalable):
     def crop(self, source_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         self.polygon.crop(source_dim=source_dim, target_dim=target_dim, cut_left=cut_left)
         self.boundary_box = BoundingBox(polygon=self.polygon)
+
+    def get_layer(self):
+        pass
+
+    def write_json_class(self):
+        pass
 
     def is_filled(self):
         return self.fill is None
@@ -96,63 +103,10 @@ class TextRegionElement(PageElement):
 
 # TODO implement draw & scale
 
-class Layout(Scalable):
-
-    def __init__(self, text_lines: List[PageElement] = None):
-        if text_lines is None:
-            self.text_lines: List[PageElement] = []
-        else:
-            self.text_lines = text_lines
-
-    def append_elem(self, elem: PageElement):
-        self.text_lines.append(elem)
-
-    def length(self):
-        return len(self.text_lines)
-
-    def resize(self, scale_factor: Tuple[float, float]):
-        for element in self.text_lines:
-            element.resize(scale_factor)
-
-    def draw(self, drawer: ImageDraw):
-        for elem in self.text_lines:
-            elem.draw(drawer)
-
-    def crop(self, source_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
-        for elem in self.text_lines:
-            elem.crop(source_dim=source_dim, target_dim=target_dim, cut_left=cut_left)
-
-    def __getitem__(self, index):
-        return self.text_lines[index]
-
-
-class MainText(Layout):
-
-    def __init__(self, main_text_lines: List[MainTextLine] = None):
-        super().__init__(main_text_lines)
-
-
-class CommentText(Layout):
-
-    def __init__(self, comments: List[CommentLine] = None):
-        super().__init__(comments)
-
-
-class Decorations(Layout):
-
-    def __init__(self, decorations: List[DecorationElement] = None):
-        super().__init__(decorations)
-
-
-class TextRegions(Layout):
-
-    def __init__(self, text_regions: List[TextRegionElement] = None):
-        super().__init__(text_regions)
-
 
 # storing multiple VectorObjects.
+# TODO: Move this class to the interpretation folder..... Not sure about that
 class TextlineRegions(Scalable):
-    # TODO: Integrate these regions directly into the VectorOcject: Textline. Every textline has a x_region, ascender...
     # note that the x region always intersects perfectly with the bounding_box because they share the same max_x and min_x
 
     def __init__(self, baseline: Line, bbox: BoundingBox, x_hight=45):

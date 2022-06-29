@@ -3,8 +3,8 @@ from enum import Enum
 # TODO: as a client https://stackoverflow.com/questions/29503339/how-to-get-all-values-from-python-enum-class
 class LayoutClasses(Enum):
     """
-    Represents the different classes of the pixel ground truth. Is useful for readability and implementation of
-    Layering.
+    Represents the different classes of the pixel ground truth. Essential to the program. Must changed if further
+    classes should to be added.
     """
     BACKGROUND = 1
     COMMENT = 2

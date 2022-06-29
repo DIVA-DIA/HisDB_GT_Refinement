@@ -121,6 +121,15 @@ class Box(VectorObject):
 
 class Line(VectorObject):
 
+    # TODO: make line list of 2+ coordinates. check for segement intersection
+    # Segment intersection
+    # def ccw(A,B,C):
+    #     return (C.y-A.y) * (B.x-A.x) > (B.y-A.y) * (C.x-A.x)
+    #
+    # # Return true if line segments AB and CD intersect
+    # def intersect(A,B,C,D):
+    #     return ccw(A,C,D) != ccw(B,C,D) and ccw(A,B,C) != ccw(A,B,D)
+
     def __init__(self, xy: List[Tuple]):
         super().__init__(xy)
         self.xy.sort(key=lambda x: x[0])
@@ -167,5 +176,14 @@ class BoundingBox(Box):
 
 
 
-
+# if __name__ == '__main__':$
+#       # Shows that polygon can draw lines.
+#     img = Image.new(mode="RGB", size=(50,50),color=0)
+#
+#     line = [(10,10),(40,40)]
+#
+#     drawer = ImageDraw.Draw(img)
+#     drawer.polygon(xy=line)
+#
+#     img.show(title="hello")
 
