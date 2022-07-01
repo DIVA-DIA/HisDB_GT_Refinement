@@ -4,9 +4,9 @@ from dataclasses import dataclass, replace
 from typing import Any, Tuple
 import numpy as np
 
+
 @dataclass(frozen=True)
 class ImageDimension():
-
     width: int = 0
     height: int = 0
 
@@ -24,23 +24,24 @@ class ImageDimension():
         :return:
         """
         shape = array.shape
-        return ImageDimension(width=shape[1],height=shape[0])
+        return ImageDimension(width=shape[1], height=shape[0])
 
     def scale_factor(self, other: ImageDimension):
         return self.width / other.width, self.height / other.height
 
-    def _scale(self, scale_factor: Tuple[float,float]):
+    def _scale(self, scale_factor: Tuple[float, float]):
         height = round(operator.truediv(self.height, scale_factor[1]))
         width = round(operator.truediv(self.width, scale_factor[0]))
         return ImageDimension(width=width, height=height)
 
     def __eq__(self, other):
-        if type(self) is type(other):
-            if self.height == other.height:
-                if self.width == other.width:
-                    return True
-        else:
+        if type(self) is not type(other):
             return False
+        if self.height != other.height:
+            return False
+        if self.width != other.width:
+            return False
+        return True
 
     def __str__(self):
         return "ImageDimension /n width = {} /n height = {}".format(self.width, self.height)

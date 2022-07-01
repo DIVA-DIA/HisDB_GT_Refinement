@@ -1,11 +1,13 @@
 from abc import abstractmethod
-from typing import Tuple
+from typing import Tuple, List
 import warnings
 
 from PIL import Image, ImageDraw
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GTInterfaces import Scalable, Drawable, Showable, Croppable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Showable, \
+    Croppable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line, \
     Quadrilateral
 
@@ -27,6 +29,7 @@ class PageElement(Scalable, Drawable, Showable, Croppable):
     def __init__(self, polygon: Polygon, color: Tuple = (255, 255, 255), is_filled: bool = False,
                  is_visible: bool = True):
         self.polygon: Polygon = polygon
+        self.layout_class: List[LayoutClasses] = []
         self.color: Tuple = color
         self.is_filled: bool = is_filled
         self.is_visible: bool = is_visible
@@ -34,13 +37,17 @@ class PageElement(Scalable, Drawable, Showable, Croppable):
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         self.polygon.resize(current_dim=current_dim, target_dim=target_dim)
 
-    def draw(self, drawer: ImageDraw, color: Tuple = None, is_filled: bool = None):
-        """ Deprecated to use the color and is_filled as parameter."""
-        if (color or is_filled) is not None:
-            warnings.warn(
-                "Deprecated to use the color and is_filled as parameter as they are not used. Use the set_color,"
-                + "and set_filled methods to change the colors manually.")
-        self.polygon.draw(drawer=drawer, outline=self.color, fill=self.is_filled)
+    def draw(self, drawer: ImageDraw, color: Tuple = None):
+        """ Draw the page element polygon with the instance color if no other coller is given. Fill it, if and only if
+        the set_filled parameter is true."""
+        if color is None:
+            col = self.color
+        else:
+            col = color
+        fill = None
+        if self.is_filled is True:
+            fill = col
+        self.polygon.draw(drawer=drawer, outline=col, fill=fill)
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         self.polygon.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
@@ -50,12 +57,12 @@ class PageElement(Scalable, Drawable, Showable, Croppable):
         """
         # TODO: Maybe delete this method.
         centered_polygon: Polygon = Polygon(
-            [(x - self.polygon.get_min_x(), y - self.polygon.get_min_x()) for x, y in self.polygon.xy])
+            [(x - self.polygon.get_min_x(), y - self.polygon.get_min_y()) for x, y in self.polygon.xy])
         img_dim: ImageDimension = ImageDimension(width=centered_polygon.get_max_x(),
                                                  height=centered_polygon.get_max_y())
         img = Image.new("RGB", size=img_dim.to_tuple())
         drawer = ImageDraw.Draw(img)
-        centered_polygon.draw(drawer=drawer, outline=(255, 43))
+        centered_polygon.draw(drawer=drawer, outline=(255, 43, 23))
         img.show()
 
     def set_color(self, color: Tuple):
@@ -79,6 +86,9 @@ class PageElement(Scalable, Drawable, Showable, Croppable):
         """
         self.is_visible = is_visible
 
+    def get_layout_class(self) -> List[LayoutClasses]:
+        return self.layout_class
+
 
 class DecorationElement(PageElement):
     """ The :class: `DecorationElement` class has no further characteristic than it's name. It instantiates the abstract super class
@@ -87,6 +97,71 @@ class DecorationElement(PageElement):
 
     def __init__(self, polygon: Polygon):
         super().__init__(polygon)
+        self.layout_class.append(LayoutClasses.DECORATION)
+
+
+class TextLineElements(PageElement):
+
+    @abstractmethod
+    def __init__(self, polygon: Polygon):
+        super().__init__(polygon)
+
+
+class BaseLine(TextLineElements):
+
+    def __init__(self, base_line: Line):
+        super().__init__(base_line)
+        self.layout_class.append(LayoutClasses.BASELINE)
+
+
+class TopLine(TextLineElements):
+
+    def __init__(self, base_line: BaseLine, x_height: int):
+        line = Line([tuple((x, y - x_height)) for x, y in base_line.polygon.xy])
+        super().__init__(line)
+        self.layout_class.append(LayoutClasses.TOPLINE)
+
+
+class XRegion(TextLineElements):
+
+    def __init__(self, base_line: BaseLine, top_line: TopLine):
+        sorted_baseline = [base_line.polygon.xy[1], base_line.polygon.xy[0]]
+        top_line = top_line.polygon.xy
+        concatenated = top_line + sorted_baseline
+        quadrilateral = Quadrilateral(concatenated)
+        super().__init__(quadrilateral)
+        self.layout_class.append(LayoutClasses.XREGION)
+
+
+class AscenderRegion(TextLineElements):
+
+    def __init__(self, polygon: Polygon, top_line: TopLine):
+        min_x = polygon.get_min_x()
+        min_y = polygon.get_min_y()
+        max_x = polygon.get_max_x()
+        self.region = Quadrilateral([(min_x, min_y),  # left top corner
+                                     (max_x, min_y),  # right top corner
+                                     top_line.polygon.get_max_x_coord(),  # right bottom corner
+                                     top_line.polygon.get_min_x_coord()  # left bottom corner
+                                     ])
+        super().__init__(self.region)
+        self.layout_class.append(LayoutClasses.ASCENDER)
+        # TODO: check if get_max_x_coord is called.
+
+
+class DescenderRegion(TextLineElements):
+
+    def __init__(self, polygon: Polygon, base_line: BaseLine):
+        min_x = polygon.get_min_x()
+        max_x = polygon.get_max_x()
+        max_y = polygon.get_max_y()
+        region = Quadrilateral([base_line.polygon.get_min_x_coord(),  # left top corner
+                                base_line.polygon.get_max_x_coord(),  # right top corner
+                                (max_x, max_y),  # right bottom corner
+                                (min_x, max_y)  # left bottom corner
+                                ])
+        super().__init__(region)
+        self.layout_class.append(LayoutClasses.DESCENDER)
 
 
 class TextLine(PageElement):
@@ -98,13 +173,34 @@ class TextLine(PageElement):
     """
 
     @abstractmethod
-    def __init__(self, base_line: Line, polygon: Polygon):
-        super().__init__(polygon)
-        self.base_line: Line = base_line
+    def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255), is_filled: bool = False,
+                 is_visible: bool = True):
+        super().__init__(polygon, color=color, is_filled=is_filled, is_visible=is_visible)
+        self.base_line: BaseLine = base_line
 
-    def draw(self, drawer: ImageDraw, color: Tuple = None, is_filled: bool = None):
-        super().draw(drawer)
-        self.base_line.draw(drawer)
+    def draw(self, drawer: ImageDraw, color: Tuple = None):
+        super().draw(drawer, color=color)
+        self.base_line.draw(drawer, color=color)
+
+    def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
+        super().resize(current_dim, target_dim)
+        self.base_line.resize(current_dim=current_dim, target_dim=target_dim)
+
+    def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
+        super().crop(current_dim, target_dim, cut_left)
+        self.base_line.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
+
+    def set_color(self, color: Tuple):
+        super().set_color(color)
+        self.base_line.set_color(color=color)
+
+    def set_is_filled(self, is_filled: bool):
+        super().set_is_filled(is_filled)
+        self.base_line.set_is_filled(is_filled=is_filled)
+
+    def set_is_visible(self, is_visible: bool):
+        super().set_is_visible(is_visible)
+        self.base_line.set_is_visible(is_visible=is_visible)
 
 
 class MainTextLine(TextLine):
@@ -112,8 +208,10 @@ class MainTextLine(TextLine):
     :class: `PageElement`.
     """
 
-    def __init__(self, base_line: Line, polygon: Polygon):
-        super().__init__(base_line, polygon)
+    def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255), is_filled: bool = False,
+                 is_visible: bool = True):
+        super().__init__(polygon, base_line, color=color, is_filled=is_filled, is_visible=is_visible)
+        self.layout_class.append(LayoutClasses.MAINTEXT)
 
 
 class CommentTextLine(TextLine):
@@ -121,8 +219,10 @@ class CommentTextLine(TextLine):
     :class: `PageElement`.
     """
 
-    def __init__(self, base_line: Line, polygon: Polygon):
-        super().__init__(base_line, polygon)
+    def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255), is_filled: bool = False,
+                 is_visible: bool = True):
+        super().__init__(polygon, base_line, color=color, is_filled=is_filled, is_visible=is_visible)
+        self.layout_class.append(LayoutClasses.COMMENT)
 
 
 class TextLineDecoration(TextLine):
@@ -130,13 +230,15 @@ class TextLineDecoration(TextLine):
     """
 
     @abstractmethod
-    def __init__(self, text_line: TextLine, base_line: Line, polygon: Polygon):
-        super().__init__(base_line, polygon)
+    def __init__(self, text_line: TextLine):
+        super().__init__(text_line.polygon, text_line.base_line, color=text_line.color, is_filled=text_line.is_filled,
+                         is_visible=text_line.is_visible)
         self.text_line: TextLine = text_line
+        self.layout_class.extend(text_line.layout_class)
 
     @abstractmethod
-    def draw(self, drawer: ImageDraw, color: Tuple = None, is_filled: bool = None):
-        super().draw(drawer, color, is_filled)
+    def draw(self, drawer: ImageDraw, color: Tuple = None):
+        super().draw(drawer, color)
 
     @abstractmethod
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
@@ -150,12 +252,22 @@ class TextLineDecoration(TextLine):
     def show(self):
         super().show()
 
+    @abstractmethod
+    def set_color(self, color: Tuple):
+        super().set_color(color)
 
-class AscenderDescenderRegion(TextLine):
+    @abstractmethod
+    def set_is_filled(self, is_filled: bool):
+        super().set_is_filled(is_filled)
+
+    @abstractmethod
+    def set_is_visible(self, is_visible: bool):
+        super().set_is_visible(is_visible)
+
+
+class AscenderDescenderRegion(TextLineDecoration):
     """ Decorator of Textline which adds an x-region, ascender- and descender-region.
-    :param base_line: Represents the base line of x_region.
-    :param x_height: provides the distance of top line and base line.
-    :type x_height: int
+    :param text_line: Textline to be decorated.
     :param top_line: Represents the top line of x_region.
     :type top_line: Line
     :param x_region: Denotes the region for little x.
@@ -164,66 +276,34 @@ class AscenderDescenderRegion(TextLine):
     :type ascender_region: Quadrilateral
     :param descender_region: Denotes the region of descenders.
     :type descender_region: Quadrilateral
-    The rest of the parameters are used to give custom colors to each of the :class:`Polygon` vectorobjects.
+    The rest of the parameters are used to give custom colors to each of the :class:`Polygon` vectorobjects for
+    debugging purposes the different fields have.
     """
 
-    def __init__(self, base_line: Line, polygon: Polygon, x_height: int, base_line_color: Tuple = (20, 200, 100),
-                 top_line_color: Tuple = (200, 230, 20), x_region_color: Tuple = None, asc_color=(100, 22, 200),
-                 desc_color=(20, 200, 200)):
-        super().__init__(base_line, polygon)
+    def __init__(self, text_line: TextLine, x_height: int):
+        super().__init__(text_line)
         self.x_height: int = x_height
+        assert x_height > 0
+        if self.base_line.polygon.get_min_y() - x_height < self.text_line.polygon.get_min_y():
+            raise AttributeError("The x_height seems is too big. The topline would be outside the boundary box. /n "
+                                 "Choose a smaller x_height. The current x_height is: " + str(x_height))
         # vector_objects
-        self.top_line: Line = self._set_topline()
-        self.x_region: Quadrilateral = self._set_x_region()
-        self.ascender_region: Quadrilateral = self._set_ascender_region()
-        self.descender_region: Quadrilateral = self._set_descender_region()
-        # colors
-        if x_region_color is None:
-            self.x_region_color: Tuple = self.color
-        else:
-            self.x_region_color: Tuple = x_region_color
-        self.base_line_color: Tuple = base_line_color
-        self.top_line_color: Tuple = top_line_color
-        self.asc_color: Tuple = asc_color
-        self.desc_color: Tuple = desc_color
+        self.top_line: TopLine = TopLine(base_line=self.base_line, x_height=x_height)
+        self.x_region: XRegion = XRegion(base_line=self.base_line, top_line=self.top_line)
+        self.ascender_region: AscenderRegion = AscenderRegion(polygon=text_line.polygon, top_line=self.top_line)
+        self.descender_region: DescenderRegion = DescenderRegion(polygon=text_line.polygon, base_line=self.base_line)
+        # add layout class of decorators to the list
+        self.layout_class.extend(self.top_line.layout_class)
+        self.layout_class.extend(self.x_region.layout_class)
+        self.layout_class.extend(self.ascender_region.layout_class)
+        self.layout_class.extend(self.descender_region.layout_class)
 
-    def _set_topline(self):
-        return Line([tuple((x, y - self.x_height)) for x, y in self.base_line.xy])
-
-    def _set_x_region(self):
-        sorted_baseline = [self.base_line.xy[1], self.base_line.xy[0]]
-        top_line = self.top_line.xy
-        concatenated = top_line + sorted_baseline
-        return Quadrilateral(concatenated)
-
-    def _set_ascender_region(self):
-        min_x = self.polygon.get_min_x()
-        min_y = self.polygon.get_min_y()
-        max_x = self.polygon.get_max_x()
-        region = Quadrilateral([(min_x, min_y),  # left top corner
-                                (max_x, min_y),  # right top corner
-                                (self.top_line.get_max_x(), self.top_line.get_max_y()),  # right bottom corner
-                                (self.top_line.get_min_x(), self.top_line.get_max_y())  # left bottom corner
-                                ])
-        return region
-
-    def _set_descender_region(self):
-        min_x = self.polygon.get_min_x()
-        max_x = self.polygon.get_max_x()
-        max_y = self.polygon.get_max_y()
-        region = Quadrilateral([(self.base_line.get_min_x(), self.base_line.get_min_y()),  # left top corner
-                                (self.base_line.get_max_x(), self.base_line.get_min_y()),  # right top corner
-                                (max_x, max_y),  # right bottom corner
-                                (min_x, max_y)  # left bottom corner
-                                ])
-        return region
-
-    def draw(self, drawer: ImageDraw, color: Tuple = None, is_filled: bool = None):
-        super().draw(drawer, color, is_filled)
-        self.top_line.draw(drawer, outline=self.top_line_color)
-        self.x_region.draw(drawer,outline=self.x_region_color)
-        self.ascender_region.draw(drawer, outline=self.asc_color)
-        self.descender_region.draw(drawer, outline=self.desc_color)
+    def draw(self, drawer: ImageDraw, color: Tuple = None):
+        self.top_line.draw(drawer, color=color)
+        self.x_region.draw(drawer, color=color)
+        self.ascender_region.draw(drawer, color=color)
+        self.descender_region.draw(drawer, color=color)
+        super().draw(drawer, color)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         super().resize(current_dim, target_dim)
@@ -241,7 +321,29 @@ class AscenderDescenderRegion(TextLine):
 
     def show(self):
         super().show()
+        # raise Warning("The show method in asc_desc_region is not implemented.")
         warnings.warn("The show method in asc_desc_region is not imlemented.", DeprecationWarning)
+
+    def set_color(self, color: Tuple):
+        super().set_color(color)
+        self.top_line.set_color(color=color)
+        self.x_region.set_color(color=color)
+        self.ascender_region.set_color(color=color)
+        self.descender_region.set_color(color=color)
+
+    def set_is_filled(self, is_filled: bool):
+        super().set_is_filled(is_filled)
+        self.top_line.set_is_filled(is_filled=is_filled)
+        self.x_region.set_is_filled(is_filled=is_filled)
+        self.ascender_region.set_is_filled(is_filled=is_filled)
+        self.descender_region.set_is_filled(is_filled=is_filled)
+
+    def set_is_visible(self, is_visible: bool):
+        super().set_is_visible(is_visible)
+        self.top_line.set_is_visible(is_visible=is_visible)
+        self.x_region.set_is_visible(is_visible=is_visible)
+        self.ascender_region.set_is_visible(is_visible=is_visible)
+        self.descender_region.set_is_visible(is_visible=is_visible)
 
 
 class HeadAndTailRegion(TextLine):

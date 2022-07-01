@@ -1,8 +1,7 @@
-from abc import abstractmethod
 from pathlib import Path
 from PIL import Image
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GTInterfaces import *
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import *
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import VectorGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer

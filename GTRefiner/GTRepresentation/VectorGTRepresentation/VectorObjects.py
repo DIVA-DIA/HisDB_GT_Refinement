@@ -1,11 +1,12 @@
 from __future__ import annotations
 import operator
+import warnings
 from typing import List, Tuple
 from scipy.spatial import distance as dist
 import numpy as np
 from PIL import ImageDraw
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GTInterfaces import Scalable, Drawable, Croppable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Croppable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 
 
@@ -71,6 +72,9 @@ class Polygon(Scalable, Drawable, Croppable):
                 max_y = int(coord[1])
         return max_y
 
+    def __getitem__(self, index):
+        return self.xy[index]
+
 
 class Quadrilateral(Polygon):
     """
@@ -126,4 +130,16 @@ class Line(Polygon):
         assert len(xy) == 2
 
     def draw(self, drawer: ImageDraw, outline=None, fill=(0, 125, 255)):
+        """ Draws a line."""
+        if outline is None:
+            warnings.warn("The Line vector object doesn't provide an outline due to it's nature. Use 'fill' to specify "
+                          "the color of the line. Fill default = (0, 125, 255)")
         drawer.line(self.xy, fill=fill)
+
+    def get_min_x_coord(self):
+        return self.xy[0]
+
+    def get_max_x_coord(self):
+        return self.xy[1]
+
+

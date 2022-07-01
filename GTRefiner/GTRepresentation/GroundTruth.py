@@ -2,8 +2,10 @@ from abc import abstractmethod
 from typing import Dict, List
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GTInterfaces import Scalable,Showable
-
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable,Showable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation import Layer
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import TextRegion
 
 
 class GroundTruth(Scalable, Showable):
@@ -28,7 +30,9 @@ class GroundTruth(Scalable, Showable):
 
 
 class VectorGT(GroundTruth):
-    pass
+
+    def __init__(self, regions: Dict[LayoutClasses, List[TextRegion]]):
+        self.regions: Dict[LayoutClasses, List[TextRegion]] = regions
 
 
 class MyImage(GroundTruth):
@@ -36,7 +40,12 @@ class MyImage(GroundTruth):
 
 
 class PixelLevelGT(MyImage):
-    pass
+
+    def __init__(self):
+        self.levels: Dict[LayoutClasses, Layer] = self._initialize_empty_px_gt()
+
+    def _initialize_empty_px_gt(self) -> Dict[LayoutClasses, List[Layer]]:
+        pass
 
 
 class RawImage(MyImage):
