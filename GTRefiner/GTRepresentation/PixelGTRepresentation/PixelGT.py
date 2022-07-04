@@ -1,7 +1,10 @@
-from typing import Dict, List
+import operator
+import numpy as np
+from typing import Dict, List, Tuple, Any
 from abc import abstractmethod
 
-from PIL import ImageDraw, ImageFont
+from PIL import ImageDraw, ImageFont, Image, ImageOps
+from skimage.filters.thresholding import threshold_otsu, threshold_niblack, threshold_sauvola
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
@@ -12,14 +15,82 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer 
 class MyImage(GroundTruth):
 
     @abstractmethod
-    def __init__(self, img_dim: ImageDimension):
+    def __init__(self, img: Image):
+        img_dim: ImageDimension = ImageDimension(img.size[0],img.size[1])
         super().__init__(img_dim)
+        self.img = img
+
+    def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
+        """ Default resize method uses the default resizing method of Pillow with bicubic resampling and no reducing
+        gap. """
+        scale_factor = current_dim.scale_factor(target_dim)
+        target_dimension = tuple(round(operator.truediv(r, t)) for r, t in zip(current_dim.to_tuple(), scale_factor))
+        self.img = self.img.resize(size=target_dimension, resample=Image.BICUBIC, box=None, reducing_gap=None)
+
+    def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
+        """
+        :param current_dim: Not used.
+        :param target_dim: Target dimension.
+        :param cut_left: Whether or not the left part of the image should be cut off.
+        :return: None
+        """
+        box = self._get_crop_coordinates(target_dim=target_dim, cut_left=cut_left)
+        self.img = self.img.crop(box)
+
+    def show(self):
+        self.img.show()
+
+    def _get_crop_coordinates(self, target_dim: ImageDimension,
+                              cut_left: bool) -> Tuple[Any, Any, Any, Any]:
+        source_dim = ImageDimension(width=self.img.width, height=self.img.height)
+        if target_dim is None or cut_left is None:
+            raise ValueError("target_dim or cut_left is None.")
+        if cut_left:
+            left = source_dim.width - target_dim.width
+            upper = (source_dim.height - target_dim.height) / 2
+            right = source_dim.width
+            lower = target_dim.height + upper
+        else:
+            left = 0
+            upper = (source_dim.height - target_dim.height) / 2
+            right = target_dim.width
+            lower = target_dim.height + upper
+
+        return left, upper, right, lower  # left, upper, right, lower
+
+    def binarize(self, bin_algo: str = 'otsu', **kwargs) -> np.array:
+        gray_scale = ImageOps.grayscale(self.img)
+        image_array = np.asarray(gray_scale)
+        threshold = 0
+        if bin_algo == 'otsu':
+            threshold = threshold_otsu(image_array)
+        elif bin_algo == 'niblack':
+            threshold = threshold_niblack(image_array, **kwargs)
+        elif bin_algo == 'sauvola':
+            threshold = threshold_sauvola(image_array, **kwargs)
+        else:
+            raise ValueError('Unknown binarization algorithm')
+
+        return image_array > threshold
 
 
 class PixelLevelGT(MyImage):
 
-    def __init__(self, img_dim: ImageDimension):
-        super().__init__(img_dim)
+    def __init__(self, img: Image = None, img_dim: ImageDimension = None):
+        """ Provides the methods and functionalities needed to resize, binarize and the pixel based groundtruth.
+        :param img: Ground truth image.
+        :param img_dim: If this parameter is given, this class will create a new ground truth image. Useful for creating
+        a new ground truth after doing manipulations on the vector_gt.
+        """
+        if (img is None) and (img_dim is None):
+            raise AttributeError("Either provide an image (class Image) or image dimension (ImageDimension)")
+        elif img is not None:
+            super().__init__(img)
+        elif img_dim is not None:
+            new_img = Image.new("RGB", size=img_dim.to_tuple())
+            super().__init__(new_img)
+        else:
+            raise AttributeError("Either provide an image (class Image) or image dimension (ImageDimension), not both.")
         self.levels: Dict[LayoutClasses, Layer] = {}
         self._initialize_empty_px_gt()
 
@@ -39,8 +110,25 @@ class PixelLevelGT(MyImage):
             font = ImageFont.truetype("/System/Library/Fonts/Avenir Next.ttc", 50)
             # draw.text((x, y),"Sample Text",(r,g,b))
             draw.text(xy=(50, 100), text=f"Key: {l_class}", fill="white", font=font)
+            draw.text(xy=(50, 160), text=f"Image Dimension: {str(self.img_dim)}", fill="white", font=font)
             img.show()
 
 
 class RawImage(MyImage):
-    pass
+
+    def __init__(self, img: Image):
+        super().__init__(img)
+
+    def get_cut_side(self) -> bool:
+        """
+        Returns the orientation of the Page. If the page is left-oriented return true,
+        if it's right-oriented return false.
+        :return: bool
+        """
+        img_left = np.array(self.img)[:, :3, :]
+        img_right = np.array(self.img)[:, -3:, :]
+        amount_black_left = np.where(np.all(img_left < (10, 10, 10), axis=1))[0].size
+        amount_black_right = np.where(np.all(img_right < (10, 10, 10), axis=1))[0].size
+
+        return amount_black_left > amount_black_right
+

@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import VectorGT, PixelLevelGT
-from HisDB_GT_Refinement.GTRefiner.Algorithms.Visitor import LayoutVisitor
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
 
 
 class Colorer(LayoutVisitor):

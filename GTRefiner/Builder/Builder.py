@@ -1,12 +1,16 @@
 from pathlib import Path
 from PIL import Image
+from abc import abstractmethod
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import *
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import VectorGT
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Grouper import Grouper
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Croppable, Scalable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page, ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import TextLineDecoration
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
 
 
 class GTBuilder(Croppable, Scalable, Layarable):
@@ -15,12 +19,10 @@ class GTBuilder(Croppable, Scalable, Layarable):
     def read(self, vector_gt_path: Path, px_gt_path: Path, orig_img: Path):
         pass
 
-    @abstractmethod
-    def crop(self, target_dim: ImageDimension):
+    def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         pass
 
-    @abstractmethod
-    def resize(self, target_dim: ImageDimension):
+    def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         pass
 
     @abstractmethod

@@ -11,7 +11,7 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutC
 # from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement, \
     MainTextLine, CommentTextLine, DecorationElement
-#from HisDB_GT_Refinement.GTRefiner.Algorithms.Visitor import LayoutVisitor
+#from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
 
 
 class Layout(Scalable, Drawable, Croppable):

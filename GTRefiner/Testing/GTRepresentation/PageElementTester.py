@@ -68,16 +68,16 @@ if __name__ == '__main__':
     #     img.show()
     #     elem.set_is_filled(False)
     #
-    # # # Test if LayoutClasses can be used to custom color.
-    # # TODO: Lars fragen, ob ich irgendwie diesen Warnungen irgendwie aus dem Weg gehen kann.
+    # # Test if LayoutClasses can be used to custom color.
+    # TODO: Lars fragen, ob ich irgendwie diesen Warnungen irgendwie aus dem Weg gehen kann.
     # for elem in page_elements:
-    #     if LayoutClasses.ASCENDER in elem.layout_class:
+    #     if LayoutClasses.ASCENDER is elem.layout_class:
     #         elem.ascender_region.set_color((200, 0, 200))  # pink
     #         elem.ascender_region.set_is_filled(True)
-    #     if LayoutClasses.DESCENDER in elem.layout_class:
+    #     if LayoutClasses.DESCENDER is elem.layout_class:
     #         elem.descender_region.set_color((50, 0, 200))  # dark blue
     #         elem.descender_region.set_is_filled(True)
-    #     if LayoutClasses.XREGION in elem.layout_class:
+    #     if LayoutClasses.XREGION is elem.layout_class:
     #         elem.x_region.set_color((50, 100, 200))  # brighter blue
     #         elem.x_region.set_is_filled(True)
     #     img = Image.new("RGB", img_dim.to_tuple(), (0, 0, 0))

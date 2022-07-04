@@ -1,4 +1,5 @@
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import VectorGT, PixelLevelGT
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import VectorGT
 
 
 class Combiner:

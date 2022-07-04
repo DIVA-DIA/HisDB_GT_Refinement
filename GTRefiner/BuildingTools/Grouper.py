@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import VectorGT
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import VectorGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 
 

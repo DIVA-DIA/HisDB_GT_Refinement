@@ -31,7 +31,7 @@ class MyImage(Scalable):
 
     def crop(self, target_dim: ImageDimension, cut_left: bool):
         box = self._get_crop_coordinates(target_dim=target_dim, cut_left=cut_left)
-        self._img = self._img.crop(,
+        self._img = self._img.crop(box)
 
     def get_dimension(self) -> ImageDimension:
         img_dim: ImageDimension = ImageDimension(width=self._img.size[0], height=self._img.size[1])

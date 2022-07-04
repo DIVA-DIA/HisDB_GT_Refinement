@@ -1,6 +1,9 @@
 from typing import List
 
-from HisDB_GT_Refinement.GTRefiner.Algorithms.Visitors.Layerer import Layerer
+# TODO: Show Lars that the Layer visitor doesn't work. Show him that the LayerTester02 does work. Ask him if there's any
+#  easy way to add the same behaviour for a visitor.
+
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.VisitorLayerer import VisitorLayerer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import PageLayout
@@ -71,7 +74,7 @@ if __name__ == '__main__':
     vector_gt = VectorGT(regions=vector_gt_list, img_dim=img_dim)
 
     # create Layerer
-    layout_visitor = Layerer(vector_gt)
+    layout_visitor = VisitorLayerer(vector_gt)
 
     # visit the page_layout
     vector_gt.accept(layout_visitor)

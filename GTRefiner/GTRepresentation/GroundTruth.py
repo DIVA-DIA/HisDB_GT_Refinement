@@ -1,10 +1,10 @@
 from abc import abstractmethod
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable,Showable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable,Showable, Croppable
 
 
-class GroundTruth(Scalable, Showable):
+class GroundTruth(Scalable, Showable, Croppable):
     """ GroundTruth is an abstract class that provides the provides the
 
     """
