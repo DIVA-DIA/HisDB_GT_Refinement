@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 
 # Isolated from the other interfaces in order to avoid circular import.
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import PixelLevelGT
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 
 
 class Layarable:

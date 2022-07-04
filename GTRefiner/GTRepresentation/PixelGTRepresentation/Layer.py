@@ -2,9 +2,11 @@ from __future__ import annotations
 import numpy as np
 import warnings
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon
 
 
 class Layer():
@@ -54,6 +56,12 @@ class Layer():
         black_background = np.where(img_as_array, self.layer, (0, 0, 0))
         return Image.fromarray(black_background, mode="RGB")
 
+    def draw(self, page_elem: PageElement):
+        img: Image = self.img_from_layer()
+        drawer: ImageDraw = ImageDraw.Draw(img)
+        page_elem.draw(drawer=drawer, color=(1,))
+        self.layer = np.asarray(img)
+
     def _initialize_empty_layer(self, img_dim):
         """ nitializes a layer with a given dimension :class: `ImageDimension`. Warning shape stores width and height as
         height and with while img_dim stores it as width and height.
@@ -65,7 +73,7 @@ class Layer():
         """ Display the image
         """
         img = self.img_from_layer()
-        print("image mode"+str(img.mode))
+        print("image mode" + str(img.mode))
         print("image shape/size" + str(img.size))
         print("self.img_dim" + str(self.img_dim))
         img.show()
@@ -79,6 +87,7 @@ class Layer():
         #   by converting it to mode "1" in a seconds step.
         # Image.fromarray(obj=self.layer, mode="L").convert(mode="1")
         return Image.fromarray(obj=self.layer)
+
 
 if __name__ == '__main__':
     pass
@@ -112,4 +121,3 @@ if __name__ == '__main__':
     #     assert AttributeError is e
     #
     # layer_4 = Layer(layer=bin_layer,img_dim=ImageDimension(10,5))
-

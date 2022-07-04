@@ -1,6 +1,10 @@
+from __future__ import annotations
 from enum import Enum
-
 # TODO: as a client https://stackoverflow.com/questions/29503339/how-to-get-all-values-from-python-enum-class
+from typing import List
+
+
+
 class LayoutClasses(Enum):
     """
     Represents the different levels of the pixel level ground truth. Essential to the program. Must changed if further
@@ -26,3 +30,28 @@ class LayoutClasses(Enum):
     def __str__(self):
         """ Prettier layout than the default __str__ of Enum implementation provides."""
         return "%s: %s" % (self._name_, self._value_)
+
+    # @classmethod
+    # def get_layout_classes_containing(cls, key: str):
+    #     key_as_str = str(key).upper()
+    #     keys: List[LayoutClasses] = []
+    #     for l_class in LayoutClasses:
+    #         as_str = str(l_class._name_)
+    #         if key_as_str in as_str:
+    #             keys.append(l_class)
+    #     return keys
+
+    @classmethod
+    def get_layout_classes_containing(cls, layout_class: LayoutClasses):
+        key_as_str = str(layout_class).upper().split(":")[0]
+        keys: List[LayoutClasses] = []
+        for l_class in LayoutClasses:
+            as_str = str(l_class._name_)
+            if key_as_str in as_str:
+                keys.append(l_class)
+        return keys
+
+
+
+
+

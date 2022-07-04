@@ -4,6 +4,7 @@ import warnings
 
 from PIL import Image, ImageDraw
 
+# from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Showable, \
     Croppable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
@@ -21,7 +22,7 @@ class PageElement(Scalable, Drawable, Showable, Croppable):
     :type color: Tuple
     :param is_filled: Whether or not the polygon should be filled. Deprecated for decorated page elements.
     :type is_filled: bool
-    :param is_visible: Wether or not is should be recognized as visible to the :class: `Writer`.
+    :param is_visible: Whether or not is should be recognized as visible to the :class: `Writer`.
     :type is_visible: bool
     """
 
@@ -29,7 +30,7 @@ class PageElement(Scalable, Drawable, Showable, Croppable):
     def __init__(self, polygon: Polygon, color: Tuple = (255, 255, 255), is_filled: bool = False,
                  is_visible: bool = True):
         self.polygon: Polygon = polygon
-        self.layout_class: List[LayoutClasses] = []
+        self.layout_class: LayoutClasses = LayoutClasses.BACKGROUND
         self.color: Tuple = color
         self.is_filled: bool = is_filled
         self.is_visible: bool = is_visible
@@ -51,6 +52,21 @@ class PageElement(Scalable, Drawable, Showable, Croppable):
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         self.polygon.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
+
+    # def layer(self, px_gt: PixelLevelGT):
+    #     target_layers = self._get_target_layers(px_gt)
+    #     self._draw_on_target_layers(target_layers=target_layers)
+    #
+    # def _get_target_layers(self, px_gt: PixelLevelGT) -> List[Layer]:
+    #     target_classes: List[LayoutClasses] = LayoutClasses.get_layout_classes_containing(self.layout_class)
+    #     target_layers: List[Layer] = []
+    #     for target_class in target_classes:
+    #         target_layers.append(px_gt.get_layer(target_class))
+    #     return target_layers
+    #
+    # def _draw_on_target_layers(self, target_layers: List[Layer]):
+    #     for layer in target_layers:
+    #         layer.draw(self)
 
     def show(self):
         """ Displays the polygon of the PageElement for debugging purposes d
@@ -86,9 +102,6 @@ class PageElement(Scalable, Drawable, Showable, Croppable):
         """
         self.is_visible = is_visible
 
-    def get_layout_class(self) -> List[LayoutClasses]:
-        return self.layout_class
-
 
 class DecorationElement(PageElement):
     """ The :class: `DecorationElement` class has no further characteristic than it's name. It instantiates the abstract super class
@@ -97,7 +110,7 @@ class DecorationElement(PageElement):
 
     def __init__(self, polygon: Polygon):
         super().__init__(polygon)
-        self.layout_class.append(LayoutClasses.DECORATION)
+        self.layout_class=LayoutClasses.DECORATION
 
 
 class TextLineElements(PageElement):
@@ -111,7 +124,7 @@ class BaseLine(TextLineElements):
 
     def __init__(self, base_line: Line):
         super().__init__(base_line)
-        self.layout_class.append(LayoutClasses.BASELINE)
+        self.layout_class=LayoutClasses.BASELINE
 
 
 class TopLine(TextLineElements):
@@ -119,7 +132,7 @@ class TopLine(TextLineElements):
     def __init__(self, base_line: BaseLine, x_height: int):
         line = Line([tuple((x, y - x_height)) for x, y in base_line.polygon.xy])
         super().__init__(line)
-        self.layout_class.append(LayoutClasses.TOPLINE)
+        self.layout_class = LayoutClasses.TOPLINE
 
 
 class XRegion(TextLineElements):
@@ -130,7 +143,7 @@ class XRegion(TextLineElements):
         concatenated = top_line + sorted_baseline
         quadrilateral = Quadrilateral(concatenated)
         super().__init__(quadrilateral)
-        self.layout_class.append(LayoutClasses.XREGION)
+        self.layout_class = LayoutClasses.XREGION
 
 
 class AscenderRegion(TextLineElements):
@@ -145,7 +158,7 @@ class AscenderRegion(TextLineElements):
                                      top_line.polygon.get_min_x_coord()  # left bottom corner
                                      ])
         super().__init__(self.region)
-        self.layout_class.append(LayoutClasses.ASCENDER)
+        self.layout_class = LayoutClasses.ASCENDER
         # TODO: check if get_max_x_coord is called.
 
 
@@ -161,7 +174,7 @@ class DescenderRegion(TextLineElements):
                                 (min_x, max_y)  # left bottom corner
                                 ])
         super().__init__(region)
-        self.layout_class.append(LayoutClasses.DESCENDER)
+        self.layout_class = LayoutClasses.DESCENDER
 
 
 class TextLine(PageElement):
@@ -211,7 +224,7 @@ class MainTextLine(TextLine):
     def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255), is_filled: bool = False,
                  is_visible: bool = True):
         super().__init__(polygon, base_line, color=color, is_filled=is_filled, is_visible=is_visible)
-        self.layout_class.append(LayoutClasses.MAINTEXT)
+        self.layout_class = LayoutClasses.MAINTEXT
 
 
 class CommentTextLine(TextLine):
@@ -222,7 +235,7 @@ class CommentTextLine(TextLine):
     def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255), is_filled: bool = False,
                  is_visible: bool = True):
         super().__init__(polygon, base_line, color=color, is_filled=is_filled, is_visible=is_visible)
-        self.layout_class.append(LayoutClasses.COMMENT)
+        self.layout_class = LayoutClasses.COMMENT
 
 
 class TextLineDecoration(TextLine):
@@ -234,7 +247,7 @@ class TextLineDecoration(TextLine):
         super().__init__(text_line.polygon, text_line.base_line, color=text_line.color, is_filled=text_line.is_filled,
                          is_visible=text_line.is_visible)
         self.text_line: TextLine = text_line
-        self.layout_class.extend(text_line.layout_class)
+        # self.layout_class = text_line.layout_class
 
     @abstractmethod
     def draw(self, drawer: ImageDraw, color: Tuple = None):
@@ -292,11 +305,11 @@ class AscenderDescenderRegion(TextLineDecoration):
         self.x_region: XRegion = XRegion(base_line=self.base_line, top_line=self.top_line)
         self.ascender_region: AscenderRegion = AscenderRegion(polygon=text_line.polygon, top_line=self.top_line)
         self.descender_region: DescenderRegion = DescenderRegion(polygon=text_line.polygon, base_line=self.base_line)
-        # add layout class of decorators to the list
-        self.layout_class.extend(self.top_line.layout_class)
-        self.layout_class.extend(self.x_region.layout_class)
-        self.layout_class.extend(self.ascender_region.layout_class)
-        self.layout_class.extend(self.descender_region.layout_class)
+        # # add layout class of decorators to the list
+        # self.layout_class.extend(self.top_line.layout_class)
+        # self.layout_class.extend(self.x_region.layout_class)
+        # self.layout_class.extend(self.ascender_region.layout_class)
+        # self.layout_class.extend(self.descender_region.layout_class)
 
     def draw(self, drawer: ImageDraw, color: Tuple = None):
         self.top_line.draw(drawer, color=color)
