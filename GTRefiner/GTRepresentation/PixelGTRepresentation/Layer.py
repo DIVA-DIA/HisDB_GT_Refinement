@@ -5,7 +5,7 @@ import warnings
 from PIL import Image, ImageDraw
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Drawable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon
 
 
@@ -56,7 +56,7 @@ class Layer():
         black_background = np.where(img_as_array, self.layer, (0, 0, 0))
         return Image.fromarray(black_background, mode="RGB")
 
-    def draw(self, page_elem: PageElement):
+    def draw(self, page_elem: Drawable):
         img: Image = self.img_from_layer()
         drawer: ImageDraw = ImageDraw.Draw(img)
         page_elem.draw(drawer=drawer, color=(1,))

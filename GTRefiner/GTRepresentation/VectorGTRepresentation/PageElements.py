@@ -8,12 +8,15 @@ from PIL import Image, ImageDraw
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Showable, \
     Croppable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line, \
     Quadrilateral
 
 
-class PageElement(Scalable, Drawable, Showable, Croppable):
+class PageElement(Scalable, Drawable, Showable, Croppable, Layarable):
     """ Super class for all page elements, such as decorations & textlines. Every PageElement holds a polygon at its
     core and should be. If further characteristics shall be added, the author suggests to use the decoration pattern.
     :param polygon: Represents the contour of the page element.
@@ -53,20 +56,20 @@ class PageElement(Scalable, Drawable, Showable, Croppable):
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         self.polygon.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
 
-    # def layer(self, px_gt: PixelLevelGT):
-    #     target_layers = self._get_target_layers(px_gt)
-    #     self._draw_on_target_layers(target_layers=target_layers)
-    #
-    # def _get_target_layers(self, px_gt: PixelLevelGT) -> List[Layer]:
-    #     target_classes: List[LayoutClasses] = LayoutClasses.get_layout_classes_containing(self.layout_class)
-    #     target_layers: List[Layer] = []
-    #     for target_class in target_classes:
-    #         target_layers.append(px_gt.get_layer(target_class))
-    #     return target_layers
-    #
-    # def _draw_on_target_layers(self, target_layers: List[Layer]):
-    #     for layer in target_layers:
-    #         layer.draw(self)
+    def layer(self, px_gt: PixelLevelGT):
+        target_layers = self._get_target_layers(px_gt)
+        self._draw_on_target_layers(target_layers=target_layers)
+
+    def _get_target_layers(self, px_gt: PixelLevelGT) -> List[Layer]:
+        target_classes: List[LayoutClasses] = LayoutClasses.get_layout_classes_containing(self.layout_class)
+        target_layers: List[Layer] = []
+        for target_class in target_classes:
+            target_layers.append(px_gt.get_layer(target_class))
+        return target_layers
+
+    def _draw_on_target_layers(self, target_layers: List[Layer]):
+        for layer in target_layers:
+            layer.draw(self)
 
     def show(self):
         """ Displays the polygon of the PageElement for debugging purposes d
@@ -193,7 +196,7 @@ class TextLine(PageElement):
 
     def draw(self, drawer: ImageDraw, color: Tuple = None):
         super().draw(drawer, color=color)
-        self.base_line.draw(drawer, color=color)
+        #self.base_line.draw(drawer, color=color)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         super().resize(current_dim, target_dim)
@@ -202,6 +205,10 @@ class TextLine(PageElement):
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         super().crop(current_dim, target_dim, cut_left)
         self.base_line.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
+
+    def layer(self, px_gt: PixelLevelGT):
+        super().layer(px_gt)
+        self.base_line.layer(px_gt)
 
     def set_color(self, color: Tuple):
         super().set_color(color)
@@ -305,6 +312,7 @@ class AscenderDescenderRegion(TextLineDecoration):
         self.x_region: XRegion = XRegion(base_line=self.base_line, top_line=self.top_line)
         self.ascender_region: AscenderRegion = AscenderRegion(polygon=text_line.polygon, top_line=self.top_line)
         self.descender_region: DescenderRegion = DescenderRegion(polygon=text_line.polygon, base_line=self.base_line)
+        self.layout_class = text_line.layout_class
         # # add layout class of decorators to the list
         # self.layout_class.extend(self.top_line.layout_class)
         # self.layout_class.extend(self.x_region.layout_class)
@@ -312,10 +320,10 @@ class AscenderDescenderRegion(TextLineDecoration):
         # self.layout_class.extend(self.descender_region.layout_class)
 
     def draw(self, drawer: ImageDraw, color: Tuple = None):
-        self.top_line.draw(drawer, color=color)
-        self.x_region.draw(drawer, color=color)
-        self.ascender_region.draw(drawer, color=color)
-        self.descender_region.draw(drawer, color=color)
+        # self.top_line.draw(drawer, color=color)
+        # self.x_region.draw(drawer, color=color)
+        # self.ascender_region.draw(drawer, color=color)
+        # self.descender_region.draw(drawer, color=color)
         super().draw(drawer, color)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
@@ -331,6 +339,13 @@ class AscenderDescenderRegion(TextLineDecoration):
         self.x_region.crop(current_dim, target_dim, cut_left)
         self.ascender_region.crop(current_dim, target_dim, cut_left)
         self.descender_region.crop(current_dim, target_dim, cut_left)
+
+    def layer(self, px_gt: PixelLevelGT):
+        super().layer(px_gt)
+        self.top_line.layer(px_gt)
+        self.x_region.layer(px_gt)
+        self.ascender_region.layer(px_gt)
+        self.descender_region.layer(px_gt)
 
     def show(self):
         super().show()
