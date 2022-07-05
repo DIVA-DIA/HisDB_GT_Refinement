@@ -141,9 +141,9 @@ class TopLine(TextLineElements):
 class XRegion(TextLineElements):
 
     def __init__(self, base_line: BaseLine, top_line: TopLine):
-        sorted_baseline = [base_line.polygon.xy[1], base_line.polygon.xy[0]]
-        top_line = top_line.polygon.xy
-        concatenated = top_line + sorted_baseline
+        # sorted_baseline = [base_line.polygon.xy[1], base_line.polygon.xy[0]]
+        # top_line =
+        concatenated = top_line.polygon.xy + base_line.polygon.xy
         quadrilateral = Quadrilateral(concatenated)
         super().__init__(quadrilateral)
         self.layout_class = LayoutClasses.XREGION

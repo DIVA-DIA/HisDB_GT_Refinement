@@ -18,7 +18,7 @@ class MyImage(GroundTruth):
     def __init__(self, img: Image):
         img_dim: ImageDimension = ImageDimension(img.size[0],img.size[1])
         super().__init__(img_dim)
-        self.img = img
+        self.img: Image = img
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         """ Default resize method uses the default resizing method of Pillow with bicubic resampling and no reducing
@@ -26,6 +26,8 @@ class MyImage(GroundTruth):
         scale_factor = current_dim.scale_factor(target_dim)
         target_dimension = tuple(round(operator.truediv(r, t)) for r, t in zip(current_dim.to_tuple(), scale_factor))
         self.img = self.img.resize(size=target_dimension, resample=Image.BICUBIC, box=None, reducing_gap=None)
+        self.img_dim = target_dim
+        assert self.img_dim.to_tuple() == self.img.size
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         """
@@ -36,6 +38,8 @@ class MyImage(GroundTruth):
         """
         box = self._get_crop_coordinates(target_dim=target_dim, cut_left=cut_left)
         self.img = self.img.crop(box)
+        self.img_dim = target_dim
+        assert self.img_dim.to_tuple() == self.img.size
 
     def show(self):
         self.img.show()
@@ -107,10 +111,10 @@ class PixelLevelGT(MyImage):
             img = self.levels[l_class].img_from_layer()
             draw = ImageDraw.Draw(img)
             # font = ImageFont.truetype(<font-file>, <font-size>)
-            font = ImageFont.truetype("/System/Library/Fonts/Avenir Next.ttc", 50)
+            font = ImageFont.truetype("/System/Library/Fonts/Avenir Next.ttc", int(50 * self.img_dim.to_tuple()[1]/6496))
             # draw.text((x, y),"Sample Text",(r,g,b))
             draw.text(xy=(50, 100), text=f"Key: {l_class}", fill="white", font=font)
-            draw.text(xy=(50, 160), text=f"Image Dimension: {str(self.img_dim)}", fill="white", font=font)
+            draw.text(xy=(50, 100 + int(60*self.img_dim.to_tuple()[1]/6496)), text=f"Image Dimension: {str(self.img.size)}", fill="white", font=font)
             img.show()
 
 

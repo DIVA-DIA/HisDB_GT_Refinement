@@ -25,47 +25,54 @@ class BuilderV1(GTBuilder):
         self.page = self.read(vector_gt_path=vector_gt_path,px_gt_path=px_gt_path, orig_img=orig_img)
 
     def read(self, vector_gt_path: Path, px_gt_path: Path, orig_img: Path) -> Page:
+        super().read(vector_gt_path,px_gt_path,orig_img)
         vector_gt: VectorGT = XMLReader.read(vector_gt_path)
         px_gt: PixelLevelGT = PxGTReader.read(px_gt_path)
         raw_img: RawImage = ImageReader.read(orig_img)
         return Page(vector_gt=vector_gt, px_gt=px_gt, raw_img=raw_img)
 
     def crop(self, target_dim: ImageDimension, cut_left: bool = None, current_dim: ImageDimension = None):
+        super().crop(current_dim,target_dim,cut_left)
         # TODO: Lars fragen. Ich habe oft Methoden von Interfaces die für jede Klasse etwas anders aussehen. Hier z.B. crop()-Methode,
         #  welche gar keine current_dim braucht.
         Cropper.crop(target_dim=target_dim, page=self.page)
 
     def resize(self, target_dim: ImageDimension, current_dim: ImageDimension=None):
+        super().resize(current_dim,target_dim)
         Resizer.resize(page=self.page, target_dim=target_dim)
 
     def decorate(self, decorator: TextLineDecorator=None):
-        AscenderDescenderDecorator.decorate(self.page.vector_gt, 22)
+        super().decorate(decorator)
+        AscenderDescenderDecorator.decorate(self.page.vector_gt, 15)
 
     def group(self, grouper: Grouper):
+        super().group(grouper)
         pass
 
     def set_visible(self, vis_table: VisibilityTable = None):
+        super().set_visible(vis_table)
         for layout_cl in self.page.vector_gt.regions:
             for region in layout_cl.text_regions:
                 for elem in region.page_elements:
                     elem.set_is_filled(True)
 
     def color(self, colorer: ColorTable, vector_gt: VectorGT):
+        super().color(colorer,vector_gt)
         pass
 
     def layer(self):
+        super().layer()
         layerer = Layerer(self.page.vector_gt)
         for layout_cl in self.page.vector_gt.regions:
             layout_cl.accept_layout_visitor(layerer)
         self.page.px_gt = layerer.px_gt
 
     def combine_px_gts(self, comb: Combiner) -> Layer:
-        pass
-
-    def mask(self, Image, Layer) -> Image:
+        super().combine_px_gts(comb)
         pass
 
     def write(self, output_path):
+        super().write(output_path)
         pass
 
     def get_GT(self) -> Page:

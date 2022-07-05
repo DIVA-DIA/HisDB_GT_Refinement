@@ -1,3 +1,5 @@
+import logging
+import time
 from pathlib import Path
 
 from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
@@ -5,6 +7,9 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageD
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 
 if __name__ == '__main__':
+    start = time.time()
+    logging.getLogger().setLevel(logging.INFO)
+
     original = Path("../../CB55/img/public-test/e-codices_fmb-cb-0055_0105r_max.jpg")
     pixel = Path("../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0105r_max.png")
     vector_gt = Path("../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0105r_max.xml")
@@ -14,7 +19,10 @@ if __name__ == '__main__':
     target_dim: ImageDimension = ImageDimension(4500, 6000)
     builder.crop(target_dim)
 
-    target_dim: ImageDimension = ImageDimension(1500, 2400)
+    # TODO: Frage an Lars. Was ist praktisch als client. Wie viel responsibilities soll er kriegen. Soll der Client vor
+    #  allem den Director oder auch den Builder selber schreiben...
+
+    target_dim: ImageDimension = ImageDimension(1800, 2400)
     builder.resize(target_dim=target_dim)
 
     builder.decorate()
@@ -26,3 +34,7 @@ if __name__ == '__main__':
     page: Page = builder.get_GT()
 
     page.px_gt.show()
+
+    logging.info("program ended")
+    end = time.time()
+    logging.info("time passed: " + str(end - start))

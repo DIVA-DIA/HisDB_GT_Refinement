@@ -1,6 +1,7 @@
 from pathlib import Path
 from PIL import Image
 from abc import abstractmethod
+import logging
 
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Grouper import Grouper
@@ -17,45 +18,46 @@ class GTBuilder(Croppable, Scalable, Layarable):
 
     @abstractmethod
     def read(self, vector_gt_path: Path, px_gt_path: Path, orig_img: Path):
-        pass
+        logging.info("Reading the ground truth files...")
 
+    @abstractmethod
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
-        pass
+        logging.info("Cropping the ground truth...")
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
-        pass
+        logging.info("Resizing the ground truth...")
 
     @abstractmethod
     def decorate(self, decorator: TextLineDecoration):
-        pass
+        logging.info("Decorating the vector objects...")
 
     @abstractmethod
     def group(self, grouper: Grouper):
-        pass
+        logging.info("(Re-)Grouping the vector objects...")
 
     @abstractmethod
     def set_visible(self, vis_table: VisibilityTable):
-        pass
+        logging.info("Setting the different different vector objects to visible according to the Visibility Table")
 
     @abstractmethod
     def color(self, colorer: ColorTable, vector_gt: VectorGT):
-        pass
+        logging.info("Setting the different color of each layout class in LayoutClasses")
 
     @abstractmethod
     def layer(self):
-        pass
+        logging.info("Converting the VectorGT to layers in a new PixelLevelGT")
 
     @abstractmethod
     def combine_px_gts(self, comb: Combiner) -> Layer:
-        pass
+        logging.info("Combine the new PixelLevelGT with the original PixelLevelGT")
 
-    @abstractmethod
-    def mask(self, Image, Layer) -> Image:
-        pass
+    # @abstractmethod
+    # def mask(self, Image, Layer) -> Image:
+    #     logging.info("Combine the new PixelLevelGT with the original PixelLevelGT")
 
     @abstractmethod
     def write(self, output_path):
-        pass
+        logging.info("Writing the new PixelLevelGT and all the visible VectorObjects to the given destination.")
 
     @abstractmethod
     def get_GT(self) -> Page:

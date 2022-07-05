@@ -88,6 +88,7 @@ class Quadrilateral(Polygon):
         assert len(xy) == 4
 
     def _order_points(self, xy):
+        # TODO: Make sure that this function works fine.
         # sort the points based on their x-coordinates
         as_np_array = np.asarray(xy)
         xSorted = as_np_array[np.argsort(as_np_array[:, 0]), :]

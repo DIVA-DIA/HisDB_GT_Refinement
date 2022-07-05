@@ -66,7 +66,6 @@ class XMLReader(GTReader):
             raise AttributeError("Didn't find any attribute: 'Page' and couldn't instantiate the ImageDimension")
         for text_region in page_part:
             for text_line in text_region.findall(ns + 'TextLine'):
-                print(text_line.attrib)
                 i = i + 1
                 base_line_text = text_line.find(ns + 'Baseline').attrib['points']
                 baseline = BaseLine(Line([tuple(map(int, pr.split(','))) for pr in base_line_text.split(' ')]))
