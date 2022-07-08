@@ -1,20 +1,20 @@
 from __future__ import annotations
+
 from typing import List
-import warnings
 
 from PIL import ImageDraw
 
-# from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import *
-# from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
-# from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement, \
-    MainTextLine, CommentTextLine, DecorationElement
-#from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
+    MainTextLine, CommentTextLine, DecorationElement, TextRegionElement
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Rectangle
 
 
-class Layout(Scalable, Drawable, Croppable):
+# TODO: Test the get_bbox() method.
+
+
+class Layout(Scalable, Drawable, Croppable, Dictionable):
 
     @abstractmethod
     def __init__(self):
@@ -37,6 +37,7 @@ class Layout(Scalable, Drawable, Croppable):
         self.page_elements.append(elem)
         self.layout_class.append(elem.layout_class)
 
+    # TODO: Index
     def split(self, elem: PageElement):
         pass
 
@@ -58,8 +59,43 @@ class Layout(Scalable, Drawable, Croppable):
     # def _find_layout_class(self, elem: PageElement, layout_class: LayoutClasses):
     #     pass
 
-    def get_text_region(self):
-        pass
+    def get_bbox(self) -> TextRegionElement:
+        bbox: TextRegionElement = TextRegionElement(
+            Rectangle([(self.get_min_x(), self.get_min_y()), (self.get_max_x(), self.get_max_y())]))
+        return bbox
+
+    def get_min_x(self):
+        min_x = float("inf")
+        for elem in self.page_elements:
+            for coord in elem.polygon.xy:
+                if coord[0] < min_x:
+                    min_x = int(coord[0])
+        return min_x
+
+    def get_min_y(self):
+        min_y = float("inf")
+        for elem in self.page_elements:
+            for coord in elem.polygon.xy:
+                if coord[1] < min_y:
+                    min_y = int(coord[1])
+        return min_y
+
+    def get_max_x(self):
+        max_x = 0
+        for elem in self.page_elements:
+            for coord in elem.polygon.xy:
+                if coord[0] > max_x:
+                    max_x = int(coord[0])
+        return max_x
+
+    def get_max_y(self):
+        max_y = 0
+        for elem in self.page_elements:
+            for coord in elem.polygon.xy:
+                if coord[1] > max_y:
+                    max_y = int(coord[1])
+        return max_y
+
 
     def draw(self, drawer: ImageDraw, color: Tuple = None):
         for elem in self.page_elements:
@@ -68,6 +104,14 @@ class Layout(Scalable, Drawable, Croppable):
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         for elem in self.page_elements:
             elem.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
+
+    def build(self) -> Dict:
+        dict = {}
+        i = 0
+        for elem in self.page_elements:
+            dict[i] = elem.build()
+            i = i+1
+        return dict
 
 
 class MainText(Layout):
@@ -106,9 +150,11 @@ class Decorations(Layout):
 class TextRegion(Layout):
 
     def __init__(self, layout: Layout):
-        super().__init__()
         self.text_regions: List[Layout] = []
         self.add_region(layout)
+        self.text_region: TextRegionElement = self.get_bbox()
+        super().__init__()
+        self.layout_class.append(LayoutClasses.TEXT_REGION)
 
     def add_region(self, layout: Layout):
         if isinstance(layout, TextRegion):
@@ -121,3 +167,48 @@ class TextRegion(Layout):
     def accept_layout_visitor(self, visitor):
         for layout in self.text_regions:
             layout.accept_layout_visitor(visitor)
+
+    def build(self) -> Dict:
+        dict = {}
+        for i, region in enumerate(self.text_regions):
+            region_dict = {}
+            region_dict.update(region.build())
+            dict[i] = region_dict
+        return dict
+    
+    def get_bbox(self) -> TextRegionElement:
+        bbox: TextRegionElement = TextRegionElement(
+            Rectangle([(self.get_min_x(), self.get_min_y()), (self.get_max_x(), self.get_max_y())]))
+        return bbox
+
+    def get_min_x(self):
+        min_x = float("inf")
+        for region in self.text_regions:
+            for coord in region.get_bbox().polygon.xy:
+                if coord[0] < min_x:
+                    min_x = int(coord[0])
+        return min_x
+
+    def get_min_y(self):
+        min_y = float("inf")
+        for region in self.text_regions:
+            for coord in region.get_bbox().polygon.xy:
+                if coord[1] < min_y:
+                    min_y = int(coord[1])
+        return min_y
+
+    def get_max_x(self):
+        max_x = 0
+        for region in self.text_regions:
+            for coord in region.get_bbox().polygon.xy:
+                if coord[0] > max_x:
+                    max_x = int(coord[0])
+        return max_x
+
+    def get_max_y(self):
+        max_y = 0
+        for region in self.text_regions:
+            for coord in region.get_bbox().polygon.xy:
+                if coord[1] > max_y:
+                    max_y = int(coord[1])
+        return max_y

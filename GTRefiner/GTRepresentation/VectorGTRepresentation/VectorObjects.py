@@ -6,11 +6,14 @@ from scipy.spatial import distance as dist
 import numpy as np
 from PIL import ImageDraw
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Croppable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Croppable, \
+    Dictionable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 
+# TODO: outline wird immer None sein. outline wegnehmen.
+# TODO: Import shapely -> wäre toll.
 
-class Polygon(Scalable, Drawable, Croppable):
+class Polygon(Scalable, Drawable, Croppable, Dictionable):
     """ This class is the parent class of all vector objects used in to represent the vector ground truth.
     :param xy: is a polygon of 2 or more coordinates.
     :type xy: represents the coordinates [(x1,x1),(x2,y2),...] of the polygon. It's important the polygon is sorted.
@@ -22,8 +25,12 @@ class Polygon(Scalable, Drawable, Croppable):
         if len(xy) < 2:
             raise AttributeError("xy is not a polygon: " + str(xy))
         self.xy: List[Tuple] = xy
+        for elem in xy:
+            if isinstance(elem[0], np.int64) or isinstance(elem[1], np.int64):
+                raise ValueError("Should be of python integer at instantiation")
 
     def draw(self, drawer: ImageDraw, outline=(255, 255, 255), fill=None):
+        # **kwargs ->
         drawer.polygon(xy=self.xy, outline=outline, fill=fill)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
@@ -110,7 +117,9 @@ class Quadrilateral(Polygon):
         (br, tr) = rightMost[np.argsort(D)[::-1], :]
         # return the coordinates in top-left, top-right,
         # bottom-right, and bottom-left order
-        return [tuple(tl), tuple(tr), tuple(br), tuple(bl)]
+        sorted_points = [tuple(tl), tuple(tr), tuple(br), tuple(bl)]
+        sorted_points_to_python_int = [(coord[0].item(), coord[1].item()) for coord in sorted_points]
+        return sorted_points_to_python_int
 
     def draw(self, drawer: ImageDraw, outline=(255, 125, 0), fill=None):
         drawer.polygon(self.xy, outline=outline, fill=fill)

@@ -4,13 +4,17 @@ from typing import Dict, List, Tuple, Any
 from abc import abstractmethod
 
 from PIL import ImageDraw, ImageFont, Image, ImageOps
+from scipy.ndimage import gaussian_filter
 from skimage.filters.thresholding import threshold_otsu, threshold_niblack, threshold_sauvola
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable
 
+sigma = 3
+truncate = 9
 
 class MyImage(GroundTruth):
 
@@ -90,6 +94,7 @@ class PixelLevelGT(MyImage):
             raise AttributeError("Either provide an image (class Image) or image dimension (ImageDimension)")
         elif img is not None:
             super().__init__(img)
+            self.levels: Dict[LayoutClasses, Layer] = self._hisdb_to_bin_images()
         elif img_dim is not None:
             new_img = Image.new("RGB", size=img_dim.to_tuple())
             super().__init__(new_img)
@@ -98,9 +103,41 @@ class PixelLevelGT(MyImage):
         self.levels: Dict[LayoutClasses, Layer] = {}
         self._initialize_empty_px_gt()
 
+    def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
+        self.img = Image.fromarray(gaussian_filter(self.img, sigma=sigma, truncate=truncate))
+        super().resize(current_dim=current_dim, target_dim=target_dim)
+        self.img.convert(mode="L")
+        new_images: Dict[LayoutClasses, Layer] = {}
+        for key, value in self.levels.items():
+            new_images[key] = Layer(self.binarize())
+        self.levels = new_images
+
     def _initialize_empty_px_gt(self):
         for layout_class in LayoutClasses:
             self.levels[layout_class] = Layer(img_dim=self.img_dim)
+
+    def _hisdb_to_bin_images(self) -> Dict[LayoutClasses, Layer]:
+        """
+        Find out the different classes that are encoded in the image and convert them to binary images.
+        :return: dict of binary images Dict[LayoutClasses, Layer]
+        """
+        img_array = np.asarray(self.img)
+        # remove border pixels
+        img_array_classes = img_array[:, :, 2]
+        # 1: background, 2: comment, 4: decoration, 8: maintext
+        # 6: comment + decoration, 12: maintext + decoration
+        categories = np.unique(img_array_classes)[1:]
+        bin_images = {}
+        for category in categories:
+            # remove border pixels
+            array_border = np.logical_not(img_array[:, :, 0] > 0)
+            blue_chan = np.where(array_border, img_array_classes, 0)
+
+            # set pixel which are equal to category to 255
+            blue_chan = np.where(blue_chan[:, :] == category, 255, 0)
+
+            bin_images[LayoutClasses(category)] = Layer(blue_chan.astype(np.uint8))
+        return bin_images
 
     def get_layer(self, layout_class: LayoutClasses) -> Layer:
         """ Returns the layer with the given layout_class. """
@@ -116,6 +153,16 @@ class PixelLevelGT(MyImage):
             draw.text(xy=(50, 100), text=f"Key: {l_class}", fill="white", font=font)
             draw.text(xy=(50, 100 + int(60*self.img_dim.to_tuple()[1]/6496)), text=f"Image Dimension: {str(self.img.size)}", fill="white", font=font)
             img.show()
+
+    def unified_layer(self, visibility_table: VisibilityTable) -> Layer:
+        base_layer = Layer(img_dim=self.img_dim)
+        for k,v in self.levels.items():
+            if visibility_table[k] is True:
+                base_layer.unite(self.levels[k])
+        return base_layer
+
+    def __getitem__(self, item):
+        return self.levels[item]
 
 
 class RawImage(MyImage):

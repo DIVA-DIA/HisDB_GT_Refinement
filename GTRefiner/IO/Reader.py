@@ -151,7 +151,13 @@ class VisibilityTableReader(TableReader):
 
     @classmethod
     def read(cls, path: Path) -> VisibilityTable:
-        pass
+        # write to json
+
+
+        # read json and convert to {LayoutClasses: Tuple}
+        data = json.load(open(file_path))
+        data = {LayoutClasses.str_to_enum(k): tuple(v) for (k, v) in data.items()}
+        print(data)
 
 
 class ColorTableReader(TableReader):

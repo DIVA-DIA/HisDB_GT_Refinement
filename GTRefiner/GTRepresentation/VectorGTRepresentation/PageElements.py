@@ -1,22 +1,23 @@
 from abc import abstractmethod
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 import warnings
 
 from PIL import Image, ImageDraw
 
-# from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Showable, \
-    Croppable
+    Croppable, Dictionable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line, \
-    Quadrilateral
+    Quadrilateral, Rectangle
 
 
-class PageElement(Scalable, Drawable, Showable, Croppable, Layarable):
+# TODO: accept_json(dict) methode -> json.dump(dict)
+
+class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionable):
     """ Super class for all page elements, such as decorations & textlines. Every PageElement holds a polygon at its
     core and should be. If further characteristics shall be added, the author suggests to use the decoration pattern.
     :param polygon: Represents the contour of the page element.
@@ -67,9 +68,15 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable):
             target_layers.append(px_gt.get_layer(target_class))
         return target_layers
 
+
+
+
     def _draw_on_target_layers(self, target_layers: List[Layer]):
         for layer in target_layers:
             layer.draw(self)
+
+    def build(self) -> Dict:
+        return {self.layout_class.get_name(): self.polygon.xy}
 
     def show(self):
         """ Displays the polygon of the PageElement for debugging purposes d
@@ -180,6 +187,17 @@ class DescenderRegion(TextLineElements):
         self.layout_class = LayoutClasses.DESCENDER
 
 
+class TextRegionElement(TextLineElements):
+
+    def __init__(self, bounding_box: Rectangle):
+        super().__init__(bounding_box)
+        self.layout_class = LayoutClasses.TEXT_REGION
+
+    def set_is_filled(self, is_filled: bool):
+        """Text Regions should not drawn as filled boxes."""
+        pass
+
+
 class TextLine(PageElement):
     """ Represents all PageElements with text line characteristics. Examples are comment lines and main-text lines.
     :param polygon: represents the contour of the text line.
@@ -209,6 +227,11 @@ class TextLine(PageElement):
     def layer(self, px_gt: PixelLevelGT):
         super().layer(px_gt)
         self.base_line.layer(px_gt)
+
+    def build(self) -> Dict:
+        data: Dict = super().build()
+        data.update(self.base_line.build()) # add base_line
+        return {self.layout_class.get_name(): data}
 
     def set_color(self, color: Tuple):
         super().set_color(color)
@@ -347,6 +370,14 @@ class AscenderDescenderRegion(TextLineDecoration):
         self.ascender_region.layer(px_gt)
         self.descender_region.layer(px_gt)
 
+    def build(self) -> Dict:
+        data: Dict = super().build()
+        data.update(self.top_line.build()) # add base_line
+        data.update(self.x_region.build())
+        data.update(self.ascender_region.build())
+        data.update(self.descender_region.build())
+        return data
+
     def show(self):
         super().show()
         # raise Warning("The show method in asc_desc_region is not implemented.")
@@ -372,6 +403,7 @@ class AscenderDescenderRegion(TextLineDecoration):
         self.x_region.set_is_visible(is_visible=is_visible)
         self.ascender_region.set_is_visible(is_visible=is_visible)
         self.descender_region.set_is_visible(is_visible=is_visible)
+
 
 
 class HeadAndTailRegion(TextLine):

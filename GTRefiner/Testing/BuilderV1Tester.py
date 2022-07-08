@@ -3,12 +3,14 @@ import time
 from pathlib import Path
 
 from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 
 if __name__ == '__main__':
     start = time.time()
-    logging.getLogger().setLevel(logging.INFO)
+
 
     original = Path("../../CB55/img/public-test/e-codices_fmb-cb-0055_0105r_max.jpg")
     pixel = Path("../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0105r_max.png")
@@ -29,11 +31,16 @@ if __name__ == '__main__':
 
     builder.set_visible()
 
-    builder.layer()
+    new_px_gt: PixelLevelGT = builder.layer()
+
+    combiner = Combiner()
+    builder.combine_px_gts(combiner)
+
+    builder.write(None)
 
     page: Page = builder.get_GT()
 
-    page.px_gt.show()
+    #page.px_gt.show()
 
     logging.info("program ended")
     end = time.time()

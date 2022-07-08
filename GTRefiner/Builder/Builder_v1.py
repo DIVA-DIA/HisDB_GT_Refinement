@@ -18,6 +18,9 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable, Vis
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
 from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader, PxGTReader, ImageReader
 
+# TODO: Execute() in Director.
+from HisDB_GT_Refinement.GTRefiner.IO.Writer import JSONWriter, ImageWriter
+
 
 class BuilderV1(GTBuilder):
 
@@ -60,19 +63,24 @@ class BuilderV1(GTBuilder):
         super().color(colorer,vector_gt)
         pass
 
-    def layer(self):
+    def layer(self) -> PixelLevelGT:
         super().layer()
         layerer = Layerer(self.page.vector_gt)
         for layout_cl in self.page.vector_gt.regions:
             layout_cl.accept_layout_visitor(layerer)
-        self.page.px_gt = layerer.px_gt
+        return layerer.px_gt
 
-    def combine_px_gts(self, comb: Combiner) -> Layer:
+    def combine_px_gts(self, comb: Combiner):
         super().combine_px_gts(comb)
-        pass
+        img = comb.combine(orig_px=self.page.px_gt, new_px_gt=self.layer())
+        self.page.raw_img = img
+
 
     def write(self, output_path):
         super().write(output_path)
+        path = Path("../Resources/ResizedGT")
+        JSONWriter.write(ground_truth=self.page.vector_gt, path=path)
+        ImageWriter.write(ground_truth=self.page.raw_img,path=path)
         pass
 
     def get_GT(self) -> Page:

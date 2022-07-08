@@ -2,11 +2,11 @@ from typing import Dict, List
 
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Dictionable, Scalable, Croppable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import TextRegion, ImageDimension
 
 
-class VectorGT(GroundTruth):
+class VectorGT(GroundTruth, Dictionable, Scalable, Croppable):
 
     def __init__(self, regions: List[TextRegion], img_dim: ImageDimension):
         super().__init__(img_dim)
@@ -35,5 +35,14 @@ class VectorGT(GroundTruth):
                 for elem in region.page_elements:
                     elem.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
         self.img_dim = target_dim
+
+    def build(self) -> Dict:
+        dict = {}
+        for i, region in enumerate(self.regions):
+            region_dict = {}
+            region_dict.update(region.build())
+            dict[i] = region_dict
+        return dict
+
 
 

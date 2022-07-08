@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Tuple
+from typing import Tuple, Dict
 from PIL.ImageDraw import ImageDraw
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
@@ -27,10 +27,16 @@ class Drawable:
         purposes, and used by the :class: `Showable interface."""
 
 
-
 class Showable():
 
     @abstractmethod
     def show(self):
         # TODO: Redundant class. Depends on the draw function. Delete it and its implementations in subclasses.
+        pass
+
+
+class Dictionable():
+
+    @abstractmethod
+    def build(self) -> Dict:
         pass

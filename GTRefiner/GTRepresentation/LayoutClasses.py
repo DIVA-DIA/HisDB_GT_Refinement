@@ -4,7 +4,6 @@ from enum import Enum
 from typing import List
 
 
-
 class LayoutClasses(Enum):
     """
     Represents the different levels of the pixel level ground truth. Essential to the program. Must changed if further
@@ -25,7 +24,7 @@ class LayoutClasses(Enum):
     TOPLINE = 24
     HEAD = 26
     TAIL = 28
-    TEXT_REGIONS = 255
+    TEXT_REGION = 255
 
     def __str__(self):
         """ Prettier layout than the default __str__ of Enum implementation provides."""
@@ -51,7 +50,13 @@ class LayoutClasses(Enum):
                 keys.append(l_class)
         return keys
 
+    @classmethod
+    def str_to_enum(cls, enum_name: str) -> LayoutClasses:
+        for l_class in LayoutClasses:
+            as_str = str(l_class._name_)
+            if enum_name == as_str:
+                return l_class
+        raise ValueError("No such LayoutClass found: " + str(enum_name))
 
-
-
-
+    def get_name(self) -> str:
+        return self._name_

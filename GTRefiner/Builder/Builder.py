@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 from PIL import Image
 from abc import abstractmethod
@@ -13,9 +14,13 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import TextLineDecoration
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
 
+# TODO: Director soll verantwortung für ablauf und instanziierung der Buildingtools übernehmen.
+
+logging.getLogger().setLevel(logging.INFO)
 
 class GTBuilder(Croppable, Scalable, Layarable):
 
+    # TODO: decorator @logging -> tutorial nachschauen.
     @abstractmethod
     def read(self, vector_gt_path: Path, px_gt_path: Path, orig_img: Path):
         logging.info("Reading the ground truth files...")
@@ -41,6 +46,7 @@ class GTBuilder(Croppable, Scalable, Layarable):
 
     @abstractmethod
     def color(self, colorer: ColorTable, vector_gt: VectorGT):
+        """ Set the color of both the vector_gt objects and the vector_gt."""
         logging.info("Setting the different color of each layout class in LayoutClasses")
 
     @abstractmethod
@@ -62,6 +68,7 @@ class GTBuilder(Croppable, Scalable, Layarable):
     @abstractmethod
     def get_GT(self) -> Page:
         pass
+
 
 
 

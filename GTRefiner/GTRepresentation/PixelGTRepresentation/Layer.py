@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+from typing import Tuple
+
 import numpy as np
 import warnings
 
@@ -13,11 +16,11 @@ class Layer():
     """ The :class: Layer class is used to represent the different levels of the :class: PixelLevelGT class. It does not
     implement the :class: Scalable interface because Layer should only be instantiated once the resizing has been done.
     """
-    mode = "1"
-
-    # color = (255,0,0) # not used -> could come in handy for the coloring
 
     def __init__(self, layer: np.ndarray = None, img_dim: ImageDimension = None):
+        self.mode = "1"
+        self.color = (255,255,255)
+        self.visible = True
         if layer is None:
             if img_dim is None:
                 raise AttributeError("layer or img_dim must have a value")
@@ -45,16 +48,33 @@ class Layer():
         else:
             return Layer(np.invert(other.layer))
 
-    def mask(self, img: Image) -> Image:
+    def paint_layer_on_img(self, img: Image) -> Image:
         """ Takes a base_img of mode RGB and overlays it with the layer of the current instance.
-        Pixels corresponding to 0 are set to black (0,0,0). Pixels correpsonding to 1 are kept.
+        Pixels corresponding to 0 are set to black (0,0,0). Pixels corresponding to 1 are kept.
         :param img: Image to be masked.
         :return: Masked Image with (0,0,0) where layer is 0.
         """
         assert img.mode == "RGB"
+        assert 3 == len(self.color)
+        width, height = img.size
+        y_axis_len = len(self.layer)
+        assert height == y_axis_len
+        # Process every pixel (numpy's x corresponds to pillow's y-coordinate).
+        # TODO: Check how much this slows down the program.
+        for y in range(y_axis_len):
+            for x in range(len(self.layer[y])):
+                if self.layer[y, x] == 1:
+                    img.putpixel((x, y), self.color)
+        return img
+
+    @classmethod
+    def _bin_layer_from_rgb(cls, img: Image) -> Layer:
+        """ Returns a binary layer where every pixel equal to (0,0,0) is set to '0', every other is set to '1'."""
+        assert img.mode == "RGB"
         img_as_array = np.asarray(img)
-        black_background = np.where(img_as_array, self.layer, (0, 0, 0))
-        return Image.fromarray(black_background, mode="RGB")
+        np_array = np.where(np.all(img_as_array == [0,0,0], axis=-1), 0, 1)
+        return Layer(np_array)
+
 
     def draw(self, page_elem: Drawable):
         img: Image = self.img_from_layer()
@@ -90,34 +110,34 @@ class Layer():
 
 
 if __name__ == '__main__':
-    pass
-    # # Test layer
-    # bin_layer: np.ndarray = np.asarray([[0, 0, 1],
-    #                                     [0, 1, 0]])
-    #
-    # img_as_np_array = np.asarray([[(12, 12, 12), (100, 100, 100), (200, 200, 200)],
-    #                               [(250, 250, 100), (50, 100, 100), (13, 12, 12)]])
-    #
-    # img = Image.fromarray(img_as_np_array, "RGB")
-    #
-    # img_dim: ImageDimension = ImageDimension(bin_layer.shape[1],bin_layer.shape[0])
-    #
-    # layer_1 = Layer(layer=bin_layer)
-    # layer_2 = Layer(img_dim=img_dim)
-    #
-    # # test intitialisation
-    # assert layer_1.layer is not None
-    # assert layer_2.layer is not None
-    # assert layer_1.img_dim == layer_2.img_dim
-    # assert layer_1.layer.shape == layer_2.layer.shape
-    # #show it
-    # layer_1.show()
-    # layer_2.show()
-    #
-    # # test falty intitialisation
-    # try:
-    #     layer_3 = Layer()
-    # except AttributeError as e:
-    #     assert AttributeError is e
-    #
-    # layer_4 = Layer(layer=bin_layer,img_dim=ImageDimension(10,5))
+
+    # Test layer
+    bin_layer: np.ndarray = np.asarray([[0, 0, 1],
+                                        [0, 1, 0]])
+
+    img_as_np_array = np.asarray([[(12, 12, 12), (100, 100, 100), (200, 200, 200)],
+                                  [(250, 250, 100), (50, 100, 100), (13, 12, 12)]])
+
+    img = Image.fromarray(img_as_np_array, "RGB")
+
+    img_dim: ImageDimension = ImageDimension(bin_layer.shape[1], bin_layer.shape[0])
+
+    layer_1 = Layer(layer=bin_layer)
+    layer_2 = Layer(img_dim=img_dim)
+
+    # test intitialisation
+    assert layer_1.layer is not None
+    assert layer_2.layer is not None
+    assert layer_1.img_dim == layer_2.img_dim
+    assert layer_1.layer.shape == layer_2.layer.shape
+    # show it
+    layer_1.show()
+    layer_2.show()
+
+    # test falty intitialisation
+    try:
+        layer_3 = Layer()
+    except AttributeError as e:
+        assert AttributeError is e
+
+    layer_4 = Layer(layer=bin_layer, img_dim=ImageDimension(10, 5))
