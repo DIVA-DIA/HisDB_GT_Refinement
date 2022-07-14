@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Tuple
+from typing import Tuple, List
 
 import numpy as np
 import warnings
@@ -18,9 +18,12 @@ class Layer():
     implement the :class: Scalable interface because Layer should only be instantiated once the resizing has been done.
     """
 
-    def __init__(self, layer: np.ndarray = None, img_dim: ImageDimension = None):
+    def __init__(self, layer: np.ndarray = None, img_dim: ImageDimension = None, color=None):
         self.mode = "1"
-        self.color = (255, 255, 255)
+        if color is None:
+            self.color = (255, 255, 255)
+        else:
+            self.color = color
         self.visible = True
         if layer is None:
             if img_dim is None:
@@ -37,12 +40,14 @@ class Layer():
     def unite(self, other: Layer) -> Layer:
         assert self.layer.shape == other.layer.shape
         is_empty = not np.any(other.layer)
-        return Layer(np.logical_or(self.layer, other.layer))
+        return Layer(np.array(np.logical_or(self.layer, other.layer), copy=True), color=self.color)
 
     def intersect(self, other: Layer) -> Layer:
-        """ Xor gives us not A and B"""
+        """ XOR of each pixel of two layers.
+        :param other: Other Layer.
+        :returns A new Layer."""
         assert self.layer.shape == other.layer.shape
-        return Layer(np.logical_and(self.layer, other.layer))
+        return Layer(np.array(np.logical_and(self.layer, other.layer), copy=True), color=self.color)
 
     def invert(self, other: Layer = None) -> Layer:
         if other is None:
@@ -50,12 +55,14 @@ class Layer():
         else:
             return Layer(np.invert(other.layer))
 
-    def paint_layer_on_img(self, img: Image, color) -> Image:
+    def paint_layer_on_img(self, img: Image, color=None) -> Image:
         """ Takes a base_img of mode RGB and overlays it with the layer of the current instance.
         Pixels corresponding to 0 are set to black (0,0,0). Pixels corresponding to 1 are kept.
         :param img: Image to be masked.
         :return: Masked Image with (0,0,0) where layer is 0.
         """
+        if color is None:
+            color = self.color
         assert img.mode == "RGB"
         assert 3 == len(self.color)
         width, height = img.size
@@ -82,6 +89,37 @@ class Layer():
         np_array = np.where(np.all(img_as_array == [0, 0, 0], axis=-1), 0, 1)
         return Layer(np_array)
 
+    @classmethod
+    def merge_and_draw(cls, layers: List[Layer], img: Image = None) -> Image:
+        """ Merges a list of layers onto a Pillow :class: `Image` Image while keeping their :param
+        color: attribute. If only one layer is given, it will return it as a RGB Image.
+        :param layers: The first layer in the list must be the base-layer. If only one layer is given.
+        :type layers: List[Layer]The base-layer contains the base-object, the object that should be represented on the final Image.
+        :param img: When given, it will draw the merged layers on this image.
+        :type img: Image
+        :return Image: return a Pillow :class: `Image` Image with moder RGB
+        """
+        base_layer = layers[0]
+        img_dim = layers[0].img_dim
+        # Deal with special cases.
+        if len(layers) == 1:
+            return layers[0].img_from_layer()
+        if img is not None:
+            rgb_img = img
+            assert rgb_img.size == img_dim.to_tuple()
+        else:
+            rgb_img = Image.new("RGB", size=img_dim.to_tuple())
+        # Merge
+        for i in range(1, len(layers)):
+            # logical and with base layer
+            bin_layer = layers[i].intersect(base_layer)
+            # draw on img with color of layers[i]
+            bin_layer.paint_layer_on_img(img=rgb_img)
+        return rgb_img
+
+
+
+
     def draw(self, page_elem: Drawable):
         img: Image = self.img_from_layer()
         drawer: ImageDraw = ImageDraw.Draw(img)
@@ -104,15 +142,20 @@ class Layer():
         print("self.img_dim" + str(self.img_dim))
         img.show()
 
-    def img_from_layer(self):
+    def img_from_layer(self, rgb: bool = False) -> Image:
         """
-        Return a binary image from it's mask.
-        :return: Image
+        Returns an Image from the layer.
+        :param rgb: If True this class returns an RGB Pillow Image.
+        :return: Return a binary image from it's mask by default
         """
         # Note: img from numpy array doesn't properly work for mode "1" (it's a bug from pillow), thus the work-around
         #   by converting it to mode "1" in a seconds step.
         # Image.fromarray(obj=self.layer, mode="L").convert(mode="1")
-        return Image.fromarray(obj=self.layer)
+        if rgb is True:
+            img = Image.new("RGB", size=self.img_dim.to_tuple())
+            return self.paint_layer_on_img(img)
+        else:
+            return Image.fromarray(obj=self.layer)
 
 
 if __name__ == '__main__':

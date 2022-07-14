@@ -6,7 +6,7 @@ from abc import abstractmethod
 class Layarable:
 
     @abstractmethod
-    def layer(self, px_gt):
+    def layer(self, **kwargs):
         """ Translates the vector_gt information into pixel information and stores it on the corresponding
         :class: `LayoutClasses` layer."""
         pass
