@@ -97,6 +97,67 @@ class XMLReader(GTReader):
         return [tuple(map(int, pr.split(','))) for pr in polygon_str.split(' ')]
 
 
+class JSONReader(GTReader):
+
+    @classmethod
+    def read(cls, path: Path) -> VectorGT:
+        vector_gt: dict = json.load(open(path))
+        main_text = PageLayout.MainText()
+        comments = PageLayout.CommentText()
+        decorations = PageLayout.Decorations()
+        img_dim: ImageDimension = ImageDimension(vector_gt["ImageDimension"][0], vector_gt["ImageDimension"][1])
+        page = vector_gt["Vector Ground Truth"]
+        for k1, text_region in page.items():
+            for k2, text_layout in text_region.items():
+                for key, page_element in text_layout.items():
+                    layout_class: LayoutClasses
+                    polygon: Polygon
+                    base_line: BaseLine
+                    key = str(list(page_element.keys())[0])
+                    vector_object = page_element[key]
+                    coords: List[Tuple] = []
+                    if LayoutClasses.MAINTEXT.get_name() in key:
+                        layout_class = LayoutClasses.MAINTEXT
+                        vector_object_key = list(vector_object.keys())
+                        coords = cls._extract_coords(vector_object=vector_object[vector_object_key[0]])
+                    elif LayoutClasses.COMMENT.get_name() in key:
+                        layout_class = LayoutClasses.COMMENT
+                        vector_object_key = list(vector_object.keys())
+                        coords = cls._extract_coords(vector_object=vector_object[vector_object_key[0]])
+                    elif LayoutClasses.DECORATION.get_name().lower() in key.lower():
+                        layout_class = LayoutClasses.DECORATION
+                        coords = cls._extract_coords(vector_object=vector_object)
+                    else:
+                        raise AttributeError(
+                            f"Could find the baseclass in fourth level of the json. The key is: '{key}'")
+                    polygon = Polygon(xy=coords)
+                    if len(polygon.xy) <= 4:
+                        raise AttributeError(
+                            f"These coordinates don't belong to a polygon. They are either a Quadrilateral or a Line. "
+                            f"Current vector object: {polygon.xy}"
+                        )
+                    if layout_class is LayoutClasses.MAINTEXT or layout_class is LayoutClasses.COMMENT:
+                        vector_object_key = list(vector_object.keys())
+                        base_line = BaseLine(
+                            Line(xy=cls._extract_coords(vector_object=vector_object[vector_object_key[1]])))
+                        if len(base_line.polygon.xy) != 2:
+                            raise AttributeError(
+                                f"These coordinates don't belong to a baseline. "
+                                f"Current vector object: {base_line.polygon.xy}"
+                            )
+                        if layout_class is LayoutClasses.MAINTEXT:
+                            main_text.add_elem(PageLayout.MainTextLine(polygon=polygon, base_line=base_line))
+                        if layout_class is LayoutClasses.COMMENT:
+                            comments.add_elem(PageLayout.CommentTextLine(polygon=polygon, base_line=base_line))
+                    if layout_class is LayoutClasses.DECORATION:
+                        decorations.add_elem(PageLayout.DecorationElement(polygon=polygon))
+        return VectorGT([TextRegion(main_text), TextRegion(comments), TextRegion(decorations)], img_dim=img_dim)
+
+    @classmethod
+    def _extract_coords(cls, vector_object: dict) -> List[Tuple]:
+        return [tuple(v) for v in vector_object]
+
+
 class PxGTReader(GTReader):
 
     @classmethod

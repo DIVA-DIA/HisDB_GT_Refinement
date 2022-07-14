@@ -69,7 +69,9 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
             layer.draw(self)
 
     def build(self) -> Dict:
-        return {self.layout_class.get_name(): self.polygon.xy}
+        """ Helper function to build the json file. """
+        # return {self.layout_class.get_name(): self.polygon.xy} # deprecated
+        return {type(self).__name__ + " Coordinates": self.polygon.xy}
 
     def show(self):
         """ Displays the polygon of the PageElement for debugging purposes d

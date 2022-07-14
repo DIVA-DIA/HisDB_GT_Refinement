@@ -112,7 +112,7 @@ class Layout(Scalable, Drawable, Croppable, Dictionable):
         dict = {}
         i = 0
         for elem in self.page_elements:
-            dict[i] = elem.build()
+            dict[type(self).__name__ + str(i)] = elem.build()
             i = i+1
         return dict
 
@@ -174,10 +174,11 @@ class TextRegion(Layout):
 
     def build(self) -> Dict:
         dict = {}
-        for i, region in enumerate(self.text_regions):
+        for region in self.text_regions:
             region_dict = {}
             region_dict.update(region.build())
-            dict[i] = region_dict
+            # bbox polygon as text_region id
+            dict[str(self.get_bbox().polygon.xy)] = region_dict
         return dict
     
     def get_bbox(self) -> TextRegionElement:

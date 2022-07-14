@@ -33,9 +33,9 @@ class JSONWriter(VectorGTWriter):
 
     @classmethod
     def write(cls, ground_truth: VectorGT, path: Path):
-        path = Path(str(path) + "v1.json")
+        path = Path(str(path) + ".json")
         dict = ground_truth.build()
-        json.dump(dict, open(path, "w"), indent=4, )
+        json.dump(dict, open(path, "w"))
 
 
 class ImageWriter(AbstractWriter):

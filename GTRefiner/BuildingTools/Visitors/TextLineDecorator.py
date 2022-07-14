@@ -19,6 +19,7 @@ class AscenderDescenderDecorator(TextLineDecorator):
 
     @classmethod
     def decorate(cls, vector_gt: VectorGT, x_height: int = None):
+        # Not nice could be solved using **kwargs
         if x_height is None:
             raise ValueError("provide x_height")
         for layout in vector_gt.regions:
