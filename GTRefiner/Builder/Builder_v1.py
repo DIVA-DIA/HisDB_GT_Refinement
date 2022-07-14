@@ -64,7 +64,7 @@ class BuilderV1(GTBuilder):
             for region in layout_cl.text_regions:
                 for elem in region.page_elements:
                     elem.set_is_filled(True)
-                    elem.is_visible = True
+                    elem._is_visible = True
         for k, v in self.page.px_gt.levels.items():
             # if (k is LayoutClasses.COMMENT) or (k is LayoutClasses.MAINTEXT) or (
             #         k is LayoutClasses.DECORATION):
@@ -76,7 +76,7 @@ class BuilderV1(GTBuilder):
         super().color(color_table)
         colors = color_table.table
         for k, color in colors.items():
-            self.page.px_gt[k].color = color
+            self.page.px_gt[k]._color = color
         for region in self.page.vector_gt.regions:
             for layout in region.text_regions:
                 for elem in layout.page_elements:

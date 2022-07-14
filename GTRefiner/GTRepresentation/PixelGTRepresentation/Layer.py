@@ -82,11 +82,11 @@ class Layer():
         return Image.fromarray(combined)
 
     @classmethod
-    def _bin_layer_from_rgb(cls, img: Image) -> Layer:
+    def bin_layer_from_rgb(cls, img: Image) -> Layer:
         """ Returns a binary layer where every pixel equal to (0,0,0) is set to '0', every other is set to '1'."""
         assert img.mode == "RGB"
         img_as_array = np.asarray(img)
-        np_array = np.where(np.all(img_as_array == [0, 0, 0], axis=-1), 0, 1)
+        np_array = np.array(np.where(np.all(img_as_array == [0, 0, 0], axis=-1), 0, 1), copy=True)
         return Layer(np_array)
 
     @classmethod
@@ -114,7 +114,7 @@ class Layer():
             # logical and with base layer
             bin_layer = layers[i].intersect(base_layer)
             # draw on img with color of layers[i]
-            bin_layer.paint_layer_on_img(img=rgb_img)
+            rgb_img = bin_layer.paint_layer_on_img(img=rgb_img)
         return rgb_img
 
 

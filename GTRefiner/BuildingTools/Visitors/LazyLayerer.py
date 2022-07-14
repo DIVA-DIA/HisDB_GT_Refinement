@@ -1,6 +1,8 @@
 from abc import abstractmethod
 from typing import List
 
+from PIL import Image
+
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
@@ -21,9 +23,6 @@ class Layerer(LayoutVisitor):
         self.px_gt: PixelLevelGT = PixelLevelGT(img_dim=vector_gt.get_dim())
         self.vector_gt: VectorGT = vector_gt
 
-    def layer(self, layout_class: Layout):
-        for elem in layout_class.page_elements:
-            elem.layer(self.px_gt)
 
     def visitMainText(self, main_text: MainText):
         self.layer(main_text)

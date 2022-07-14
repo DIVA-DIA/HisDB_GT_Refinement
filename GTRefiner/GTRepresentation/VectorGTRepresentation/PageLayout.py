@@ -2,10 +2,12 @@ from __future__ import annotations
 
 from typing import List
 
-from PIL import ImageDraw
+from PIL import ImageDraw, Image
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import *
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement, \
     MainTextLine, CommentTextLine, DecorationElement, TextRegionElement
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Rectangle
@@ -14,7 +16,7 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.Vecto
 # TODO: Test the get_bbox() method.
 
 
-class Layout(Scalable, Drawable, Croppable, Dictionable):
+class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
 
     @abstractmethod
     def __init__(self, page_elements: List[PageElement] = None):
@@ -23,22 +25,28 @@ class Layout(Scalable, Drawable, Croppable, Dictionable):
         else:
             self.page_elements: List[PageElement] = page_elements
         self.layout_class: List[LayoutClasses] = []
-        self.color: Tuple = (255, 255, 255)
-        self.is_visible: bool = True
+        self._color: Tuple = (255, 255, 255)
+        self._is_visible: bool = True
 
     @abstractmethod
     def accept_layout_visitor(self, visitor):
         pass
 
     def set_color(self, color: Tuple):
-        self.color = color
+        self._color = color
 
-    def set_is_visible(self, is_visible: bool):
-        self.is_visible = is_visible
+    def set_visible(self, is_visible: bool):
+        self._is_visible = is_visible
 
     def add_elem(self, elem: PageElement):
         self.page_elements.append(elem)
         self.layout_class.append(elem.layout_class)
+
+    def layer(self, img: Image):
+        for elem in self.page_elements:
+            layers: List[Layer] = elem.layer(img=img)
+            img = Layer.merge_and_draw(layers=layers, img=img)
+        return img
 
     # TODO: Index
     def split(self, elem: PageElement):
@@ -167,6 +175,11 @@ class TextRegion(Layout):
 
     def merge(self, other: TextRegion):
         pass
+
+    def layer(self, img: Image):
+        for layout in self.text_regions:
+            img = layout.layer(img)
+        return img
 
     def accept_layout_visitor(self, visitor):
         for layout in self.text_regions:
