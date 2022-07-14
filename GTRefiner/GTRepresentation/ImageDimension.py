@@ -10,7 +10,8 @@ class ImageDimension():
     width: int = 0
     height: int = 0
 
-    def difference(self, other: Any) -> Tuple[float, float]:
+    def difference(self, other: ImageDimension) -> Tuple[float, float]:
+        """ Method used solely for cropping."""
         # division by two because we cut the same amount from top as from bottom
         return self.width - other.width, int((self.height - other.height) / 2)
 

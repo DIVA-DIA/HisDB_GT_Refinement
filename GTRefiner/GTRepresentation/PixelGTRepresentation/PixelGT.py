@@ -27,6 +27,7 @@ class MyImage(GroundTruth):
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         """ Default resize method uses the default resizing method of Pillow with bicubic resampling and no reducing
         gap. """
+        # resize base image
         scale_factor = current_dim.scale_factor(target_dim)
         target_dimension = tuple(round(operator.truediv(r, t)) for r, t in zip(current_dim.to_tuple(), scale_factor))
         self.img = self.img.resize(size=target_dimension, resample=Image.BICUBIC, box=None, reducing_gap=None)
@@ -66,8 +67,8 @@ class MyImage(GroundTruth):
 
         return left, upper, right, lower  # left, upper, right, lower
 
-    def binarize(self, bin_algo: str = 'otsu', **kwargs) -> np.array:
-        gray_scale = ImageOps.grayscale(self.img)
+    def binarize(self, img: Image, bin_algo: str = 'otsu', **kwargs) -> np.array:
+        gray_scale = ImageOps.grayscale(img)
         image_array = np.asarray(gray_scale)
         threshold = 0
         if bin_algo == 'otsu':
@@ -109,8 +110,19 @@ class PixelLevelGT(MyImage):
         self.img.convert(mode="L")
         new_images: Dict[LayoutClasses, Layer] = {}
         for key, value in self.levels.items():
-            new_images[key] = Layer(self.binarize())
+            img: Image = Image.fromarray(gaussian_filter(value.layer, sigma=sigma, truncate=truncate))
+            img = img.resize(size=target_dim.to_tuple(), resample=Image.BICUBIC, box=None, reducing_gap=None)
+            binarized_img: np.ndarray = self.binarize(img=img)
+            new_images[key] = Layer(binarized_img)
         self.levels = new_images
+
+    def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
+        super().crop(current_dim, target_dim, cut_left)
+        for key, value in self.levels.items():
+            box = self._get_crop_coordinates(target_dim=target_dim, cut_left=cut_left)
+            self.levels[key] = Layer(np.asarray(value.img_from_layer().crop(box)))
+            assert self.img_dim == self.levels[key].img_dim
+
 
     def _initialize_empty_px_gt(self):
         for layout_class in LayoutClasses:

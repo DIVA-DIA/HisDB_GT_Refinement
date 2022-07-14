@@ -20,7 +20,7 @@ color_table: Dict = {
     "TOPLINE": (100, 30, 200),
     "HEAD": (100, 100, 100),
     "TAIL": (100, 100, 100),
-    "TEXT_REGIONS": (100, 100, 100),
+    "TEXT_REGION": (100, 100, 100),
 }
 
 if __name__ == '__main__':

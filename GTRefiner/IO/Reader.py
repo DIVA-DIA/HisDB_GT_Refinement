@@ -1,3 +1,4 @@
+import json
 import re
 import xml.etree.ElementTree as ET
 import numpy as np
@@ -110,8 +111,7 @@ class PxGTReader(GTReader):
         """
         img: Image = Image.open(path).convert("RGB")
         img_array = np.asarray(img)
-        img_dim: ImageDimension = ImageDimension(img.size[0], img.size[1])
-        px_gt: PixelLevelGT = PixelLevelGT(img_dim=img_dim)
+        px_gt: PixelLevelGT = PixelLevelGT(img=img)
 
         # remove border pixels
         img_array_classes = img_array[:, :, 2]
@@ -151,11 +151,8 @@ class VisibilityTableReader(TableReader):
 
     @classmethod
     def read(cls, path: Path) -> VisibilityTable:
-        # write to json
-
-
         # read json and convert to {LayoutClasses: Tuple}
-        data = json.load(open(file_path))
+        data = json.load(open(path))
         data = {LayoutClasses.str_to_enum(k): tuple(v) for (k, v) in data.items()}
         print(data)
 
@@ -163,4 +160,6 @@ class VisibilityTableReader(TableReader):
 class ColorTableReader(TableReader):
     @classmethod
     def read(cls, path: Path) -> ColorTable:
-        pass
+        data = json.load(open(path))
+        data = {LayoutClasses.str_to_enum(k): tuple(v) for (k, v) in data.items()}
+        return ColorTable(data)

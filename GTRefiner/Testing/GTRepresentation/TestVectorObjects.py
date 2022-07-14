@@ -43,6 +43,8 @@ if __name__ == '__main__':
         obj.crop(img_dim, target_dim, cut_left=False)
         obj.draw(drawer)
 
+
+
     # TODO: Test cropping with a given polygon that you know how the cropped result should look like.
 
     #show image

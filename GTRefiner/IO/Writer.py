@@ -33,9 +33,9 @@ class JSONWriter(VectorGTWriter):
 
     @classmethod
     def write(cls, ground_truth: VectorGT, path: Path):
-        path = Path(str(path) + ".json")
+        path = Path(str(path) + "v1.json")
         dict = ground_truth.build()
-        json.dump(dict, open(path, "w"), indent=4,)
+        json.dump(dict, open(path, "w"), indent=4, )
 
 
 class ImageWriter(AbstractWriter):
@@ -43,6 +43,8 @@ class ImageWriter(AbstractWriter):
     @classmethod
     @abstractmethod
     def write(cls, ground_truth: MyImage, path: Path):
+        # path = Path(str(path) + "v1.gif")
+        # ground_truth.img.save(path)
         pass
 
 
@@ -55,6 +57,5 @@ class PXGTWriter(ImageWriter):
 class RawImageWriter(ImageWriter):
     @classmethod
     def write(cls, ground_truth: RawImage, path: Path):
-        path = Path(str(path) + ".png")
-        ground_truth.img.save(path = Path(str(path) + ".png"))
-        pass
+        path = Path(str(path) + ".gif")
+        ground_truth.img.save(fp=path)

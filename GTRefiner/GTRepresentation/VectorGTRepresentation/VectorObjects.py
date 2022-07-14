@@ -5,6 +5,7 @@ from typing import List, Tuple
 from scipy.spatial import distance as dist
 import numpy as np
 from PIL import ImageDraw
+from copy import deepcopy
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Croppable, \
     Dictionable
@@ -29,9 +30,8 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
             if isinstance(elem[0], np.int64) or isinstance(elem[1], np.int64):
                 raise ValueError("Should be of python integer at instantiation")
 
-    def draw(self, drawer: ImageDraw, outline=(255, 255, 255), fill=None):
-        # **kwargs ->
-        drawer.polygon(xy=self.xy, outline=outline, fill=fill)
+    def draw(self, drawer: ImageDraw, color: Tuple = None):
+        drawer.polygon(xy=self.xy, outline=None, fill=color)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         scale_factor: Tuple[float, float] = current_dim.scale_factor(target_dim)
@@ -45,7 +45,9 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
         self.xy = self._find_and_scale_points(difference)
 
     def _find_and_scale_points(self, difference: Tuple[float, float]):
-        return [tuple(map(operator.sub, t, difference)) for t in self.xy]
+        return [(x - difference[0], y - difference[1]) for x, y in self.xy]
+        #return [tuple(map(operator.sub, t, difference)) for t in self.xy]
+
 
     def get_bbox(self) -> Rectangle:
         bbox: Rectangle = Rectangle([(self.get_min_x(), self.get_min_y()), (self.get_max_x(), self.get_max_y())])
@@ -82,6 +84,20 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
     def __getitem__(self, index):
         return self.xy[index]
 
+    def __eq__(self, other):
+        if not isinstance(other, Polygon):
+            return False
+        if not len(self.xy) == len(other.xy):
+            return False
+        for i, coord in enumerate(other.xy):
+            if not coord[0] == self.xy[i][0]:
+                return False
+            if not coord[1] == self.xy[i][1]:
+                return False
+        return True
+
+
+
 
 class Quadrilateral(Polygon):
     """
@@ -94,7 +110,8 @@ class Quadrilateral(Polygon):
         super().__init__(sorted_xy)
         assert len(xy) == 4
 
-    def _order_points(self, xy):
+    @classmethod
+    def _order_points(cls, xy):
         # TODO: Make sure that this function works fine.
         # sort the points based on their x-coordinates
         as_np_array = np.asarray(xy)
@@ -121,8 +138,12 @@ class Quadrilateral(Polygon):
         sorted_points_to_python_int = [(coord[0].item(), coord[1].item()) for coord in sorted_points]
         return sorted_points_to_python_int
 
-    def draw(self, drawer: ImageDraw, outline=(255, 125, 0), fill=None):
-        drawer.polygon(self.xy, outline=outline, fill=fill)
+    def is_sorted(self):
+        sorted = self._order_points(deepcopy(self.xy))
+        return sorted == self.xy
+
+    def draw(self, drawer: ImageDraw, color=None):
+        drawer.polygon(self.xy, outline=None, fill=color)
 
 
 class Rectangle(Polygon):
@@ -130,8 +151,8 @@ class Rectangle(Polygon):
         super().__init__(xy=xy)
         assert len(xy) == 2
 
-    def draw(self, drawer: ImageDraw, outline=(225, 225, 10), fill=None):
-        drawer.rectangle(self.xy, outline=outline, fill=fill)
+    def draw(self, drawer: ImageDraw, color: Tuple = None):
+        drawer.rectangle(self.xy, outline=None, fill=color)
 
 
 class Line(Polygon):
@@ -139,12 +160,12 @@ class Line(Polygon):
         super().__init__(xy=xy)
         assert len(xy) == 2
 
-    def draw(self, drawer: ImageDraw, outline=None, fill=(0, 125, 255)):
+    def draw(self, drawer: ImageDraw, outline=None, color: Tuple = None):
         """ Draws a line."""
         if outline is None:
             warnings.warn("The Line vector object doesn't provide an outline due to it's nature. Use 'fill' to specify "
                           "the color of the line. Fill default = (0, 125, 255)")
-        drawer.line(self.xy, fill=fill)
+        drawer.line(self.xy, fill=color)
 
     def get_min_x_coord(self):
         return self.xy[0]

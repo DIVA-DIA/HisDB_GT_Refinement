@@ -1,5 +1,8 @@
 from typing import Dict, List
 
+from PIL import ImageDraw
+from PIL import Image
+
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Dictionable, Scalable, Croppable
@@ -27,7 +30,13 @@ class VectorGT(GroundTruth, Dictionable, Scalable, Croppable):
         self.img_dim = target_dim
 
     def show(self):
-        raise NotImplementedError
+        img = Image.new("RGB", size=self.img_dim.to_tuple())
+        drawer = ImageDraw.Draw(img)
+        for layout in self.regions:
+            for region in layout.text_regions:
+                for elem in region.page_elements:
+                    elem.draw(drawer=drawer)
+        img.show()
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         for layout in self.regions:

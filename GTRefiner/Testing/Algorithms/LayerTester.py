@@ -1,8 +1,9 @@
 # Test if a built-in method layer() in PageElements does the job.
-
+from pathlib import Path
 from typing import List
 
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.LazyLayerer import Layerer
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import AscenderDescenderDecorator
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import PageLayout
@@ -12,8 +13,10 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageL
     CommentText, TextRegion
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line
+from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader
 
-if __name__ == '__main__':
+
+def test_a_few_self_made_text_lines():
     img_dim: ImageDimension = ImageDimension(4872, 6496)
     # px_gt = PixelLevelGT(img_dim)
 
@@ -81,3 +84,24 @@ if __name__ == '__main__':
 
     # illustrate the new px_gt
     lazy_layerer.px_gt.show()
+
+if __name__ == '__main__':
+    #test_a_few_self_made_text_lines()
+    vector_gt_path = Path("../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0105r_max.xml")
+    vector_gt: VectorGT = XMLReader.read(path=vector_gt_path)
+    #vector_gt.show()
+
+    AscenderDescenderDecorator.decorate(vector_gt, 5)
+    # create Layerer
+    lazy_layerer = Layerer(vector_gt)
+
+    # visit the page_layout
+    vector_gt.accept(lazy_layerer)
+
+    # illustrate the new px_gt
+    lazy_layerer.px_gt.show()
+
+
+
+
+

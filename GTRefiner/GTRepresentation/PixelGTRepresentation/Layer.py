@@ -6,6 +6,7 @@ import numpy as np
 import warnings
 
 from PIL import Image, ImageDraw
+from numpy import ma
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Drawable
@@ -19,7 +20,7 @@ class Layer():
 
     def __init__(self, layer: np.ndarray = None, img_dim: ImageDimension = None):
         self.mode = "1"
-        self.color = (255,255,255)
+        self.color = (255, 255, 255)
         self.visible = True
         if layer is None:
             if img_dim is None:
@@ -35,6 +36,7 @@ class Layer():
 
     def unite(self, other: Layer) -> Layer:
         assert self.layer.shape == other.layer.shape
+        is_empty = not np.any(other.layer)
         return Layer(np.logical_or(self.layer, other.layer))
 
     def intersect(self, other: Layer) -> Layer:
@@ -48,7 +50,7 @@ class Layer():
         else:
             return Layer(np.invert(other.layer))
 
-    def paint_layer_on_img(self, img: Image) -> Image:
+    def paint_layer_on_img(self, img: Image, color) -> Image:
         """ Takes a base_img of mode RGB and overlays it with the layer of the current instance.
         Pixels corresponding to 0 are set to black (0,0,0). Pixels corresponding to 1 are kept.
         :param img: Image to be masked.
@@ -59,22 +61,26 @@ class Layer():
         width, height = img.size
         y_axis_len = len(self.layer)
         assert height == y_axis_len
-        # Process every pixel (numpy's x corresponds to pillow's y-coordinate).
-        # TODO: Check how much this slows down the program.
-        for y in range(y_axis_len):
-            for x in range(len(self.layer[y])):
-                if self.layer[y, x] == 1:
-                    img.putpixel((x, y), self.color)
-        return img
+        img_as_np_array = np.asarray(img)
+        colored_layer = np.zeros((img_as_np_array.shape[0], img_as_np_array.shape[1], 3), dtype="uint8")
+        # # Draw self.layer (binary) with it's color RGB mode
+        # colored_layer[:, :, 0] = ma.where(self.layer, self.color[0], 0)
+        # colored_layer[:, :, 1] = ma.where(self.layer, self.color[1], 0)
+        # colored_layer[:, :, 2] = ma.where(self.layer, self.color[2], 0)
+        # Overlay img with colored layer. The values > 0 from colored layer will overwrite the img.
+        combined = np.zeros((img_as_np_array.shape[0], img_as_np_array.shape[1], 3), "uint8")
+        combined[:, :, 0] = ma.where(self.layer > 0, color[0], img_as_np_array[:, :, 0])
+        combined[:, :, 1] = ma.where(self.layer > 0, color[1], img_as_np_array[:, :, 1])
+        combined[:, :, 2] = ma.where(self.layer > 0, color[2], img_as_np_array[:, :, 2])
+        return Image.fromarray(combined)
 
     @classmethod
     def _bin_layer_from_rgb(cls, img: Image) -> Layer:
         """ Returns a binary layer where every pixel equal to (0,0,0) is set to '0', every other is set to '1'."""
         assert img.mode == "RGB"
         img_as_array = np.asarray(img)
-        np_array = np.where(np.all(img_as_array == [0,0,0], axis=-1), 0, 1)
+        np_array = np.where(np.all(img_as_array == [0, 0, 0], axis=-1), 0, 1)
         return Layer(np_array)
-
 
     def draw(self, page_elem: Drawable):
         img: Image = self.img_from_layer()

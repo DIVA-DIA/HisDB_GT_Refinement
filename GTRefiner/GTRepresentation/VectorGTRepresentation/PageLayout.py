@@ -17,8 +17,11 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.Vecto
 class Layout(Scalable, Drawable, Croppable, Dictionable):
 
     @abstractmethod
-    def __init__(self):
-        self.page_elements: List[PageElement] = []
+    def __init__(self, page_elements: List[PageElement] = None):
+        if page_elements is None:
+            self.page_elements: List[PageElement] = []
+        else:
+            self.page_elements: List[PageElement] = page_elements
         self.layout_class: List[LayoutClasses] = []
         self.color: Tuple = (255, 255, 255)
         self.is_visible: bool = True
@@ -149,9 +152,10 @@ class Decorations(Layout):
 
 class TextRegion(Layout):
 
-    def __init__(self, layout: Layout):
+    def __init__(self, layout: Layout = None):
         self.text_regions: List[Layout] = []
-        self.add_region(layout)
+        if layout is not None:
+            self.add_region(layout)
         self.text_region: TextRegionElement = self.get_bbox()
         super().__init__()
         self.layout_class.append(LayoutClasses.TEXT_REGION)

@@ -22,7 +22,7 @@ class GTBuilder(Croppable, Scalable, Layarable):
 
     # TODO: decorator @logging -> tutorial nachschauen.
     @abstractmethod
-    def read(self, vector_gt_path: Path, px_gt_path: Path, orig_img: Path):
+    def read(self, vector_gt_path: Path, px_gt_path: Path, orig_img: Path, vis_table: Path, col_table: Path):
         logging.info("Reading the ground truth files...")
 
     @abstractmethod
@@ -45,7 +45,7 @@ class GTBuilder(Croppable, Scalable, Layarable):
         logging.info("Setting the different different vector objects to visible according to the Visibility Table")
 
     @abstractmethod
-    def color(self, colorer: ColorTable, vector_gt: VectorGT):
+    def color(self, color_table: ColorTable):
         """ Set the color of both the vector_gt objects and the vector_gt."""
         logging.info("Setting the different color of each layout class in LayoutClasses")
 

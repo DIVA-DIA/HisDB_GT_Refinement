@@ -13,8 +13,12 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageL
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon
 
+logging.getLogger().setLevel(logging.INFO)
+
 if __name__ == '__main__':
     start = time.time()
+
+    warnings.warn("This tester doesn't yet work.")
 
     img_dim: ImageDimension = ImageDimension(4872, 6496)
 
