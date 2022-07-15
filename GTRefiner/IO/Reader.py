@@ -88,6 +88,7 @@ class XMLReader(GTReader):
             #     text_regions.append_elem(
             #         PageLayout.TextRegionElement(Polygon(polygon=self._str_to_polygon(polygon_text)), color))
             if "GraphicRegion" in str(text_region.tag):
+                polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
                 decorations.add_elem(
                     PageLayout.DecorationElement(Polygon(xy=cls._str_to_polygon(polygon_text))))
         return VectorGT([TextRegion(main_text), TextRegion(comments), TextRegion(decorations)], img_dim=img_dimension)
@@ -212,10 +213,12 @@ class VisibilityTableReader(TableReader):
 
     @classmethod
     def read(cls, path: Path) -> VisibilityTable:
+        if True: return None
         # read json and convert to {LayoutClasses: Tuple}
         data = json.load(open(path))
         data = {LayoutClasses.str_to_enum(k): tuple(v) for (k, v) in data.items()}
         print(data)
+        return None
 
 
 class ColorTableReader(TableReader):

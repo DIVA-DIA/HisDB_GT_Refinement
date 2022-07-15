@@ -9,7 +9,7 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement, \
-    MainTextLine, CommentTextLine, DecorationElement, TextRegionElement
+    MainTextLine, CommentTextLine, DecorationElement, TextRegionElement, AscenderDescenderRegion
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Rectangle
 
 
@@ -44,8 +44,13 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
 
     def layer(self, img: Image):
         for elem in self.page_elements:
-            layers: List[Layer] = elem.layer(img=img)
-            img = Layer.merge_and_draw(layers=layers, img=img)
+            if elem.is_visible():
+                layers: List[Layer] = elem.layer(img=img)
+                if type(elem) is AscenderDescenderRegion:
+                    is_sorted = elem.x_region.polygon.is_sorted()
+                    if not is_sorted:
+                        raise AttributeError("x_region is not sorted.")
+                img = Layer.merge_and_draw(layers=layers, img=img)
         return img
 
     # TODO: Index
@@ -178,6 +183,8 @@ class TextRegion(Layout):
 
     def layer(self, img: Image):
         for layout in self.text_regions:
+            if LayoutClasses.COMMENT in layout.layout_class:
+                print("here's your comment")
             img = layout.layer(img)
         return img
 

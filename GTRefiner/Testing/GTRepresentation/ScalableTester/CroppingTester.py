@@ -14,16 +14,17 @@ if __name__ == '__main__':
     drawer = ImageDraw.Draw(img)
 
     polygon = Polygon([(200, 200), (300, 100), (500, 100), (200, 300)])
-    target_polygon = Polygon([(100, 150), (200, 50), (400, 50), (100, 250)])
+    polygon.draw(drawer=drawer, color=(255, 255, 255))
+    target_polygon = Polygon([(200, 150), (300, 50), (500, 50), (200, 250)])
 
     # test __eq__
     assert polygon == polygon
     assert not target_polygon == polygon
 
-    polygon.crop(current_dim=orig_img_dim, target_dim=target_dim, cut_left=True)
+    polygon.crop(current_dim=orig_img_dim, target_dim=target_dim, cut_left=False)
 
-    polygon.draw(drawer=drawer, fill=(255, 255, 255))
-    target_polygon.draw(drawer=drawer, fill=(255, 0, 0))
+    polygon.draw(drawer=drawer, color=(255, 255, 255))
+    target_polygon.draw(drawer=drawer, color=(255, 0, 0))
 
     img.show()
 

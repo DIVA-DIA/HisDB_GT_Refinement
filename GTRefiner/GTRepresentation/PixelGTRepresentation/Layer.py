@@ -81,13 +81,39 @@ class Layer():
         combined[:, :, 2] = ma.where(self.layer > 0, color[2], img_as_np_array[:, :, 2])
         return Image.fromarray(combined)
 
+    def paint_layer_on_img_and_keep_colors(self, img: Image):
+        """ Overlay img with colored layer. The values > 0 from self.layer will overwrite the img, the rest of the
+        pixels are kept as are.
+        :param img:
+        :return:
+        """
+        assert img.mode == "RGB"
+        width, height = img.size
+        y_axis_len = len(self.layer)
+        assert height == y_axis_len
+        # img.show() # to debug
+        img_as_np_array = np.asarray(img)
+        img_as_np_array[:, :, 0] = ma.where(self.layer > 0, self.color[0], img_as_np_array[:, :, 0])
+        img_as_np_array[:, :, 1] = ma.where(self.layer > 0, self.color[1], img_as_np_array[:, :, 1])
+        img_as_np_array[:, :, 2] = ma.where(self.layer > 0, self.color[2], img_as_np_array[:, :, 2])
+        new_img = Image.fromarray(img_as_np_array)
+        # new_img.show() # to debug
+        return new_img
+
     @classmethod
     def bin_layer_from_rgb(cls, img: Image) -> Layer:
         """ Returns a binary layer where every pixel equal to (0,0,0) is set to '0', every other is set to '1'."""
         assert img.mode == "RGB"
         img_as_array = np.asarray(img)
-        np_array = np.array(np.where(np.all(img_as_array == [0, 0, 0], axis=-1), 0, 1), copy=True)
+        np_array = np.array(np.where(np.all(img_as_array == [0, 0, 0], axis=-1), 0, 1), copy=True).astype(dtype="bool")
         return Layer(np_array)
+
+    def intersect_this_layer_with_an_rgb_img(self,img: Image) -> Image:
+        img_as_np_array = np.asarray(img)
+        img_as_np_array[:, :, 0] = ma.where(self.layer > 0, img_as_np_array[:, :, 0], 0)
+        img_as_np_array[:, :, 1] = ma.where(self.layer > 0, img_as_np_array[:, :, 1], 0)
+        img_as_np_array[:, :, 2] = ma.where(self.layer > 0, img_as_np_array[:, :, 2], 0)
+        return Image.fromarray(img_as_np_array)
 
     @classmethod
     def merge_and_draw(cls, layers: List[Layer], img: Image = None) -> Image:
@@ -103,7 +129,7 @@ class Layer():
         img_dim = layers[0].img_dim
         # Deal with special cases.
         if len(layers) == 1:
-            return layers[0].img_from_layer()
+            return layers[0].paint_layer_on_img_and_keep_colors(img=img)
         if img is not None:
             rgb_img = img
             assert rgb_img.size == img_dim.to_tuple()
@@ -114,11 +140,8 @@ class Layer():
             # logical and with base layer
             bin_layer = layers[i].intersect(base_layer)
             # draw on img with color of layers[i]
-            rgb_img = bin_layer.paint_layer_on_img(img=rgb_img)
+            rgb_img = bin_layer.paint_layer_on_img_and_keep_colors(img=rgb_img)
         return rgb_img
-
-
-
 
     def draw(self, page_elem: Drawable):
         img: Image = self.img_from_layer()
@@ -136,7 +159,7 @@ class Layer():
     def show(self):
         """ Display the image
         """
-        img = self.img_from_layer()
+        img: Image = self.img_from_layer()
         print("image mode" + str(img.mode))
         print("image shape/size" + str(img.size))
         print("self.img_dim" + str(self.img_dim))

@@ -54,12 +54,12 @@ if __name__ == '__main__':
                                     [0, 1, 0, 0, 0, 0],
                                     [0, 1, 0, 0, 0, 0]]))
 
-    # # test union:
-    # union_layer = base_layer.unite(some_layer)
-    # union_layer.show() # passes :)
-    #
-    # intersected_layer = union_layer.intersect(other_layer)
-    # intersected_layer.show() # passes :)
+    # test union:
+    union_layer = base_layer.unite(some_layer)
+    union_layer.show() # passes :)
+
+    intersected_layer = union_layer.intersect(other_layer)
+    intersected_layer.show() # passes :)
     # new_shape = (base_layer.layer.shape[0], base_layer.layer.shape[1], 3)
     # np_array = np.zeros(new_shape, dtype="uint8")
     # # np_array = np_array.mask()

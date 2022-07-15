@@ -11,6 +11,7 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces impo
     Dictionable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 
+
 # TODO: outline wird immer None sein. outline wegnehmen.
 # TODO: Import shapely -> wäre toll.
 
@@ -46,8 +47,7 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
 
     def _find_and_scale_points(self, difference: Tuple[float, float]):
         return [(x - difference[0], y - difference[1]) for x, y in self.xy]
-        #return [tuple(map(operator.sub, t, difference)) for t in self.xy]
-
+        # return [tuple(map(operator.sub, t, difference)) for t in self.xy]
 
     def get_bbox(self) -> Rectangle:
         bbox: Rectangle = Rectangle([(self.get_min_x(), self.get_min_y()), (self.get_max_x(), self.get_max_y())])
@@ -97,8 +97,6 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
         return True
 
 
-
-
 class Quadrilateral(Polygon):
     """
     :param xy: 4 coords that represent a quadrilateral. which are sorted upon initialisation to ensure a useful representation with the draw method.
@@ -106,9 +104,14 @@ class Quadrilateral(Polygon):
     """
 
     def __init__(self, xy: List[Tuple]):
-        sorted_xy = self._order_points(xy)
-        super().__init__(sorted_xy)
+        #sorted_xy = self._order_points(xy)
+        super().__init__(xy)
         assert len(xy) == 4
+        if not self.is_sorted():
+            warnings.warn(f"Xy is not sorted.{xy}")
+            temp = self.xy[2]
+            self.xy[2] = self.xy[3]
+            self.xy[3] = temp
 
     @classmethod
     def _order_points(cls, xy):
@@ -139,11 +142,28 @@ class Quadrilateral(Polygon):
         return sorted_points_to_python_int
 
     def is_sorted(self):
-        sorted = self._order_points(deepcopy(self.xy))
-        return sorted == self.xy
+        if not self.xy[0][1] < self.xy[3][1]:
+            return False
+        if not self.xy[1][1] < self.xy[2][1]:
+            return False
+        if not self.xy[0][0] < self.xy[1][0]:
+            return False
+        if not self.xy[3][0] < self.xy[2][0]:
+            return False
+        # sorted = self._order_points(deepcopy(self.xy))
+        # sorted == self.xy
+        return True
 
     def draw(self, drawer: ImageDraw, color=None):
         drawer.polygon(self.xy, outline=None, fill=color)
+
+    def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
+        super().resize(current_dim, target_dim)
+        assert self.is_sorted()
+
+    def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
+        super().crop(current_dim, target_dim, cut_left)
+        assert self.is_sorted()
 
 
 class Rectangle(Polygon):
@@ -159,6 +179,7 @@ class Line(Polygon):
     def __init__(self, xy):
         super().__init__(xy=xy)
         assert len(xy) == 2
+        assert xy[0][0] < xy [1][0] # assert line is sorted left to right
 
     def draw(self, drawer: ImageDraw, outline=None, color: Tuple = None):
         """ Draws a line."""
@@ -168,9 +189,9 @@ class Line(Polygon):
         drawer.line(self.xy, fill=color)
 
     def get_min_x_coord(self):
+        assert self.xy[0][0] < self.xy[1][0]
         return self.xy[0]
 
     def get_max_x_coord(self):
+        assert self.xy[0][0] < self.xy[1][0]
         return self.xy[1]
-
-

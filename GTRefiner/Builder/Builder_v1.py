@@ -20,7 +20,7 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.Vecto
 from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader, PxGTReader, ImageReader, VisibilityTableReader, \
     ColorTableReader
 
-# TODO: Execute() in Director.
+# TODO: Execute() in Director and make everything accept "Page".
 from HisDB_GT_Refinement.GTRefiner.IO.Writer import JSONWriter, ImageWriter, RawImageWriter
 
 
@@ -52,7 +52,7 @@ class BuilderV1(GTBuilder):
 
     def decorate(self, decorator: TextLineDecorator = None):
         super().decorate(decorator)
-        AscenderDescenderDecorator.decorate(self.page.vector_gt, 15)
+        AscenderDescenderDecorator.decorate(self.page.vector_gt, 42)
 
     def group(self, grouper: Grouper):
         super().group(grouper)
@@ -62,15 +62,22 @@ class BuilderV1(GTBuilder):
         super().set_visible(vis_table)
         for layout_cl in self.page.vector_gt.regions:
             for region in layout_cl.text_regions:
-                for elem in region.page_elements:
-                    elem.set_is_filled(True)
-                    elem._is_visible = True
-        for k, v in self.page.px_gt.levels.items():
-            # if (k is LayoutClasses.COMMENT) or (k is LayoutClasses.MAINTEXT) or (
-            #         k is LayoutClasses.DECORATION):
-            #     v.visible = False
-            # else:
-            v.visible = True
+                for i, elem in enumerate(region.page_elements):
+                    elem.set_visible(True)
+                    # debugging
+                    # if elem.layout_class is LayoutClasses.DECORATION:
+                    #     elem.set_visible(True)
+                    # elif i%100 == 0:
+                    #     # for better performance only show a few lines
+                    #     elem.set_visible(True)
+                    # else:
+                    #     elem.set_visible(False)
+        # for k, v in self.page.px_gt.levels.items():
+        #     # if (k is LayoutClasses.COMMENT) or (k is Layout Classes.MAINTEXT) or (
+        #     #         k is LayoutClasses.DECORATION):
+        #     #     v.visible = False
+        #     # else:
+        #     v.visible = True
 
     def color(self, color_table: ColorTable):
         super().color(color_table)
@@ -84,16 +91,14 @@ class BuilderV1(GTBuilder):
 
     def layer(self) -> PixelLevelGT:
         super().layer()
-        layerer = Layerer(self.page.vector_gt)
-        for layout_cl in self.page.vector_gt.regions:
-            layout_cl.accept_layout_visitor(layerer)
-        return layerer.px_gt
+        layerer = Layerer(self.page.vector_gt,px_gt=self.page.px_gt)
 
-    def combine_px_gts(self, comb: Combiner):
-        super().combine_px_gts(comb)
-        img = comb.combine(orig_px=self.page.px_gt, new_px_gt=self.layer())
-        self.page.px_gt.img = img
-        img.show()
+
+    # def combine_px_gts(self, comb: Combiner):
+    #     super().combine_px_gts(comb)
+    #     img = comb.combine(orig_px=self.page.px_gt, new_px_gt=self.layer())
+    #     self.page.px_gt.img = img
+    #     img.show()
 
     def write(self, output_path):
         super().write(output_path)

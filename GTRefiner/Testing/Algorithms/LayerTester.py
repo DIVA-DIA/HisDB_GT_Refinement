@@ -52,11 +52,6 @@ def test_a_few_self_made_text_lines():
 
     decoration = DecorationElement(decoration_polygon)
 
-    main_text_line.set_is_filled(True)
-    another_text_line.set_is_filled(True)
-    decoration.set_is_filled(True)
-    ascender_descender_line.set_is_filled(True)
-
     # create page layout
     main_text = MainText()
     main_text.add_elem(elem=main_text_line)

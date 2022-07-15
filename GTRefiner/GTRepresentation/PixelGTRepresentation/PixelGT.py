@@ -117,10 +117,14 @@ class PixelLevelGT(MyImage):
         self.levels = new_images
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
-        super().crop(current_dim, target_dim, cut_left)
+        #super().crop(current_dim, target_dim, cut_left)
+        box = self._get_crop_coordinates(target_dim=target_dim, cut_left=cut_left)
         for key, value in self.levels.items():
-            box = self._get_crop_coordinates(target_dim=target_dim, cut_left=cut_left)
+            #self.levels[key].show()
+            self.img = self.img.crop(box)
             self.levels[key] = Layer(np.asarray(value.img_from_layer().crop(box)))
+            #self.levels[key].show()
+            self.img_dim = target_dim
             assert self.img_dim == self.levels[key].img_dim
 
 
@@ -166,11 +170,17 @@ class PixelLevelGT(MyImage):
             draw.text(xy=(50, 100 + int(60*self.img_dim.to_tuple()[1]/6496)), text=f"Image Dimension: {str(self.img.size)}", fill="white", font=font)
             img.show()
 
-    def unified_layer(self, visibility_table: VisibilityTable) -> Layer:
+    def merged_levels(self, visibility_table: VisibilityTable = None, all_vis: bool = False) -> Layer:
         base_layer = Layer(img_dim=self.img_dim)
-        for k,v in self.levels.items():
-            if visibility_table[k] is True:
-                base_layer.unite(self.levels[k])
+        if visibility_table is not None:
+            for k,v in self.levels.items():
+                if visibility_table[k] is True:
+                    base_layer = base_layer.unite(self.levels[k])
+        elif all_vis is True:
+            for k, layer in self.levels.items():
+                base_layer = base_layer.unite(layer)
+        else:
+            raise ValueError("'VisibilityTable' or 'all_vis' expected. None given.")
         return base_layer
 
     def __getitem__(self, item):

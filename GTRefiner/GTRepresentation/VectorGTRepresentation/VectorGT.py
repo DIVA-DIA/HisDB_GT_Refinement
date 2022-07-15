@@ -7,6 +7,7 @@ from PIL import Image
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Dictionable, Scalable, Croppable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import TextRegion, ImageDimension
 
 
@@ -30,8 +31,11 @@ class VectorGT(GroundTruth, Dictionable, Scalable, Croppable):
                     elem.resize(current_dim=current_dim,target_dim=target_dim)
         self.img_dim = target_dim
 
-    def show(self):
-        img = Image.new("RGB", size=self.img_dim.to_tuple())
+    def show(self, base_img: Image = None):
+        if base_img is None:
+            img = Image.new("RGB", size=self.img_dim.to_tuple())
+        else:
+            img = base_img
         drawer = ImageDraw.Draw(img)
         for layout in self.regions:
             for region in layout.text_regions:
@@ -55,6 +59,11 @@ class VectorGT(GroundTruth, Dictionable, Scalable, Croppable):
             dict[type(region).__name__ + " " + str(i)] = region_dict
         global_dict["Vector Ground Truth"] = dict
         return global_dict
+
+    def layer(self, img):
+        for text_region in self.regions:
+            img = text_region.layer(img)
+        return img
 
     def __eq__(self, other):
         if not type(other) is type(self):
