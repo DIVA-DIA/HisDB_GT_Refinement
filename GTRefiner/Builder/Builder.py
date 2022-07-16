@@ -1,24 +1,22 @@
-import time
 from pathlib import Path
-from PIL import Image
 from abc import abstractmethod
 import logging
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Cropper import Cropper
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Grouper import Grouper
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Croppable, Scalable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page, ImageDimension
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Resizer import Resizer
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Colorer import Colorer
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import TextLineDecorator
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import TextLineDecoration
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable
 
 # TODO: Director soll verantwortung für ablauf und instanziierung der Buildingtools übernehmen.
 
 logging.getLogger().setLevel(logging.INFO)
 
-class GTBuilder(Croppable, Scalable, Layarable):
+class GTBuilder():
 
     # TODO: decorator @logging -> tutorial nachschauen.
     @abstractmethod
@@ -26,14 +24,14 @@ class GTBuilder(Croppable, Scalable, Layarable):
         logging.info("Reading the ground truth files...")
 
     @abstractmethod
-    def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
+    def crop(self, cropper: Cropper):
         logging.info("Cropping the ground truth...")
 
-    def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
+    def resize(self, resizer: Resizer):
         logging.info("Resizing the ground truth...")
 
     @abstractmethod
-    def decorate(self, decorator: TextLineDecoration):
+    def decorate(self, decorator: TextLineDecorator):
         logging.info("Decorating the vector objects...")
 
     @abstractmethod
@@ -41,16 +39,16 @@ class GTBuilder(Croppable, Scalable, Layarable):
         logging.info("(Re-)Grouping the vector objects...")
 
     @abstractmethod
-    def set_visible(self, vis_table: VisibilityTable):
+    def set_visible(self):
         logging.info("Setting the different different vector objects to visible according to the Visibility Table")
 
     @abstractmethod
-    def color(self, color_table: ColorTable):
+    def set_color(self):
         """ Set the color of both the vector_gt objects and the vector_gt."""
         logging.info("Setting the different color of each layout class in LayoutClasses")
 
     @abstractmethod
-    def layer(self):
+    def construct(self, layerer: Combiner):
         logging.info("Converting the VectorGT to layers in a new PixelLevelGT")
 
     @abstractmethod

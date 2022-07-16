@@ -1,13 +1,7 @@
 import logging
 import time
-from pathlib import Path
 
-from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.LazyLayerer import Layerer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import *
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import *
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
@@ -79,7 +73,7 @@ if __name__ == '__main__':
     vector_gt = VectorGT(regions=vector_gt_list, img_dim=img_dim)
 
     # create Layerer
-    lazy_layerer = Layerer(vector_gt).px_gt
+    lazy_layerer = Combiner(vector_gt).px_gt
 
     # create empty px_gt
     px_gt: PixelLevelGT = PixelLevelGT(img_dim=img_dim)

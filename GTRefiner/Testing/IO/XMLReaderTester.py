@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.LazyLayerer import Layerer
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
 from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader
 
 if __name__ == '__main__':
@@ -16,7 +16,7 @@ if __name__ == '__main__':
                 elem.set_is_filled(True)
 
     # create Layerer
-    layout_visitor = Layerer(vector_gt)
+    layout_visitor = Combiner(vector_gt)
 
     # visit the page_layout
     vector_gt.accept(layout_visitor)

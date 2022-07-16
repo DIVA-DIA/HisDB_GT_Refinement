@@ -12,6 +12,9 @@ class Page(Scalable, Croppable, Showable):
         self.raw_img: RawImage = raw_img
         self.vis_table: VisibilityTable = vis_table
         self.col_table: ColorTable = col_table
-        self.img_dim = vector_gt.img_dim
         assert self.vector_gt.img_dim == self.px_gt.img_dim
         assert self.px_gt.img_dim == self.raw_img.img_dim
+
+    def get_img_dim(self):
+        assert self.vector_gt.img_dim == self.px_gt.img_dim
+        return self.vector_gt.img_dim

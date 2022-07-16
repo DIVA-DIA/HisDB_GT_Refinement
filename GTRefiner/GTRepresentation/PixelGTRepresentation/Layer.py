@@ -10,7 +10,6 @@ from numpy import ma
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Drawable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon
 
 
 class Layer():
@@ -21,10 +20,10 @@ class Layer():
     def __init__(self, layer: np.ndarray = None, img_dim: ImageDimension = None, color=None):
         self.mode = "1"
         if color is None:
-            self.color = (255, 255, 255)
+            self._color = (255, 255, 255)
         else:
-            self.color = color
-        self.visible = True
+            self._color = color
+        self._visible = True
         if layer is None:
             if img_dim is None:
                 raise AttributeError("layer or img_dim must have a value")
@@ -40,14 +39,14 @@ class Layer():
     def unite(self, other: Layer) -> Layer:
         assert self.layer.shape == other.layer.shape
         is_empty = not np.any(other.layer)
-        return Layer(np.array(np.logical_or(self.layer, other.layer), copy=True), color=self.color)
+        return Layer(np.array(np.logical_or(self.layer, other.layer), copy=True), color=self._color)
 
     def intersect(self, other: Layer) -> Layer:
         """ XOR of each pixel of two layers.
         :param other: Other Layer.
         :returns A new Layer."""
         assert self.layer.shape == other.layer.shape
-        return Layer(np.array(np.logical_and(self.layer, other.layer), copy=True), color=self.color)
+        return Layer(np.array(np.logical_and(self.layer, other.layer), copy=True), color=self._color)
 
     def invert(self, other: Layer = None) -> Layer:
         if other is None:
@@ -62,9 +61,9 @@ class Layer():
         :return: Masked Image with (0,0,0) where layer is 0.
         """
         if color is None:
-            color = self.color
+            color = self._color
         assert img.mode == "RGB"
-        assert 3 == len(self.color)
+        assert 3 == len(self._color)
         width, height = img.size
         y_axis_len = len(self.layer)
         assert height == y_axis_len
@@ -93,9 +92,9 @@ class Layer():
         assert height == y_axis_len
         # img.show() # to debug
         img_as_np_array = np.asarray(img)
-        img_as_np_array[:, :, 0] = ma.where(self.layer > 0, self.color[0], img_as_np_array[:, :, 0])
-        img_as_np_array[:, :, 1] = ma.where(self.layer > 0, self.color[1], img_as_np_array[:, :, 1])
-        img_as_np_array[:, :, 2] = ma.where(self.layer > 0, self.color[2], img_as_np_array[:, :, 2])
+        img_as_np_array[:, :, 0] = ma.where(self.layer > 0, self._color[0], img_as_np_array[:, :, 0])
+        img_as_np_array[:, :, 1] = ma.where(self.layer > 0, self._color[1], img_as_np_array[:, :, 1])
+        img_as_np_array[:, :, 2] = ma.where(self.layer > 0, self._color[2], img_as_np_array[:, :, 2])
         new_img = Image.fromarray(img_as_np_array)
         # new_img.show() # to debug
         return new_img
@@ -108,7 +107,7 @@ class Layer():
         np_array = np.array(np.where(np.all(img_as_array == [0, 0, 0], axis=-1), 0, 1), copy=True).astype(dtype="bool")
         return Layer(np_array)
 
-    def intersect_this_layer_with_an_rgb_img(self,img: Image) -> Image:
+    def intersect_this_layer_with_an_rgb_img(self, img: Image) -> Image:
         img_as_np_array = np.asarray(img)
         img_as_np_array[:, :, 0] = ma.where(self.layer > 0, img_as_np_array[:, :, 0], 0)
         img_as_np_array[:, :, 1] = ma.where(self.layer > 0, img_as_np_array[:, :, 1], 0)
@@ -179,6 +178,12 @@ class Layer():
             return self.paint_layer_on_img(img)
         else:
             return Image.fromarray(obj=self.layer)
+
+    def set_color(self, color: Tuple):
+        self._color = color
+
+    def set_visible(self, is_visible: bool):
+        self._visible = is_visible
 
 
 if __name__ == '__main__':

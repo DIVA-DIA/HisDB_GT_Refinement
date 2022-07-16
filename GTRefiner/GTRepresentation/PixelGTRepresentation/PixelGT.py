@@ -11,7 +11,7 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTru
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
 
 sigma = 3
 truncate = 9
@@ -185,6 +185,18 @@ class PixelLevelGT(MyImage):
 
     def __getitem__(self, item):
         return self.levels[item]
+
+    def set_color(self, color_table: ColorTable):
+        """ Setter-method for the color.
+        """
+        for key, level in self.levels.items():
+            level.set_color(color_table.table[key])
+
+    def set_visible(self, vis_table: VisibilityTable):
+        """ Setter-method for the is_visible field.
+        """
+        for key, level in self.levels.items():
+            level.set_visible(vis_table.table[key])
 
 
 class RawImage(MyImage):

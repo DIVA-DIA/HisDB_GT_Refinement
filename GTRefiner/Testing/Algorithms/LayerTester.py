@@ -2,11 +2,9 @@
 from pathlib import Path
 from typing import List
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.LazyLayerer import Layerer
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import AscenderDescenderDecorator
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import PageLayout
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import BaseLine, MainTextLine, \
     DecorationElement, CommentTextLine, AscenderDescenderRegion
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import MainText, Decorations, \
@@ -72,7 +70,7 @@ def test_a_few_self_made_text_lines():
     vector_gt = VectorGT(regions=vector_gt_list, img_dim=img_dim)
 
     # create Layerer
-    lazy_layerer = Layerer(vector_gt)
+    lazy_layerer = Combiner(vector_gt)
 
     # visit the page_layout
     vector_gt.accept(lazy_layerer)
@@ -88,7 +86,7 @@ if __name__ == '__main__':
 
     AscenderDescenderDecorator.decorate(vector_gt, 5)
     # create Layerer
-    lazy_layerer = Layerer(vector_gt)
+    lazy_layerer = Combiner(vector_gt)
 
     # visit the page_layout
     vector_gt.accept(lazy_layerer)

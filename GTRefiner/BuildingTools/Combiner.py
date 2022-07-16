@@ -1,60 +1,45 @@
-import logging
-import time
-from typing import Tuple
-import warnings
-import numpy as np
+from abc import abstractmethod
+from typing import List
+
 from PIL import Image
 
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import Decorations, CommentText, \
+    MainText, Layout
 
-logging.getLogger().setLevel(logging.INFO)
 
-class Combiner:
+# Layerer successfully draws maintext, comments and decorations on the px_gt. However, it's difficult for the layerer to
+# get to decorators. Thus I will implement a layer method (like the draw) for every leaf of PageElements. This way I
+# won't have to care about traversing the the tree structure.
+
+
+class Combiner():
 
     @classmethod
-    def combine(cls, orig_px: PixelLevelGT, new_px_gt: PixelLevelGT) -> Image:
-        """ Overlays and colors the visible layers of the new pixel ground truth (generated from the vector ground
-        truth) with the original pixel level ground truth and return a single image.
-        """
-        # create new image to paint on
-        assert new_px_gt.img_dim == orig_px.img_dim
-        img_dim = orig_px.img_dim
-        output_img: Image = Image.new("RGB", img_dim.to_tuple())
-        # paint
-        for k, v in orig_px.levels.items():
-            if v.visible is True:
-                base_layer = Layer(img_dim=img_dim)
-                # handle the case of ascenders & descenders
-                if (k is LayoutClasses.ASCENDER):
-                    # get all textline classes
-                    target_classes = LayoutClasses.get_layout_classes_containing(LayoutClasses.MAINTEXT)
-                    target_classes.extend(LayoutClasses.get_layout_classes_containing(LayoutClasses.COMMENT))
-                    orig_comments_and_maintext = Layer(img_dim=img_dim)
-                    for l_class in target_classes:
-                        orig_comments_and_maintext = orig_comments_and_maintext.unite(orig_px[l_class])
-                        base_layer = base_layer.unite(new_px_gt[l_class])
-                    if np.any(base_layer.layer) == False:
-                        warnings.warn("Base Layer is empty after unite() Key = " + str(k))
-                    base_layer = base_layer.intersect(orig_comments_and_maintext)
-                    if np.any(base_layer.layer) == False:
-                        warnings.warn("Base Layer is empty after intersect() Key = " + str(k))
-                else:
-                    base_layer = base_layer.unite(new_px_gt[k])
-                    if np.any(base_layer.layer) == False:
-                        warnings.warn("Base Layer is empty after unite() Key = " + str(k))
-                    base_layer = base_layer.intersect(v)
-                    if np.any(base_layer.layer) == False:
-                        warnings.warn("Base Layer is empty after intersect() Key = " + str(k))
-                # merge the two layers.
-                output_img: Image = base_layer.paint_layer_on_img(output_img, color=v.color)
-            output_img.show()
-        return output_img
+    def construct(cls, page: Page):
+        _layered_img = cls._layer(page)
+        _combined_img = cls._combine(page, _layered_img)
 
+    @classmethod
+    def _layer(cls, page: Page) -> Image:
+        img: Image = Image.new("RGB", size=page.vector_gt.get_dim().to_tuple())
+        return page.vector_gt.layer(img)
 
+    @classmethod
+    def _combine(cls, page: Page, layered_img: Image) -> Image:
+        bin_mask_from_layered_img: Layer = Layer.bin_layer_from_rgb(layered_img)
+        intersected_mask: Layer = bin_mask_from_layered_img.intersect(
+            page.px_gt.merged_levels(all_vis=True))
+        # debugging
+        intersected_mask.show()
+        layered_img.show()
 
-
-
-
+        final: Image = intersected_mask.intersect_this_layer_with_an_rgb_img(layered_img)
+        final.show()
+        page.px_gt.img = final

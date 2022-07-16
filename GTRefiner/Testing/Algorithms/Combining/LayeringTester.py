@@ -127,7 +127,7 @@ def test_real_gt():
 
     builder.set_visible()
 
-    builder.layer()
+    builder.construct()
 
     # page: Page = builder.get_GT()
 

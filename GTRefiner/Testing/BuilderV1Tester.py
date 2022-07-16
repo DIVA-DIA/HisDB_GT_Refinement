@@ -1,9 +1,13 @@
 import logging
 import time
-from pathlib import Path
 
+from pathlib import Path
+from datetime import datetime
 from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Cropper import Cropper
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Resizer import Resizer
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import AscenderDescenderDecorator
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
@@ -12,46 +16,50 @@ from HisDB_GT_Refinement.GTRefiner.IO.Reader import ColorTableReader
 
 if __name__ == '__main__':
     start = time.time()
-
+    now = datetime.now().strftime("%H_%M_%S")
 
     original = Path("../../CB55/img/public-test/e-codices_fmb-cb-0055_0105r_max.jpg")
     pixel = Path("../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0105r_max.png")
     vector_gt = Path("../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0105r_max.xml")
     color_table = Path("../Resources/color_table.json")
-
-    builder = BuilderV1(orig_img=original,px_gt_path=pixel, vector_gt_path=vector_gt)
-
-    target_dim: ImageDimension = ImageDimension(4500, 6000)
-    builder.crop(target_dim)
-
-    # TODO: Frage an Lars. Was ist praktisch als client. Wie viel responsibilities soll er kriegen. Soll der Client vor
-    #  allem den Director oder auch den Builder selber schreiben...
-
+    visibility_table = Path("../Resources/visibility_table.json")
+    out_put_directory = Path("../Resources/NewGTs/")
+    out_put_name: str = f"HisDB-GT-from-{now}"
+    crop_dim: ImageDimension = ImageDimension(4500, 6000)
     target_dim: ImageDimension = ImageDimension(1800, 2400)
 
-    builder.resize(target_dim=target_dim)
+    # build GT
+    builder = BuilderV1(orig_img=original, px_gt_path=pixel, vector_gt_path=vector_gt, col_table=color_table, vis_table=visibility_table)
 
-    builder.decorate()
+    cropper = Cropper(target_dim=crop_dim)
+    builder.crop(cropper)
+    builder.page.vector_gt.show(builder.page.px_gt.merged_levels(all_vis=True).img_from_layer(rgb=True))
 
-    color_table_instance = ColorTableReader().read(color_table)
-    builder.color(color_table=color_table_instance)
+    resizer = Resizer(target_dim=target_dim)
+    builder.resize(resizer)
+    builder.page.vector_gt.show(builder.page.px_gt.merged_levels(all_vis=True).img_from_layer(rgb=True))
 
+
+    decorator= AscenderDescenderDecorator(x_height=12)
+    builder.decorate(decorator=decorator)
+
+    builder.set_color()
     builder.set_visible()
 
-    new_px_gt: PixelLevelGT = builder.layer()
-
     combiner = Combiner()
-    builder.combine_px_gts(combiner)
+    builder.construct(combiner=combiner)
 
     page: Page = builder.get_GT()
 
-    #page.px_gt.show()
+    # page.px_gt.show()
     page.raw_img.show()
+    page.px_gt.show()
+    page.vector_gt.show()
 
-
-    builder.write(output_path = Path("../Resources/ResizedGT/"))
-
+    builder.write(output_path=Path(str(out_put_directory) + out_put_name))
 
     logging.info("program ended")
     end = time.time()
     logging.info("time passed: " + str(end - start))
+
+

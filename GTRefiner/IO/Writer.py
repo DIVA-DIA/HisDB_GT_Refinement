@@ -59,3 +59,9 @@ class RawImageWriter(ImageWriter):
     def write(cls, ground_truth: RawImage, path: Path):
         path = Path(str(path) + ".gif")
         ground_truth.img.save(fp=path)
+
+class GIFWriter(ImageWriter):
+
+    @classmethod
+    def write(cls, ground_truth: Image, path: Path):
+        Image.save(ground_truth, fp=str(path) + ".gif")
