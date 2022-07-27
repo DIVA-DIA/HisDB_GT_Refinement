@@ -4,7 +4,6 @@ import numpy as np
 from PIL import ImageDraw, ImageChops
 from PIL import Image
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Dictionable, Scalable, Croppable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
@@ -16,10 +15,6 @@ class VectorGT(GroundTruth, Dictionable, Scalable, Croppable):
     def __init__(self, regions: List[TextRegion], img_dim: ImageDimension):
         super().__init__(img_dim)
         self.regions: List[TextRegion] = regions
-
-    def accept(self, layout_visitor: LayoutVisitor):
-        for region in self.regions:
-            region.accept_layout_visitor(layout_visitor)
 
     def get_dim(self):
         return super().get_dim()

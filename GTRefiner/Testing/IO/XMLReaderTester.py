@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Combiner import Combiner
 from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader
 
 if __name__ == '__main__':

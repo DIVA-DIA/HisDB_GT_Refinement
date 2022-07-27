@@ -56,6 +56,9 @@ class XMLReader(GTReader):
         main_text = PageLayout.MainText()
         comments = PageLayout.CommentText()
         decorations = PageLayout.Decorations()
+        mt_count = 0
+        com_count = 0
+        dec_count = 0
         # initialize dictionary
         text_elements: Dict = {}
         # parse out the polygons
@@ -74,11 +77,13 @@ class XMLReader(GTReader):
                 if text_line.attrib.get("id").startswith("textline"):
                     main_text.add_elem(
                         PageLayout.MainTextLine(Polygon(xy=cls._str_to_polygon(polygon_text)),
-                                                base_line=baseline))
+                                                base_line=baseline, id = mt_count))
+                    mt_count = mt_count + 1
                 elif text_line.attrib.get("id").startswith("comment"):
                     comments.add_elem(
                         PageLayout.CommentTextLine(Polygon(xy=cls._str_to_polygon(polygon_text)),
-                                                   base_line=baseline))
+                                                   base_line=baseline, id=com_count))
+                    com_count = com_count + 1
             # # must be in outer loop due to file structure
             # polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
             # if "TextRegion" in str(text_region.tag):
@@ -90,7 +95,8 @@ class XMLReader(GTReader):
             if "GraphicRegion" in str(text_region.tag):
                 polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
                 decorations.add_elem(
-                    PageLayout.DecorationElement(Polygon(xy=cls._str_to_polygon(polygon_text))))
+                    PageLayout.DecorationElement(Polygon(xy=cls._str_to_polygon(polygon_text)), id=dec_count))
+                dec_count = dec_count + 1
         return VectorGT([TextRegion(main_text), TextRegion(comments), TextRegion(decorations)], img_dim=img_dimension)
 
     @classmethod
@@ -108,6 +114,9 @@ class JSONReader(GTReader):
         decorations = PageLayout.Decorations()
         img_dim: ImageDimension = ImageDimension(vector_gt["ImageDimension"][0], vector_gt["ImageDimension"][1])
         page = vector_gt["Vector Ground Truth"]
+        mt_count = 0
+        com_count = 0
+        dec_count = 0
         for k1, text_region in page.items():
             for k2, text_layout in text_region.items():
                 for key, page_element in text_layout.items():
@@ -147,11 +156,15 @@ class JSONReader(GTReader):
                                 f"Current vector object: {base_line.polygon.xy}"
                             )
                         if layout_class is LayoutClasses.MAINTEXT:
-                            main_text.add_elem(PageLayout.MainTextLine(polygon=polygon, base_line=base_line))
+                            main_text.add_elem(PageLayout.MainTextLine(polygon=polygon, base_line=base_line, id=mt_count))
+                            mt_count = mt_count + 1
                         if layout_class is LayoutClasses.COMMENT:
-                            comments.add_elem(PageLayout.CommentTextLine(polygon=polygon, base_line=base_line))
+                            comments.add_elem(PageLayout.CommentTextLine(polygon=polygon, base_line=base_line, id=com_count))
+                            com_count = com_count + 1
                     if layout_class is LayoutClasses.DECORATION:
-                        decorations.add_elem(PageLayout.DecorationElement(polygon=polygon))
+                        decorations.add_elem(PageLayout.DecorationElement(polygon=polygon, id=dec_count))
+                        dec_count = dec_count + 1
+
         return VectorGT([TextRegion(main_text), TextRegion(comments), TextRegion(decorations)], img_dim=img_dim)
 
     @classmethod
@@ -222,5 +235,5 @@ class ColorTableReader(TableReader):
     @classmethod
     def read(cls, path: Path) -> ColorTable:
         data = json.load(open(path))
-        data = {LayoutClasses.str_to_enum(k): tuple(v) for (k, v) in data.items()}
+        data = {LayoutClasses.str_to_enum(k): list(tuple(v) for v in v) for (k, v) in data.items()}
         return ColorTable(data)

@@ -9,6 +9,7 @@ class LayoutClasses(Enum):
     Represents the different levels of the pixel level ground truth. Essential to the program. Must changed if further
     classes should to be added.
     """
+    # Base Classes
     BACKGROUND = 1
     COMMENT = 2
     DECORATION = 4
@@ -17,6 +18,9 @@ class LayoutClasses(Enum):
     COMMENT_AND_MAINTEXT = 10
     MAINTEXT_AND_DECORATION = 12
     MAINTEXT_AND_DECORATION_AND_COMMENT = 14
+    TEXT_REGION = 255
+
+    # Decoration Classes
     ASCENDER = 16
     XREGION = 18
     DESCENDER = 20
@@ -24,7 +28,6 @@ class LayoutClasses(Enum):
     TOPLINE = 24
     HEAD = 26
     TAIL = 28
-    TEXT_REGION = 255
 
     def __str__(self):
         """ Prettier layout than the default __str__ of Enum implementation provides."""

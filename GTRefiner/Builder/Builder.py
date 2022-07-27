@@ -2,15 +2,14 @@ from pathlib import Path
 from abc import abstractmethod
 import logging
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Cropper import Cropper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Grouper import Grouper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Resizer import Resizer
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Cropper import Cropper
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Grouper import Grouper
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Resizer import Resizer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Colorer import Colorer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Combiner import Combiner
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import TextLineDecorator
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable
 
 # TODO: Director soll verantwortung für ablauf und instanziierung der Buildingtools übernehmen.
 
@@ -43,12 +42,12 @@ class GTBuilder():
         logging.info("Setting the different different vector objects to visible according to the Visibility Table")
 
     @abstractmethod
-    def set_color(self):
+    def set_color(self, colorer: Colorer = Colorer()):
         """ Set the color of both the vector_gt objects and the vector_gt."""
         logging.info("Setting the different color of each layout class in LayoutClasses")
 
     @abstractmethod
-    def construct(self, layerer: Combiner):
+    def combine(self, layerer: Combiner):
         logging.info("Converting the VectorGT to layers in a new PixelLevelGT")
 
     @abstractmethod

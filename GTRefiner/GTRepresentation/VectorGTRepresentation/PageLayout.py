@@ -129,6 +129,12 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
             i = i+1
         return dict
 
+    def __getitem__(self, item):
+        return self.page_elements[item]
+
+    def __setitem__(self, key, value):
+        self.page_elements[key] = value
+
 
 class MainText(Layout):
     @abstractmethod

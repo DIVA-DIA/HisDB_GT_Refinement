@@ -1,7 +1,7 @@
 import logging
 import time
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Combiner import Combiner
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import *
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import *
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT

@@ -16,7 +16,7 @@ if __name__ == '__main__':
     vector_gt_path = Path("../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0105r_max.xml")
     vector_gt_orig: VectorGT = XMLReader.read(path=vector_gt_path)
 
-    AscenderDescenderDecorator().decorate(vector_gt_orig, 42)
+    AscenderDescenderDecorator().visit_page(vector_gt_orig, 42)
 
     out_put_fp = Path(
         "../../Resources/IO_JSON/version_with__name__in_build()_with_ascenders_descenders_with_textregion_names")

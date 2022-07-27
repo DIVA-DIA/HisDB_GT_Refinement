@@ -5,7 +5,7 @@ import warnings
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import VectorGTVisitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import Decorations, CommentText, \
@@ -16,7 +16,7 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageL
 # won't have to care about traversing the the tree structure.
 
 
-class VisitorLayerer(LayoutVisitor):
+class VisitorLayerer(VectorGTVisitor):
 
     def __init__(self, vector_gt: VectorGT):
         warnings.warn("Layerer doesn't draw children, only maintext, comments, and decorations. :/")

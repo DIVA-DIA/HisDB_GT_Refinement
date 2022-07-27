@@ -5,7 +5,8 @@ from typing import List
 import numpy as np
 import warnings
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import VectorGT, PageLayout
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
@@ -13,28 +14,19 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageL
     MainText, Layout, TextRegion
 
 
-class Grouper(LayoutVisitor):
+class Grouper(Visitor):
 
     @abstractmethod
-    def __init__(self, vector_gt: VectorGT):
-        self.vector_gt = vector_gt
-
-    @abstractmethod
-    def visitMainText(self, main_text: MainText):
-        pass
-
-    @abstractmethod
-    def visitCommentText(self, comment_text: CommentText):
-        pass
-
-    @abstractmethod
-    def visitDecorations(self, decorations: Decorations):
+    def visit_page(self, page: Page):
         pass
 
 
 class BlockGrouper(Grouper):
     """ Groups the elements of the :class: `Layout` given into different blocks depending on their minimal x-coordinate.
     Takes use of the np.histogram to group into different bins."""
+
+    def visit_page(self, page: Page):
+        pass
 
     # TODO: Write more generically and test it.
     def get_unsorted_layout(self, text: TextRegion) -> Layout:
@@ -79,7 +71,11 @@ class BlockGrouper(Grouper):
 
         polygons_per_category['comments'] = sorted_array
 
-class ThreshholdGrouper(Grouper):
+
+class ThresholdGrouper(Grouper):
+
+    def visit_page(self, page: Page):
+        pass
 
     def _group(self, y_threshold: int, x_threshold: int) -> None:
         self._sort_comment_blocks_by_x()

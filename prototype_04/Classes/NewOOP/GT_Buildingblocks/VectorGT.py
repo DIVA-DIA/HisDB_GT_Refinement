@@ -107,14 +107,14 @@ class VectorGT(Scalable):
     def resize(self, scale_factor: Tuple[float,float]):
         for key in self.text_elements:
             for elem in self.text_elements[key]:
-                elem.resize(scale_factor=scale_factor)
+                elem.visit_page(scale_factor=scale_factor)
         self.img_dimension = self.img_dimension.scale(scale_factor)
 
 
     def crop(self, target_dim: ImageDimension, cut_left: bool):
         for key in self.text_elements:
             for elem in self.text_elements[key]:
-                elem.crop(source_dim=self.img_dimension,target_dim=target_dim,cut_left=cut_left)
+                elem.visit_page(source_dim=self.img_dimension, target_dim=target_dim, cut_left=cut_left)
         self.img_dimension = target_dim
 
 

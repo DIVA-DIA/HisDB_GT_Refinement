@@ -108,7 +108,7 @@ def test_real_gt():
     original_2 = Path("../../../../CB55/img/public-test/e-codices_fmb-cb-0055_0108v_max.jpg")
     pixel_2 = Path("../../../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0108v_max.png")
     vector_gt_2 = Path("../../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0108v_max.xml")
-    color_table = Path("../../../Resources/color_table.json")
+    color_table = Path("../../../Resources/ColorTables/color_table.json")
 
     builder = BuilderV1(orig_img=original_2, px_gt_path=pixel_2, vector_gt_path=vector_gt_2, col_table=color_table,
                         vis_table=None)
@@ -127,7 +127,7 @@ def test_real_gt():
 
     builder.set_visible()
 
-    builder.construct()
+    builder.combine()
 
     # page: Page = builder.get_GT()
 

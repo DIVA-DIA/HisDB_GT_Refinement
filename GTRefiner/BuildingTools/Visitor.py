@@ -1,17 +1,10 @@
 from abc import abstractmethod
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import MainText, CommentText, Decorations
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 
 
-class LayoutVisitor:
-    @abstractmethod
-    def visitMainText(self, main_text: MainText):
-        pass
+class Visitor:
 
     @abstractmethod
-    def visitCommentText(self, comment_text: CommentText):
-        pass
-
-    @abstractmethod
-    def visitDecorations(self, decorations: Decorations):
+    def visit_page(self, page: Page):
         pass

@@ -1,12 +1,13 @@
 from pathlib import Path
 
 from HisDB_GT_Refinement.GTRefiner.Builder.Builder import GTBuilder
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Cropper import Cropper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Grouper import Grouper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Resizer import Resizer
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Cropper import Cropper
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Grouper import Grouper
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Resizer import Resizer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Colorer import Colorer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Combiner import Combiner
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import TextLineDecorator
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.VisibilityVisitor import VisibilityVisitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT, RawImage
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
@@ -15,7 +16,7 @@ from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader, PxGTReader, Image
     ColorTableReader
 
 # TODO: Execute() in Director and make everything accept "Page".
-from HisDB_GT_Refinement.GTRefiner.IO.Writer import JSONWriter, RawImageWriter, GIFWriter
+from HisDB_GT_Refinement.GTRefiner.IO.Writer import JSONWriter, GIFWriter
 
 
 class BuilderV1(GTBuilder):
@@ -36,41 +37,33 @@ class BuilderV1(GTBuilder):
 
     def crop(self, cropper: Cropper):
         super().crop(cropper)
-        cropper.crop(page=self.page)
+        cropper.visit_page(page=self.page)
         # self.page.px_gt.show()
 
     def resize(self, resizer: Resizer):
         super().resize(resizer)
-        resizer.resize(page=self.page)
+        resizer.visit_page(page=self.page)
         # self.page.px_gt.show()
 
     def decorate(self, decorator: TextLineDecorator):
         super().decorate(decorator)
-        decorator.decorate(self.page)
+        decorator.visit_page(self.page)
 
     def group(self, grouper: Grouper):
         super().group(grouper)
-        pass
+        grouper.visit_page(self.page)
 
-    def set_visible(self):
+    def set_visible(self, visibilitor: VisibilityVisitor = VisibilityVisitor()):
         super().set_visible()
-        for region in self.page.vector_gt.regions:
-            for layout in region.text_regions:
-                for elem in layout.page_elements:
-                    elem.set_visible(vis_table=self.page.vis_table)
-        self.page.px_gt.set_visible(vis_table=self.page.vis_table)
+        visibilitor.visit_page(page=self.page)
 
-    def set_color(self):
+    def set_color(self, colorer: Colorer = Colorer()):
         super().set_color()
-        for region in self.page.vector_gt.regions:
-            for layout in region.text_regions:
-                for elem in layout.page_elements:
-                    elem.set_color(color_table=self.page.col_table)
-        self.page.px_gt.set_color(color_table=self.page.col_table)
+        colorer.visit_page(page=self.page)
 
-    def construct(self, combiner: Combiner):
-        super().construct(combiner)
-        combiner.construct(self.page)
+    def combine(self, combiner: Combiner):
+        super().combine(combiner)
+        combiner.visit_page(self.page)
 
     def write(self, output_path):
         super().write(output_path)

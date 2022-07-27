@@ -2,7 +2,7 @@
 from pathlib import Path
 from typing import List
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Combiner import Combiner
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import AscenderDescenderDecorator
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import BaseLine, MainTextLine, \
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     vector_gt: VectorGT = XMLReader.read(path=vector_gt_path)
     #vector_gt.show()
 
-    AscenderDescenderDecorator.decorate(vector_gt, 5)
+    AscenderDescenderDecorator.visit_page(vector_gt, 5)
     # create Layerer
     lazy_layerer = Combiner(vector_gt)
 

@@ -4,15 +4,17 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutC
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import TextLine, \
     AscenderDescenderRegion
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import Decorations, CommentText, \
+    MainText
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
 
 
-class TextLineDecorator(LayoutVisitor):
+class TextLineDecorator(Visitor):
 
     @classmethod
     @abstractmethod
-    def decorate(cls, page: Page):
+    def visit_page(self, page: Page):
         pass
 
 
@@ -21,7 +23,7 @@ class AscenderDescenderDecorator(TextLineDecorator):
     def __init__(self, x_height: int):
         self.x_height = x_height
 
-    def decorate(self, page: Page):
+    def visit_page(self, page: Page):
         if self.x_height is None:
             raise ValueError("provide x_height")
         for layout in page.vector_gt.regions:
@@ -29,6 +31,21 @@ class AscenderDescenderDecorator(TextLineDecorator):
                 for i, elem in enumerate(region.page_elements):
                     if isinstance(elem, TextLine):
                         region.page_elements[i] = AscenderDescenderRegion(text_line=elem, x_height=self.x_height)
+    #
+    # def visitMainText(self, main_text: MainText):
+    #     if self.x_height is None:
+    #         raise ValueError("provide x_height")
+    #     for i, elem in enumerate(main_text.page_elements):
+    #         main_text[i] = AscenderDescenderRegion(text_line=elem, x_height=self.x_height)
+    #
+    # def visitCommentText(self, comment_text: CommentText):
+    #     if self.x_height is None:
+    #         raise ValueError("provide x_height")
+    #     for i, elem in enumerate(comment_text.page_elements):
+    #         comment_text[i] = AscenderDescenderRegion(text_line=elem, x_height=self.x_height)
+    #
+    # def visitDecorations(self, decorations: Decorations):
+    #     pass
 
 
 class HeadAndTailDecorator(TextLineDecorator):

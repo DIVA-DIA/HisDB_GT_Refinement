@@ -82,7 +82,7 @@ def read_pixel_level_gt(image_path: Path):
 
 def crop_image(img: Image):
     crop_area = (1500, 1500, 2000, 2000)
-    cropped_img = img.crop(,
+    cropped_img = img.visit_page(,
     cropped_img.show()
     cropped_img.save("Input/pixel_level_small.png")
 

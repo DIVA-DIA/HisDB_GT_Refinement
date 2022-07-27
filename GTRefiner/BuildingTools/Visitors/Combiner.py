@@ -7,7 +7,7 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import LayoutVisitor
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import Decorations, CommentText, \
@@ -19,10 +19,10 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageL
 # won't have to care about traversing the the tree structure.
 
 
-class Combiner():
+class Combiner(Visitor):
 
     @classmethod
-    def construct(cls, page: Page):
+    def visit_page(cls, page: Page):
         _layered_img = cls._layer(page)
         _combined_img = cls._combine(page, _layered_img)
 

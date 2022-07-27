@@ -11,7 +11,7 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line, \
     Quadrilateral, Rectangle
 
@@ -25,18 +25,19 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
     :type polygon: Polygon
     :param color: What color to use when drawn.
     :type color: Tuple
-    :param is_filled: Whether or not the polygon should be filled. Deprecated for decorated page elements.
-    :type is_filled: bool
+    :param id: To identify the text_line. Helpful for coloring, sorting, etc. Not mandatory, default value is -1.
+    :type id: int
     :param is_visible: Whether or not is should be recognized as visible to the :class: `Writer`.
     :type is_visible: bool
     """
 
     @abstractmethod
-    def __init__(self, polygon: Polygon, color: Tuple = (255, 255, 255), is_visible: bool = False):
+    def __init__(self, polygon: Polygon, color: Tuple = (255, 255, 255), is_visible: bool = False, id: int = 0):
         self.polygon: Polygon = polygon
         self.layout_class: LayoutClasses = LayoutClasses.BACKGROUND
-        self.color: Tuple = color
-        self.is_visible: bool = is_visible
+        self._id: int = id
+        self._color: Tuple = color
+        self._is_visible: bool = is_visible
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         self.polygon.resize(current_dim=current_dim, target_dim=target_dim)
@@ -45,7 +46,7 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
         """ Draw the page element polygon with the instance color if no other coller is given. Fill it, if and only if
         the set_filled parameter is true."""
         if color is None:
-            col = self.color
+            col = self._color
         else:
             col = color
         self.polygon.draw(drawer=drawer, color=col)
@@ -53,20 +54,31 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         self.polygon.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
 
-    def layer(self, px_gt: PixelLevelGT):
-        target_layers = self._get_target_layers(px_gt)
-        self._draw_on_target_layers(target_layers=target_layers)
+    def layer(self, img: Image, layers: List[Layer] = None) -> List[Layer]:
+        img_dim: ImageDimension = ImageDimension(img.size[0], img.size[1])
+        if not self._is_visible:
+            return layers
+        layer = Layer(img_dim=img_dim, color=self._color)
+        layer.draw(self)
+        if layers is None:
+            layers = []
+        layers.append(layer)
+        return layers
 
-    def _get_target_layers(self, px_gt: PixelLevelGT) -> List[Layer]:
-        target_classes: List[LayoutClasses] = LayoutClasses.get_layout_classes_containing(self.layout_class)
-        target_layers: List[Layer] = []
-        for target_class in target_classes:
-            target_layers.append(px_gt.get_layer(target_class))
-        return target_layers
-
-    def _draw_on_target_layers(self, target_layers: List[Layer]):
-        for layer in target_layers:
-            layer.draw(self)
+    # def layer(self, px_gt: PixelLevelGT):
+    # target_layers = self._get_target_layers(px_gt)
+    # self._draw_on_target_layers(target_layers=target_layers)
+    #
+    # def _get_target_layers(self, px_gt: PixelLevelGT) -> List[Layer]:
+    #     target_classes: List[LayoutClasses] = LayoutClasses.get_layout_classes_containing(self.layout_class)
+    #     target_layers: List[Layer] = []
+    #     for target_class in target_classes:
+    #         target_layers.append(px_gt.get_layer(target_class))
+    #     return target_layers
+    #
+    # def _draw_on_target_layers(self, target_layers: List[Layer]):
+    #     for layer in target_layers:
+    #         layer.draw(self)
 
     def build(self) -> Dict:
         """ Helper function to build the json file. """
@@ -96,23 +108,36 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
         if (color is not None) and (color_table is not None):
             raise AttributeError("Either give color or color_table, not both")
         if color is not None:
-            self.color = color
+            self._color = color
         if color_table is not None:
-            self.color = color_table.table[self.layout_class]
+            colors: List[tuple] = color_table.table[self.layout_class]
+            self._color = colors[self._id % len(colors)]
 
-    def set_is_filled(self, is_filled: bool):
-        """ Setter-method for the is_filled field.
-        :param is_filled: Whether or not the polygon should be filled. Deprecated for decorated page elements.
-        :type is_filled: bool
-        """
-        self.is_filled = is_filled
+    def get_color(self):
+        return self._color
 
-    def set_is_visible(self, is_visible: bool):
+    def get_id(self):
+        return self._id
+
+    def set_visible(self, is_visible: bool = None, vis_table: VisibilityTable = None):
         """ Setter-method for the is_visible field.
-        :param is_visible: Wether or not is should be recognized as visible to the :class: `Writer`.
+        :param is_visible: Whether or not is should be recognized as visible
         :type is_visible: bool
         """
-        self.is_visible = is_visible
+        if (is_visible is None) and (vis_table is None):
+            raise AttributeError("Either give color or color_table, not None")
+        if (is_visible is not None) and (vis_table is not None):
+            raise AttributeError("Either give color or color_table, not both")
+        if is_visible is not None:
+            self._is_visible = is_visible
+        if vis_table is not None:
+            self._is_visible = vis_table.table[self.layout_class]
+
+    def is_visible(self) -> bool:
+        """ Getter-method for the is_visible field.
+        :return: Whether or not is should be recognized as visible
+        """
+        return self._is_visible
 
 
 class DecorationElement(PageElement):
@@ -120,52 +145,63 @@ class DecorationElement(PageElement):
     :class: `PageElement`.
     """
 
-    def __init__(self, polygon: Polygon):
-        super().__init__(polygon)
+    def __init__(self, polygon: Polygon, id: int = 0):
+        super().__init__(polygon, id=id)
         self.layout_class = LayoutClasses.DECORATION
 
 
 class TextLineElements(PageElement):
 
     @abstractmethod
-    def __init__(self, polygon: Polygon):
-        super().__init__(polygon)
+    def __init__(self, polygon: Polygon, id: int = 0):
+        super().__init__(polygon, id=id)
 
 
 class BaseLine(TextLineElements):
 
-    def __init__(self, base_line: Line):
-        super().__init__(base_line)
+    def __init__(self, base_line: Line, id: int = 0):
+        super().__init__(base_line, id=id)
         self.layout_class = LayoutClasses.BASELINE
+
+    def set_visible(self, is_visible: bool = None, vis_table: VisibilityTable = None):
+        if is_visible is True:
+            warnings.warn(f"It's not recommended to set this object {type(self).__name__} visible.")
+        super().set_visible(is_visible=is_visible, vis_table=vis_table)
 
 
 class TopLine(TextLineElements):
 
-    def __init__(self, base_line: BaseLine, x_height: int):
+    def __init__(self, base_line: BaseLine, x_height: int, id: int = 0):
         line = Line([tuple((x, y - x_height)) for x, y in base_line.polygon.xy])
-        super().__init__(line)
+        super().__init__(line, id=id)
         self.layout_class = LayoutClasses.TOPLINE
+
+    def set_visible(self, is_visible: bool = None, vis_table: VisibilityTable = None):
+        if is_visible is True:
+            warnings.warn(f"It's not recommended to set this object {type(self).__name__} visible.")
+        super().set_visible(is_visible=is_visible, vis_table=vis_table)
 
 
 class XRegion(TextLineElements):
 
-    def __init__(self, base_line: BaseLine, top_line: TopLine):
+    def __init__(self, base_line: BaseLine, top_line: TopLine, id: int = 0):
         # sorted_baseline = [base_line.polygon.xy[1], base_line.polygon.xy[0]]
         # top_line =
-        concatenated = top_line.polygon.xy + base_line.polygon.xy
+        concatenated = [top_line.polygon.xy[0], top_line.polygon.xy[1], base_line.polygon.xy[1],
+                        base_line.polygon.xy[0]]
         quadrilateral = Quadrilateral(concatenated)
-        super().__init__(quadrilateral)
+        super().__init__(quadrilateral, id=id)
         self.layout_class = LayoutClasses.XREGION
 
-    def layer(self, px_gt: PixelLevelGT):
+    def layer(self, img: Image, layers: List[Layer] = None) -> List[Layer]:
         if not self.polygon.is_sorted():
-            raise AttributeError("Must be sorted.")
-        super().layer(px_gt)
+            raise AttributeError("Quadrilateral must be sorted. Something went wrong.")
+        return super().layer(img=img, layers=layers)
 
 
 class AscenderRegion(TextLineElements):
 
-    def __init__(self, polygon: Polygon, top_line: TopLine):
+    def __init__(self, polygon: Polygon, top_line: TopLine, id: int = 0):
         min_x = polygon.get_min_x()
         min_y = polygon.get_min_y()
         max_x = polygon.get_max_x()
@@ -174,14 +210,14 @@ class AscenderRegion(TextLineElements):
                                      top_line.polygon.get_max_x_coord(),  # right bottom corner
                                      top_line.polygon.get_min_x_coord()  # left bottom corner
                                      ])
-        super().__init__(self.region)
+        super().__init__(self.region, id=id)
         self.layout_class = LayoutClasses.ASCENDER
         # TODO: check if get_max_x_coord is called.
 
 
 class DescenderRegion(TextLineElements):
 
-    def __init__(self, polygon: Polygon, base_line: BaseLine):
+    def __init__(self, polygon: Polygon, base_line: BaseLine, id: int = 0):
         min_x = polygon.get_min_x()
         max_x = polygon.get_max_x()
         max_y = polygon.get_max_y()
@@ -190,14 +226,14 @@ class DescenderRegion(TextLineElements):
                                 (max_x, max_y),  # right bottom corner
                                 (min_x, max_y)  # left bottom corner
                                 ])
-        super().__init__(region)
+        super().__init__(region, id=id)
         self.layout_class = LayoutClasses.DESCENDER
 
 
 class TextRegionElement(TextLineElements):
 
-    def __init__(self, bounding_box: Rectangle):
-        super().__init__(bounding_box)
+    def __init__(self, bounding_box: Rectangle, id: int = 0):
+        super().__init__(bounding_box, id=id)
         self.layout_class = LayoutClasses.TEXT_REGION
 
     def set_is_filled(self, is_filled: bool):
@@ -215,8 +251,8 @@ class TextLine(PageElement):
 
     @abstractmethod
     def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255),
-                 is_visible: bool = True):
-        super().__init__(polygon, color=color, is_visible=is_visible)
+                 is_visible: bool = True, id: int = 0):
+        super().__init__(polygon, color=color, is_visible=is_visible, id=id)
         self.base_line: BaseLine = base_line
 
     def draw(self, drawer: ImageDraw, color: Tuple = None):
@@ -231,9 +267,9 @@ class TextLine(PageElement):
         super().crop(current_dim, target_dim, cut_left)
         self.base_line.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
 
-    def layer(self, px_gt: PixelLevelGT):
-        super().layer(px_gt)
-        self.base_line.layer(px_gt)
+    def layer(self, img: Image, layers: List[Layer] = None) -> List[Layer]:
+        layers: List[Layer] = super().layer(img=img, layers=layers)
+        return self.base_line.layer(img=img, layers=layers)
 
     def build(self) -> Dict:
         data: Dict = super().build()
@@ -244,13 +280,8 @@ class TextLine(PageElement):
         super().set_color(color, color_table)
         self.base_line.set_color(color=color, color_table=color_table)
 
-    def set_is_filled(self, is_filled: bool):
-        super().set_is_filled(is_filled)
-        self.base_line.set_is_filled(is_filled=is_filled)
-
-    def set_is_visible(self, is_visible: bool):
-        super().set_is_visible(is_visible)
-        self.base_line.set_is_visible(is_visible=is_visible)
+    def set_visible(self, is_visible: bool = None, vis_table: VisibilityTable = None):
+        super().set_visible(is_visible=is_visible, vis_table=vis_table)
 
 
 class MainTextLine(TextLine):
@@ -259,8 +290,8 @@ class MainTextLine(TextLine):
     """
 
     def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255), is_filled: bool = False,
-                 is_visible: bool = True):
-        super().__init__(polygon, base_line, color=color, is_visible=is_visible)
+                 is_visible: bool = True, id: int = 0):
+        super().__init__(polygon, base_line, color=color, is_visible=is_visible, id=id)
         self.layout_class = LayoutClasses.MAINTEXT
 
 
@@ -270,8 +301,8 @@ class CommentTextLine(TextLine):
     """
 
     def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255), is_filled: bool = False,
-                 is_visible: bool = True):
-        super().__init__(polygon, base_line, color=color, is_visible=is_visible)
+                 is_visible: bool = True, id: int = 0):
+        super().__init__(polygon, base_line, color=color, is_visible=is_visible, id=id)
         self.layout_class = LayoutClasses.COMMENT
 
 
@@ -281,8 +312,8 @@ class TextLineDecoration(TextLine):
 
     @abstractmethod
     def __init__(self, text_line: TextLine):
-        super().__init__(text_line.polygon, text_line.base_line, color=text_line.color,
-                         is_visible=text_line.is_visible)
+        super().__init__(text_line.polygon, text_line.base_line, color=text_line._color,
+                         is_visible=text_line._is_visible, id=text_line.get_id())
         self.text_line: TextLine = text_line
         # self.layout_class = text_line.layout_class
 
@@ -307,12 +338,8 @@ class TextLineDecoration(TextLine):
         super().set_color(color, color_table)
 
     @abstractmethod
-    def set_is_filled(self, is_filled: bool):
-        super().set_is_filled(is_filled)
-
-    @abstractmethod
-    def set_is_visible(self, is_visible: bool):
-        super().set_is_visible(is_visible)
+    def set_visible(self, is_visible: bool = None, vis_table: VisibilityTable = None):
+        super().set_visible(is_visible=is_visible, vis_table=vis_table)
 
 
 class AscenderDescenderRegion(TextLineDecoration):
@@ -334,16 +361,16 @@ class AscenderDescenderRegion(TextLineDecoration):
         super().__init__(text_line)
         self.x_height: int = x_height
         assert x_height > 0
-        max_value_possible = self.base_line.polygon.get_min_y() - self.text_line.polygon.get_min_y()
-        if x_height > max_value_possible:
-            raise AttributeError("The x_height seems is too big. The topline would be outside the boundary box. /n "
-                                 "Choose a smaller x_height. The current x_height is: " + str(
-                                 x_height) + "max value allowed: " + str(max_value_possible))
+        # max_value_possible = self.base_line.polygon.get_min_y() - self.text_line.polygon.get_min_y()
+        # if x_height > max_value_possible:
+        #     raise AttributeError("The x_height seems is too big. The topline would be outside the boundary box. /n "
+        #                          "Choose a smaller x_height. The current x_height is: " + str(
+        #         x_height) + "max value allowed: " + str(max_value_possible))
         # vector_objects
-        self.top_line: TopLine = TopLine(base_line=self.base_line, x_height=x_height)
-        self.x_region: XRegion = XRegion(base_line=self.base_line, top_line=self.top_line)
-        self.ascender_region: AscenderRegion = AscenderRegion(polygon=text_line.polygon, top_line=self.top_line)
-        self.descender_region: DescenderRegion = DescenderRegion(polygon=text_line.polygon, base_line=self.base_line)
+        self.top_line: TopLine = TopLine(base_line=self.base_line, x_height=x_height, id=text_line.get_id())
+        self.x_region: XRegion = XRegion(base_line=self.base_line, top_line=self.top_line, id=text_line.get_id())
+        self.ascender_region: AscenderRegion = AscenderRegion(polygon=text_line.polygon, top_line=self.top_line, id=text_line.get_id())
+        self.descender_region: DescenderRegion = DescenderRegion(polygon=text_line.polygon, base_line=self.base_line, id=text_line.get_id())
         self.layout_class = text_line.layout_class
         # # add layout class of decorators to the list
         # self.layout_class.extend(self.top_line.layout_class)
@@ -372,12 +399,12 @@ class AscenderDescenderRegion(TextLineDecoration):
         self.ascender_region.crop(current_dim, target_dim, cut_left)
         self.descender_region.crop(current_dim, target_dim, cut_left)
 
-    def layer(self, px_gt: PixelLevelGT):
-        super().layer(px_gt)
-        self.top_line.layer(px_gt)
-        self.x_region.layer(px_gt)
-        self.ascender_region.layer(px_gt)
-        self.descender_region.layer(px_gt)
+    def layer(self, img: Image, layers: List[Layer] = None):
+        layers: List[Layer] = super().layer(img=img, layers=layers)
+        layers: List[Layer] = self.top_line.layer(img=img, layers=layers)
+        layers: List[Layer] = self.x_region.layer(img=img, layers=layers)
+        layers: List[Layer] = self.ascender_region.layer(img=img, layers=layers)
+        return self.descender_region.layer(img=img, layers=layers)
 
     def build(self) -> Dict:
         data: Dict = super().build()
@@ -399,19 +426,11 @@ class AscenderDescenderRegion(TextLineDecoration):
         self.ascender_region.set_color(color=color, color_table=color_table)
         self.descender_region.set_color(color=color, color_table=color_table)
 
-    def set_is_filled(self, is_filled: bool):
-        super().set_is_filled(is_filled)
-        self.top_line.set_is_filled(is_filled=is_filled)
-        self.x_region.set_is_filled(is_filled=is_filled)
-        self.ascender_region.set_is_filled(is_filled=is_filled)
-        self.descender_region.set_is_filled(is_filled=is_filled)
-
-    def set_is_visible(self, is_visible: bool):
-        super().set_is_visible(is_visible)
-        self.top_line.set_is_visible(is_visible=is_visible)
-        self.x_region.set_is_visible(is_visible=is_visible)
-        self.ascender_region.set_is_visible(is_visible=is_visible)
-        self.descender_region.set_is_visible(is_visible=is_visible)
+    def set_visible(self, is_visible: bool = None, vis_table: VisibilityTable = None):
+        super().set_visible(is_visible=is_visible, vis_table=vis_table)
+        self.x_region.set_visible(is_visible=is_visible, vis_table=vis_table)
+        self.ascender_region.set_visible(is_visible=is_visible, vis_table=vis_table)
+        self.descender_region.set_visible(is_visible=is_visible, vis_table=vis_table)
 
 
 class HeadAndTailRegion(TextLine):

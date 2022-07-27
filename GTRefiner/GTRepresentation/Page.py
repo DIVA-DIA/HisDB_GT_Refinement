@@ -6,7 +6,8 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.Vecto
 
 class Page(Scalable, Croppable, Showable):
 
-    def __init__(self, vector_gt: VectorGT, px_gt: PixelLevelGT, raw_img: RawImage,vis_table: VisibilityTable, col_table: ColorTable):
+    def __init__(self, vector_gt: VectorGT, px_gt: PixelLevelGT, raw_img: RawImage, vis_table: VisibilityTable,
+                 col_table: ColorTable):
         self.vector_gt: VectorGT = vector_gt
         self.px_gt: PixelLevelGT = px_gt
         self.raw_img: RawImage = raw_img
@@ -18,3 +19,6 @@ class Page(Scalable, Croppable, Showable):
     def get_img_dim(self):
         assert self.vector_gt.img_dim == self.px_gt.img_dim
         return self.vector_gt.img_dim
+
+    def visit_page(self, visitor):
+        visitor.visit_page(self)
