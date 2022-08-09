@@ -1,16 +1,18 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import numpy as np
 
 from PIL import ImageDraw, ImageChops
 from PIL import Image
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Dictionable, Scalable, Croppable
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Dictionable, Scalable, Croppable, \
+    Drawable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import TextRegion, ImageDimension
 
 
-class VectorGT(GroundTruth, Dictionable, Scalable, Croppable):
+class VectorGT(GroundTruth, Dictionable, Scalable, Croppable, Drawable):
 
     def __init__(self, regions: List[TextRegion], img_dim: ImageDimension):
         super().__init__(img_dim)
@@ -23,20 +25,20 @@ class VectorGT(GroundTruth, Dictionable, Scalable, Croppable):
         for layout in self.regions:
             for region in layout.text_regions:
                 for elem in region.page_elements:
-                    elem.resize(current_dim=current_dim,target_dim=target_dim)
+                    elem.resize(current_dim=current_dim, target_dim=target_dim)
         self.img_dim = target_dim
 
-    def show(self, base_img: Image = None):
-        if base_img is None:
-            img = Image.new("RGB", size=self.img_dim.to_tuple())
-        else:
-            img = base_img
-        drawer = ImageDraw.Draw(img)
+    def show(self, base_img: Image = None, transparency=0.5, color: Tuple = None, outline: Tuple = None):
+        drawn_vector_objects = Image.new("RGB", size=self.img_dim.to_tuple())
+        drawer = ImageDraw.Draw(drawn_vector_objects)
         for layout in self.regions:
             for region in layout.text_regions:
                 for elem in region.page_elements:
-                    elem.draw(drawer=drawer)
-        img.show()
+                    elem.draw(drawer=drawer, color=color, outline=outline)
+        if base_img:
+            base_img = base_img.convert("RGB")
+            drawn_vector_objects = Image.blend(drawn_vector_objects, base_img, transparency)
+        drawn_vector_objects.show()
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         for layout in self.regions:
@@ -46,7 +48,7 @@ class VectorGT(GroundTruth, Dictionable, Scalable, Croppable):
         self.img_dim = target_dim
 
     def build(self) -> Dict:
-        global_dict = {"ImageDimension":self.img_dim.to_tuple()}
+        global_dict = {"ImageDimension": self.img_dim.to_tuple()}
         dict = {}
         for i, region in enumerate(self.regions):
             region_dict = {}
@@ -83,7 +85,18 @@ class VectorGT(GroundTruth, Dictionable, Scalable, Croppable):
         # what_is_missing = np.where(what_is_missing,255,0)
         # img = Image.fromarray(what_is_missing.astype("uint8"))
         # img.show()
-        return (img_as_array_1==img_as_array_2).all()
+        return (img_as_array_1 == img_as_array_2).all()
 
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline=None):
+        for region in self.regions:
+            for layout in region.text_regions:
+                layout.draw(drawer=drawer, color=color, outline=outline)
 
-
+    # def set_color(self, color: Tuple = None, color_table: ColorTable = None):
+    #     if color is None and color_table is None:
+    #         raise AttributeError("Either provide color or color_table. Not None.")
+    #     if color is not None and color_table is not None:
+    #         raise AttributeError("Either provide color or color_table. Not both.")
+    #     for region in self.regions:
+    #         for elem in region.page_elements:
+    #             elem.set_color(color=color,color_table=color_table)

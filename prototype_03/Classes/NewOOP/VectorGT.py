@@ -131,16 +131,16 @@ class VectorGT(Scalable):
 
     def draw(self, drawer: ImageDraw):
         for main_text_line in self.get_main_text_lines():
-            main_text_line.draw(drawer)
+            main_text_line.draw(drawer, )
 
         for comment in self.get_comments():
-            comment.draw(drawer)
+            comment.draw(drawer, )
 
         for decoration in self.get_decorations():
-            decoration.draw(drawer) # türkis
+            decoration.draw(drawer, )  # türkis
 
         for region in self.get_text_regions():
-            region.draw(drawer)
+            region.draw(drawer, )
 
     def resize(self, size: Tuple):
         print("Resize method nocht nicht implementiert (@ PAGE(Scalable)")

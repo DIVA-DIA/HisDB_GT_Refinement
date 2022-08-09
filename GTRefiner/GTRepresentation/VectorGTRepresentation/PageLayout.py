@@ -46,10 +46,6 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
         for elem in self.page_elements:
             if elem.is_visible():
                 layers: List[Layer] = elem.layer(img=img)
-                if type(elem) is AscenderDescenderRegion:
-                    is_sorted = elem.x_region.polygon.is_sorted()
-                    if not is_sorted:
-                        raise AttributeError("x_region is not sorted.")
                 img = Layer.merge_and_draw(layers=layers, img=img)
         return img
 
@@ -112,10 +108,9 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
                     max_y = int(coord[1])
         return max_y
 
-
-    def draw(self, drawer: ImageDraw, color: Tuple = None):
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline=None):
         for elem in self.page_elements:
-            elem.draw(drawer=drawer, color=color)
+            elem.draw(drawer=drawer, color=color, outline=None)
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         for elem in self.page_elements:
@@ -126,7 +121,7 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
         i = 0
         for elem in self.page_elements:
             dict[type(self).__name__ + str(i)] = elem.build()
-            i = i+1
+            i = i + 1
         return dict
 
     def __getitem__(self, item):
@@ -137,7 +132,7 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
 
 
 class MainText(Layout):
-    @abstractmethod
+
     def __init__(self):
         super().__init__()
         self.page_elements: List[MainTextLine] = []
@@ -148,7 +143,6 @@ class MainText(Layout):
 
 
 class CommentText(Layout):
-    @abstractmethod
     def __init__(self):
         super().__init__()
         self.page_elements: List[CommentTextLine] = []
@@ -159,7 +153,6 @@ class CommentText(Layout):
 
 
 class Decorations(Layout):
-    @abstractmethod
     def __init__(self):
         super().__init__()
         self.page_elements: List[DecorationElement] = []
@@ -171,21 +164,26 @@ class Decorations(Layout):
 
 class TextRegion(Layout):
 
-    def __init__(self, layout: Layout = None):
+    def __init__(self, layout: Layout = None, text_regions: List[Layout] = None):
         self.text_regions: List[Layout] = []
+        self.text_region: TextRegionElement
+        super().__init__()
+        #self.layout_class.append(LayoutClasses.TEXT_REGION)
+        if text_regions is not None:
+            self.text_regions = text_regions
+            self.text_region = self.get_bbox()
         if layout is not None:
             self.add_region(layout)
-        self.text_region: TextRegionElement = self.get_bbox()
-        super().__init__()
-        self.layout_class.append(LayoutClasses.TEXT_REGION)
+            self.text_region = self.get_bbox()
+
+
 
     def add_region(self, layout: Layout):
         if isinstance(layout, TextRegion):
             raise AttributeError("You're adding a text region in this text region. Use the merge() to do so.")
         self.text_regions.append(layout)
-
-    def merge(self, other: TextRegion):
-        pass
+        if layout.layout_class not in self.layout_class:
+            self.layout_class.extend(layout.layout_class)
 
     def layer(self, img: Image):
         for layout in self.text_regions:
@@ -206,7 +204,7 @@ class TextRegion(Layout):
             # bbox polygon as text_region id
             dict[str(self.get_bbox().polygon.xy)] = region_dict
         return dict
-    
+
     def get_bbox(self) -> TextRegionElement:
         bbox: TextRegionElement = TextRegionElement(
             Rectangle([(self.get_min_x(), self.get_min_y()), (self.get_max_x(), self.get_max_y())]))

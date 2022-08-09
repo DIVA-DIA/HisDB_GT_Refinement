@@ -22,7 +22,7 @@ class Croppable():
 class Drawable:
 
     @abstractmethod
-    def draw(self, drawer: ImageDraw, color: Tuple = None):
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline = None):
         """ Draw the vector object or collection of vector_objects. Useful for drawing on :class: `Layer`, for debugging
         purposes, and used by the :class: `Showable interface."""
 

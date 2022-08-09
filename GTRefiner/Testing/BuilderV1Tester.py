@@ -16,33 +16,35 @@ if __name__ == '__main__':
     start = time.time()
     now = datetime.now().strftime("%H_%M_%S")
 
-    original = Path("../../CB55/img/public-test/e-codices_fmb-cb-0055_0105r_max.jpg")
-    pixel = Path("../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0105r_max.png")
-    vector_gt = Path("../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0105r_max.xml")
+    original = Path("../../CB55/img/public-test/e-codices_fmb-cb-0055_0098v_max.jpg")
+    pixel = Path("../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0098v_max.png")
+    vector_gt = Path("../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0098v_max.xml")
     color_table = Path("../Resources/ColorTables/color_table_with_color_lists_2.json")
     visibility_table = Path("../Resources/VisibilityTables/visibility_table.json")
     out_put_directory = Path("../Resources/NewGTs/")
     out_put_name: str = f"HisDB-GT-from-{now}"
     crop_dim: ImageDimension = ImageDimension(4500, 6000)
-    target_dim: ImageDimension = ImageDimension(1800, 2400)
+    target_dim: ImageDimension = ImageDimension(900, 1200)
 
     # build GT
     builder = BuilderV1(orig_img=original, px_gt_path=pixel, vector_gt_path=vector_gt, col_table=color_table, vis_table=visibility_table)
 
     cropper = Cropper(target_dim=crop_dim)
     builder.crop(cropper)
-    builder.page.vector_gt.show(builder.page.px_gt.merged_levels(all_vis=True).img_from_layer(rgb=True))
 
     resizer = Resizer(target_dim=target_dim)
     builder.resize(resizer)
+    # test if correctly cropped and scaled
     builder.page.vector_gt.show(builder.page.px_gt.merged_levels(all_vis=True).img_from_layer(rgb=True))
-
 
     decorator= AscenderDescenderDecorator(x_height=12)
     builder.decorate(decorator=decorator)
 
     builder.set_color()
     builder.set_visible()
+
+    builder.page.vector_gt.show()
+
 
     combiner = Combiner()
     builder.combine(combiner=combiner)

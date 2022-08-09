@@ -15,11 +15,11 @@ color_table: Dict = {
     "MAINTEXT_AND_DECORATION": [(0, 255, 255)],
     "MAINTEXT_AND_DECORATION_AND_COMMENT": [(255, 255, 255)],
     # decorations
-    "ASCENDER": [(250, 120, 120),(20, 120, 212),(20, 212, 120)],
-    "XREGION": [(120, 250, 120)],
-    "DESCENDER": [(120, 120, 250)],
-    "BASELINE": [(30, 100, 200)],
-    "TOPLINE": [(100, 30, 200)],
+    "ASCENDER": [(250, 120, 120), (20, 120, 212), (20, 212, 120), (255,20,255)],
+    "XREGION": [(120, 250, 120), (100, 100, 100), (0, 255, 40), (88, 20, 255)],
+    "DESCENDER": [(120, 120, 250), (20, 20, 20)],
+    "BASELINE": [(30, 100, 200)],  # will not be drawn
+    "TOPLINE": [(100, 30, 200)],  # will not be drawn
     "HEAD": [(100, 100, 100)],
     "TAIL": [(100, 100, 100)],
     "TEXT_REGION": [(100, 100, 100)],
@@ -63,5 +63,5 @@ if __name__ == '__main__':
     # read color table json and convert to {LayoutClasses: Tuple}
     data = json.load(open(file_path))
     data = {LayoutClasses.str_to_enum(k): list(tuple(v) for v in v) for (k, v) in data.items()}
-    #data = {LayoutClasses.str_to_enum(k): list(tuple(tup) for tup in v) for v in (k,v) in data.items()}
+    # data = {LayoutClasses.str_to_enum(k): list(tuple(tup) for tup in v) for v in (k,v) in data.items()}
     print(data)

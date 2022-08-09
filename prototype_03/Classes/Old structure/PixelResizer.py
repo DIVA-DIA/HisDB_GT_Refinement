@@ -9,6 +9,9 @@ from pathlib import Path
 
 
 # stores the strategies implemented
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import RawImage, PixelLevelGT
+
+
 class Strategy(Enum):
     MAJORITY_WINS = 0
     MINORITY_WINS = 1
@@ -65,8 +68,10 @@ class MeanWins(ResizingStrategy):
         x = 6496 // resize_factor
         y = 4872 // resize_factor
 
-        return img_as_array.reshape((x, resize_factor,
-                                     y, resize_factor, 3)).mean(axis=3, dtype=int).mean(axis=1, dtype=int)
+        reshaped_array =  img_as_array.reshape((x, resize_factor,
+                                     y, resize_factor, 3)).mean(axis=3, dtype="uint8").mean(axis=1, dtype=int)
+
+        return reshaped_array.astype(dtype="uint8")
 
 
 class FlexibleResizer(ResizingStrategy):
@@ -126,11 +131,24 @@ if __name__ == '__main__':
     # print(np.indices((6496, 4872, 3)))
     # print(np.zeros(shape, dtype=int))
 
-    # client code
+    # # client code
     source_img_path = Path("../../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0098v_max.png")
     source_img = Image.open(source_img_path)
     resizer = NaiveResizer(source_img, MinorityWins())
-    img_asarray = resizer.resize(4)
+    # px_gt = PixelLevelGT(source_img)
+    #px_gt.img.show() #red
+    # layer = px_gt.merged_levels(all_vis=True)
+    # layer.show()
+    img_asarray = resizer.resize(14)
     img = Image.fromarray(img_asarray)
-    img.show()
+    px_gt = PixelLevelGT(img=img)
+    # px_gt.img.show()
+    layer = px_gt.merged_levels(all_vis=True)
+    layer.show()
+    # img.show()
     #img.save(Path("../Output/Resizing/resized02(pixel_based)_factor_by_8_minority_wins.jpg"))
+
+    # binarize
+    # r_img = RawImage(Image.open(Path("../../../../../../Documents/Kurse/Bachelor Thesis/Schreiben/Bilder/Resizing/MinorityWins (Faktor 8).png")))
+    # bin_img = r_img.binarize(img=r_img.img)
+    # Image.fromarray(bin_img).show()

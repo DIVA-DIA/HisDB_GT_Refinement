@@ -25,30 +25,35 @@ class BlockGrouper(Grouper):
     """ Groups the elements of the :class: `Layout` given into different blocks depending on their minimal x-coordinate.
     Takes use of the np.histogram to group into different bins."""
 
-    def visit_page(self, page: Page):
-        pass
+    def __init__(self, layout_class: LayoutClasses):
+        self.layout_class = layout_class
 
-    # TODO: Write more generically and test it.
-    def get_unsorted_layout(self, text: TextRegion) -> Layout:
-        if len(text.text_regions) is 0:
+    def visit_page(self, page: Page):
+        """ If a text """
+        regions = page.vector_gt.regions
+        for i, layout in enumerate(regions):
+            if self.layout_class in layout.layout_class:
+                regions[i] = self._get_grouped_layout(layout)
+
+    # def visit_vector_gt(self, vector_gt: VectorGT):
+    #     for i, region in enumerate(vector_gt.regions):
+    #         vector_gt.regions[i] = self.visit_text_region(region)
+    #
+    # def visit_text_region(self, region: TextRegion) -> TextRegion:
+    #     return self._get_grouped_layout(region)
+
+    def _get_grouped_layout(self, region: TextRegion) -> TextRegion:
+        if len(region.text_regions) is 0:
             raise AttributeError("Can't sort a TextRegion without Layouts.")
-        if len(text.text_regions) > 1:
+        if len(region.text_regions) > 1:
             warnings.warn(
-                f"The Text Region already contains {len(text.text_regions)} blocks. "
+                f"The Text Region already contains {len(region.text_regions)} blocks. "
                 f"They will be concatenated and regrouped.")
         # initialize page_elems
         page_elems: List[PageElement] = []
-        for region in text.text_regions:
+        for region in region.text_regions:
             page_elems.extend(region.page_elements)
-        layout_class: LayoutClasses = None
-        for elem in text.page_elements:
-            if layout_class is None:
-                layout_class = elem.layout_class
-            elif elem.layout_class is not layout_class:
-                warnings.warn(
-                    f"The Layout given contains both {layout_class} and {elem.layout_class}. "
-                    f"Are you sure you want to apply BlockGrouper to this Layout: {text}?")
-        return LayoutClasses
+        return self._group(page_elems, region.layout_class[0])
 
     def _group(self, text: List[PageElement], layout_class: LayoutClasses) -> TextRegion:
         """ Group on X axis. """
@@ -64,12 +69,21 @@ class BlockGrouper(Grouper):
                 blocks[bin_idx] = []
             blocks[bin_idx].append(text[i])
 
+        layout: Layout
+        if self.layout_class is LayoutClasses.MAINTEXT:
+            layout = MainText()
+        elif self.layout_class is LayoutClasses.COMMENT:
+            layout = CommentText()
+        elif self.layout_class is LayoutClasses.DECORATION:
+            layout = Decorations()
+        else:
+            raise AttributeError("layout class doesn't support ")
+
+
         text_region = TextRegion()
         for a in [p for p in blocks.values()]:
-            text_region.add_elem(Layout())
-        return
+            text_region.add_elem(Layout(a))
 
-        polygons_per_category['comments'] = sorted_array
 
 
 class ThresholdGrouper(Grouper):

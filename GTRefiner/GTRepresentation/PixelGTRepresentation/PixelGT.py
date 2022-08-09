@@ -13,14 +13,15 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutC
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
 
-sigma = 3
-truncate = 9
+sigma = 4
+truncate = 12
+
 
 class MyImage(GroundTruth):
 
     @abstractmethod
     def __init__(self, img: Image):
-        img_dim: ImageDimension = ImageDimension(img.size[0],img.size[1])
+        img_dim: ImageDimension = ImageDimension(img.size[0], img.size[1])
         super().__init__(img_dim)
         self.img: Image = img
 
@@ -99,10 +100,11 @@ class PixelLevelGT(MyImage):
         elif img_dim is not None:
             new_img = Image.new("RGB", size=img_dim.to_tuple())
             super().__init__(new_img)
+        # elif img is None:
+        #     self.levels: Dict[LayoutClasses, Layer] = {}
+        #     self._initialize_empty_px_gt()
         else:
             raise AttributeError("Either provide an image (class Image) or image dimension (ImageDimension), not both.")
-        self.levels: Dict[LayoutClasses, Layer] = {}
-        self._initialize_empty_px_gt()
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         self.img = Image.fromarray(gaussian_filter(self.img, sigma=sigma, truncate=truncate))
@@ -117,16 +119,15 @@ class PixelLevelGT(MyImage):
         self.levels = new_images
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
-        #super().crop(current_dim, target_dim, cut_left)
+        # super().crop(current_dim, target_dim, cut_left)
         box = self._get_crop_coordinates(target_dim=target_dim, cut_left=cut_left)
         for key, value in self.levels.items():
-            #self.levels[key].show()
+            # self.levels[key].show()
             self.img = self.img.crop(box)
             self.levels[key] = Layer(np.asarray(value.img_from_layer().crop(box)))
-            #self.levels[key].show()
+            # self.levels[key].show()
             self.img_dim = target_dim
             assert self.img_dim == self.levels[key].img_dim
-
 
     def _initialize_empty_px_gt(self):
         for layout_class in LayoutClasses:
@@ -164,16 +165,18 @@ class PixelLevelGT(MyImage):
             img = self.levels[l_class].img_from_layer()
             draw = ImageDraw.Draw(img)
             # font = ImageFont.truetype(<font-file>, <font-size>)
-            font = ImageFont.truetype("/System/Library/Fonts/Avenir Next.ttc", int(50 * self.img_dim.to_tuple()[1]/6496))
+            font = ImageFont.truetype("/System/Library/Fonts/Avenir Next.ttc",
+                                      int(50 * self.img_dim.to_tuple()[1] / 6496))
             # draw.text((x, y),"Sample Text",(r,g,b))
             draw.text(xy=(50, 100), text=f"Key: {l_class}", fill="white", font=font)
-            draw.text(xy=(50, 100 + int(60*self.img_dim.to_tuple()[1]/6496)), text=f"Image Dimension: {str(self.img.size)}", fill="white", font=font)
+            draw.text(xy=(50, 100 + int(60 * self.img_dim.to_tuple()[1] / 6496)),
+                      text=f"Image Dimension: {str(self.img.size)}", fill="white", font=font)
             img.show()
 
     def merged_levels(self, visibility_table: VisibilityTable = None, all_vis: bool = False) -> Layer:
         base_layer = Layer(img_dim=self.img_dim)
         if visibility_table is not None:
-            for k,v in self.levels.items():
+            for k, v in self.levels.items():
                 if visibility_table[k] is True:
                     base_layer = base_layer.unite(self.levels[k])
         elif all_vis is True:
@@ -190,7 +193,8 @@ class PixelLevelGT(MyImage):
         """ Setter-method for the color.
         """
         for key, level in self.levels.items():
-            level.set_color(color_table.table[key])
+            if key in color_table.table.keys():
+                level.set_color(color_table.table[key])
 
     def set_visible(self, vis_table: VisibilityTable):
         """ Setter-method for the is_visible field.
@@ -216,4 +220,3 @@ class RawImage(MyImage):
         amount_black_right = np.where(np.all(img_right < (10, 10, 10), axis=1))[0].size
 
         return amount_black_left > amount_black_right
-

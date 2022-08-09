@@ -31,8 +31,16 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
             if isinstance(elem[0], np.int64) or isinstance(elem[1], np.int64):
                 raise ValueError("Should be of python integer at instantiation")
 
-    def draw(self, drawer: ImageDraw, color: Tuple = None):
-        drawer.polygon(xy=self.xy, outline=None, fill=color)
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline: Tuple = None):
+        """
+
+        :param drawer: Pillow drawer, can be of any mode (example "1", "RGB", "RGBA"). The color parameter must be corresponding format.
+        :param color: Single element tuple for binary, triple tuple for RGB, quadruple tuple for RGBA (consult PILLOW Documenation for more information).
+        :param outline: Only use this parameter for illustration purposes.
+        Using it for ground truth generation is dangerous.
+        :return:
+        """
+        drawer.polygon(xy=self.xy, outline=outline, fill=color)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         scale_factor: Tuple[float, float] = current_dim.scale_factor(target_dim)
@@ -104,7 +112,7 @@ class Quadrilateral(Polygon):
     """
 
     def __init__(self, xy: List[Tuple]):
-        #sorted_xy = self._order_points(xy)
+        # sorted_xy = self._order_points(xy)
         super().__init__(xy)
         assert len(xy) == 4
         if not self.is_sorted():
@@ -154,8 +162,8 @@ class Quadrilateral(Polygon):
         # sorted == self.xy
         return True
 
-    def draw(self, drawer: ImageDraw, color=None):
-        drawer.polygon(self.xy, outline=None, fill=color)
+    def draw(self, drawer: ImageDraw, color=None, outline = None):
+        drawer.polygon(self.xy, outline=outline, fill=color)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         super().resize(current_dim, target_dim)
@@ -171,15 +179,15 @@ class Rectangle(Polygon):
         super().__init__(xy=xy)
         assert len(xy) == 2
 
-    def draw(self, drawer: ImageDraw, color: Tuple = None):
-        drawer.rectangle(self.xy, outline=None, fill=color)
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline = None):
+        drawer.rectangle(self.xy, outline=outline, fill=color)
 
 
 class Line(Polygon):
     def __init__(self, xy):
         super().__init__(xy=xy)
         assert len(xy) == 2
-        assert xy[0][0] < xy [1][0] # assert line is sorted left to right
+        assert xy[0][0] < xy[1][0]  # assert line is sorted left to right
 
     def draw(self, drawer: ImageDraw, outline=None, color: Tuple = None):
         """ Draws a line."""

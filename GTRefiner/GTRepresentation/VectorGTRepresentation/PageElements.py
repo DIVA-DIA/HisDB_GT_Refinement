@@ -42,14 +42,14 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         self.polygon.resize(current_dim=current_dim, target_dim=target_dim)
 
-    def draw(self, drawer: ImageDraw, color: Tuple = None):
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline: Tuple = None):
         """ Draw the page element polygon with the instance color if no other coller is given. Fill it, if and only if
         the set_filled parameter is true."""
         if color is None:
             col = self._color
         else:
             col = color
-        self.polygon.draw(drawer=drawer, color=col)
+        self.polygon.draw(drawer=drawer, color=col, outline=outline)
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
         self.polygon.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
@@ -110,8 +110,9 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
         if color is not None:
             self._color = color
         if color_table is not None:
-            colors: List[tuple] = color_table.table[self.layout_class]
-            self._color = colors[self._id % len(colors)]
+            if self.layout_class in color_table.table.keys():
+                colors: List[tuple] = color_table.table[self.layout_class]
+                self._color = colors[self._id % len(colors)]
 
     def get_color(self):
         return self._color
@@ -139,6 +140,13 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
         """
         return self._is_visible
 
+    def get_layout_classes(self, layout_classes: List[LayoutClasses] = None) -> List[LayoutClasses]:
+        if layout_classes is None:
+            return [self.layout_class]
+        else:
+            layout_classes.append(self.layout_class)
+            return layout_classes
+
 
 class DecorationElement(PageElement):
     """ The :class: `DecorationElement` class has no further characteristic than it's name. It instantiates the abstract super class
@@ -155,6 +163,11 @@ class TextLineElements(PageElement):
     @abstractmethod
     def __init__(self, polygon: Polygon, id: int = 0):
         super().__init__(polygon, id=id)
+
+    def get_layout_classes(self, layout_classes: List[LayoutClasses] = None) -> List[LayoutClasses]:
+        layout_classes: List[LayoutClasses] = super().get_layout_classes(layout_classes)
+        layout_classes.append(self.layout_class)
+        return layout_classes
 
 
 class BaseLine(TextLineElements):
@@ -193,10 +206,10 @@ class XRegion(TextLineElements):
         super().__init__(quadrilateral, id=id)
         self.layout_class = LayoutClasses.XREGION
 
-    def layer(self, img: Image, layers: List[Layer] = None) -> List[Layer]:
-        if not self.polygon.is_sorted():
-            raise AttributeError("Quadrilateral must be sorted. Something went wrong.")
-        return super().layer(img=img, layers=layers)
+    # def layer(self, img: Image, layers: List[Layer] = None) -> List[Layer]:
+    #     if not self.polygon.is_sorted():
+    #         raise AttributeError("Quadrilateral must be sorted. Something went wrong.")
+    #     return super().layer(img=img, layers=layers)
 
 
 class AscenderRegion(TextLineElements):
@@ -255,8 +268,8 @@ class TextLine(PageElement):
         super().__init__(polygon, color=color, is_visible=is_visible, id=id)
         self.base_line: BaseLine = base_line
 
-    def draw(self, drawer: ImageDraw, color: Tuple = None):
-        super().draw(drawer=drawer, color=color)
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline=None):
+        super().draw(drawer=drawer, color=color, outline=outline)
         # self.base_line.draw(drawer, color=color)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
@@ -282,6 +295,11 @@ class TextLine(PageElement):
 
     def set_visible(self, is_visible: bool = None, vis_table: VisibilityTable = None):
         super().set_visible(is_visible=is_visible, vis_table=vis_table)
+
+    def get_layout_classes(self, layout_classes: List[LayoutClasses] = None) -> List[LayoutClasses]:
+        layout_classes: List[LayoutClasses] = super().get_layout_classes(layout_classes)
+        layout_classes = self.base_line.get_layout_classes(layout_classes)
+        return layout_classes
 
 
 class MainTextLine(TextLine):
@@ -318,8 +336,8 @@ class TextLineDecoration(TextLine):
         # self.layout_class = text_line.layout_class
 
     @abstractmethod
-    def draw(self, drawer: ImageDraw, color: Tuple = None):
-        super().draw(drawer=drawer, color=color)
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline=None):
+        super().draw(drawer=drawer, color=color, outline=None)
 
     @abstractmethod
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
@@ -369,8 +387,10 @@ class AscenderDescenderRegion(TextLineDecoration):
         # vector_objects
         self.top_line: TopLine = TopLine(base_line=self.base_line, x_height=x_height, id=text_line.get_id())
         self.x_region: XRegion = XRegion(base_line=self.base_line, top_line=self.top_line, id=text_line.get_id())
-        self.ascender_region: AscenderRegion = AscenderRegion(polygon=text_line.polygon, top_line=self.top_line, id=text_line.get_id())
-        self.descender_region: DescenderRegion = DescenderRegion(polygon=text_line.polygon, base_line=self.base_line, id=text_line.get_id())
+        self.ascender_region: AscenderRegion = AscenderRegion(polygon=text_line.polygon, top_line=self.top_line,
+                                                              id=text_line.get_id())
+        self.descender_region: DescenderRegion = DescenderRegion(polygon=text_line.polygon, base_line=self.base_line,
+                                                                 id=text_line.get_id())
         self.layout_class = text_line.layout_class
         # # add layout class of decorators to the list
         # self.layout_class.extend(self.top_line.layout_class)
@@ -378,12 +398,12 @@ class AscenderDescenderRegion(TextLineDecoration):
         # self.layout_class.extend(self.ascender_region.layout_class)
         # self.layout_class.extend(self.descender_region.layout_class)
 
-    def draw(self, drawer: ImageDraw, color: Tuple = None):
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline=None):
         # self.top_line.draw(drawer, color=color)
         # self.x_region.draw(drawer, color=color)
         # self.ascender_region.draw(drawer, color=color)
         # self.descender_region.draw(drawer, color=color)
-        super().draw(drawer=drawer, color=color)
+        super().draw(drawer=drawer, color=color, outline=None)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         super().resize(current_dim, target_dim)
@@ -431,6 +451,14 @@ class AscenderDescenderRegion(TextLineDecoration):
         self.x_region.set_visible(is_visible=is_visible, vis_table=vis_table)
         self.ascender_region.set_visible(is_visible=is_visible, vis_table=vis_table)
         self.descender_region.set_visible(is_visible=is_visible, vis_table=vis_table)
+
+    def get_layout_classes(self, layout_classes: List[LayoutClasses] = None) -> List[LayoutClasses]:
+        layout_classes: List[LayoutClasses] = super().get_layout_classes(layout_classes)
+        layout_classes = self.top_line.get_layout_classes(layout_classes)
+        layout_classes = self.x_region.get_layout_classes(layout_classes)
+        layout_classes = self.ascender_region.get_layout_classes(layout_classes)
+        layout_classes = self.descender_region.get_layout_classes(layout_classes)
+        return layout_classes
 
 
 class HeadAndTailRegion(TextLine):

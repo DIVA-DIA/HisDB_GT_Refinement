@@ -1,7 +1,7 @@
 import json
 from abc import abstractmethod
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Tuple, List
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 
@@ -22,7 +22,7 @@ class Table():
 # TODO: Color soll eine method .toGIFpalette() haben. ->
 class ColorTable(Table):
 
-    def __init__(self, table: Dict[LayoutClasses, Tuple]):
+    def __init__(self, table: Dict[LayoutClasses, List[Tuple]]):
         super().__init__(table)
 
 
