@@ -18,15 +18,21 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.Vecto
 
 class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
 
-    @abstractmethod
-    def __init__(self, page_elements: List[PageElement] = None):
-        if page_elements is None:
+    def __init__(self, page_elements: List[PageElement] = None, layout_class: LayoutClasses = None):
+        if page_elements is None and layout_class is None:
             self.page_elements: List[PageElement] = []
-        else:
+            self.layout_class: LayoutClasses = None
+        elif page_elements is None and layout_class is not None:
+            self.page_elements: List[PageElement] = []
+            self.layout_class: LayoutClasses = layout_class
+        elif page_elements is not None and layout_class is not None:
             self.page_elements: List[PageElement] = page_elements
-        self.layout_class: List[LayoutClasses] = []
-        self._color: Tuple = (255, 255, 255)
-        self._is_visible: bool = True
+            self.layout_class: LayoutClasses = layout_class
+        elif page_elements is not None and layout_class is None:
+            raise AttributeError("Must provide layout_class if page_elements are given.")
+        self._color: Tuple = (255, 255, 255)  # not yet used, could be useful for future implementation of Colorer
+        self._is_visible: bool = True  # not yet used, could be useful for future implementation of Colorer or Combiner
+                                        # (Layerer)
 
     @abstractmethod
     def accept_layout_visitor(self, visitor):
@@ -40,7 +46,10 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
 
     def add_elem(self, elem: PageElement):
         self.page_elements.append(elem)
-        self.layout_class.append(elem.layout_class)
+        if not elem.layout_class == self.layout_class:
+            raise AttributeError(
+                f"Cannot add element of a different layout_class. elem.layout_class = {elem.layout_class},"
+                f"self.layout_class = {self.layout_class} ")
 
     def layer(self, img: Image):
         for elem in self.page_elements:
@@ -49,34 +58,16 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
                 img = Layer.merge_and_draw(layers=layers, img=img)
         return img
 
-    # TODO: Index
-    def split(self, elem: PageElement):
-        pass
-
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         for elem in self.page_elements:
             elem.resize(current_dim=current_dim, target_dim=target_dim)
 
-    # def layer(self, px_gt: PixelLevelGT):
-    #     for layout_class in self.layout_class:
-    #         drawable_layer: Layer = px_gt.levels[layout_class]
-    #         drawer = ImageDraw(drawable_layer.img_from_layer())
-    #         for page_element in self.page_elements:
-    #             if layout_class in page_element.layout_class:
-    #                 # find the target element, can be a decorator. Thus, the code is a bit more extensive.
-    #                 target_element = page_element._find_layout_class
-    #             page_element.set_is_filled(True)
-    #             self.draw(drawer,color = (1,))
-    #
-    # def _find_layout_class(self, elem: PageElement, layout_class: LayoutClasses):
-    #     pass
-
-    def get_bbox(self) -> TextRegionElement:
+    def get_region_bbox(self) -> TextRegionElement:
         bbox: TextRegionElement = TextRegionElement(
-            Rectangle([(self.get_min_x(), self.get_min_y()), (self.get_max_x(), self.get_max_y())]))
+            Rectangle([(self._get_min_x(), self._get_min_y()), (self._get_max_x(), self._get_max_y())]))
         return bbox
 
-    def get_min_x(self):
+    def _get_min_x(self):
         min_x = float("inf")
         for elem in self.page_elements:
             for coord in elem.polygon.xy:
@@ -84,7 +75,7 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
                     min_x = int(coord[0])
         return min_x
 
-    def get_min_y(self):
+    def _get_min_y(self):
         min_y = float("inf")
         for elem in self.page_elements:
             for coord in elem.polygon.xy:
@@ -92,7 +83,7 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
                     min_y = int(coord[1])
         return min_y
 
-    def get_max_x(self):
+    def _get_max_x(self):
         max_x = 0
         for elem in self.page_elements:
             for coord in elem.polygon.xy:
@@ -100,7 +91,7 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
                     max_x = int(coord[0])
         return max_x
 
-    def get_max_y(self):
+    def _get_max_y(self):
         max_y = 0
         for elem in self.page_elements:
             for coord in elem.polygon.xy:
@@ -130,65 +121,35 @@ class Layout(Scalable, Drawable, Croppable, Dictionable, Layarable):
     def __setitem__(self, key, value):
         self.page_elements[key] = value
 
-
-class MainText(Layout):
-
-    def __init__(self):
-        super().__init__()
-        self.page_elements: List[MainTextLine] = []
-        self.layout_class.append(LayoutClasses.MAINTEXT)
-
-    def accept_layout_visitor(self, visitor):
-        visitor.visitMainText(self)
-
-
-class CommentText(Layout):
-    def __init__(self):
-        super().__init__()
-        self.page_elements: List[CommentTextLine] = []
-        self.layout_class.append(LayoutClasses.COMMENT)
-
-    def accept_layout_visitor(self, visitor):
-        visitor.visitCommentText(self)
-
-
-class Decorations(Layout):
-    def __init__(self):
-        super().__init__()
-        self.page_elements: List[DecorationElement] = []
-        self.layout_class.append(LayoutClasses.DECORATION)
-
-    def accept_layout_visitor(self, visitor):
-        visitor.visitDecorations(self)
-
-
 class TextRegion(Layout):
 
     def __init__(self, layout: Layout = None, text_regions: List[Layout] = None):
-        self.text_regions: List[Layout] = []
+        if text_regions is None:
+            self.text_regions: List[Layout] = []
         self.text_region: TextRegionElement
         super().__init__()
-        #self.layout_class.append(LayoutClasses.TEXT_REGION)
+        # self.layout_class.append(LayoutClasses.TEXT_REGION)
         if text_regions is not None:
-            self.text_regions = text_regions
-            self.text_region = self.get_bbox()
+            self.text_regions: List[Layout] = text_regions
+            self.text_region: TextRegionElement = self.get_region_bbox()
+            self.layout_class = self.text_regions[0].layout_class
         if layout is not None:
+            self.layout_class = layout.layout_class
             self.add_region(layout)
-            self.text_region = self.get_bbox()
-
-
+            self.text_region = self.get_region_bbox()
 
     def add_region(self, layout: Layout):
-        if isinstance(layout, TextRegion):
-            raise AttributeError("You're adding a text region in this text region. Use the merge() to do so.")
+        if not layout.layout_class == self.layout_class:
+            raise AttributeError(f"The layout to be added doesn't match the region's layout_class."
+                                 f"self.layout_class = {self.layout_class}, layout.layout_class = {layout.layout_class}")
+        if self.layout_class is None:
+            self.layout_class = layout.layout_class
         self.text_regions.append(layout)
-        if layout.layout_class not in self.layout_class:
-            self.layout_class.extend(layout.layout_class)
 
     def layer(self, img: Image):
         for layout in self.text_regions:
-            if LayoutClasses.COMMENT in layout.layout_class:
-                print("here's your comment")
+            # if LayoutClasses.COMMENT == layout.layout_class:
+            #     print("here's your comment")
             img = layout.layer(img)
         return img
 
@@ -202,42 +163,42 @@ class TextRegion(Layout):
             region_dict = {}
             region_dict.update(region.build())
             # bbox polygon as text_region id
-            dict[str(self.get_bbox().polygon.xy)] = region_dict
+            dict[str(self.get_region_bbox().polygon.xy)] = region_dict
         return dict
 
-    def get_bbox(self) -> TextRegionElement:
+    def get_region_bbox(self) -> TextRegionElement:
         bbox: TextRegionElement = TextRegionElement(
-            Rectangle([(self.get_min_x(), self.get_min_y()), (self.get_max_x(), self.get_max_y())]))
+            Rectangle([(self._get_min_x(), self._get_min_y()), (self._get_max_x(), self._get_max_y())]))
         return bbox
 
-    def get_min_x(self):
+    def _get_min_x(self):
         min_x = float("inf")
         for region in self.text_regions:
-            for coord in region.get_bbox().polygon.xy:
+            for coord in region.get_region_bbox().polygon.xy:
                 if coord[0] < min_x:
                     min_x = int(coord[0])
         return min_x
 
-    def get_min_y(self):
+    def _get_min_y(self):
         min_y = float("inf")
         for region in self.text_regions:
-            for coord in region.get_bbox().polygon.xy:
+            for coord in region.get_region_bbox().polygon.xy:
                 if coord[1] < min_y:
                     min_y = int(coord[1])
         return min_y
 
-    def get_max_x(self):
+    def _get_max_x(self):
         max_x = 0
         for region in self.text_regions:
-            for coord in region.get_bbox().polygon.xy:
+            for coord in region.get_region_bbox().polygon.xy:
                 if coord[0] > max_x:
                     max_x = int(coord[0])
         return max_x
 
-    def get_max_y(self):
+    def _get_max_y(self):
         max_y = 0
         for region in self.text_regions:
-            for coord in region.get_bbox().polygon.xy:
+            for coord in region.get_region_bbox().polygon.xy:
                 if coord[1] > max_y:
                     max_y = int(coord[1])
         return max_y

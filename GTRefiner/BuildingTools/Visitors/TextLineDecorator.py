@@ -1,13 +1,9 @@
 from abc import abstractmethod
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import TextLine, \
     AscenderDescenderRegion
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import Decorations, CommentText, \
-    MainText
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
 
 
 class TextLineDecorator(Visitor):

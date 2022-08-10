@@ -7,11 +7,9 @@ import warnings
 
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import VectorGT, PageLayout
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import Decorations, CommentText, \
-    MainText, Layout, TextRegion
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import Layout, TextRegion
 
 
 class Grouper(Visitor):
@@ -69,20 +67,11 @@ class BlockGrouper(Grouper):
                 blocks[bin_idx] = []
             blocks[bin_idx].append(text[i])
 
-        layout: Layout
-        if self.layout_class is LayoutClasses.MAINTEXT:
-            layout = MainText()
-        elif self.layout_class is LayoutClasses.COMMENT:
-            layout = CommentText()
-        elif self.layout_class is LayoutClasses.DECORATION:
-            layout = Decorations()
-        else:
-            raise AttributeError("layout class doesn't support ")
-
-
         text_region = TextRegion()
         for a in [p for p in blocks.values()]:
-            text_region.add_elem(Layout(a))
+            text_region.add_region(Layout(layout_class=layout_class))
+
+        return text_region
 
 
 

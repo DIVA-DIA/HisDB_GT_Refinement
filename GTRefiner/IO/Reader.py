@@ -53,9 +53,9 @@ class XMLReader(GTReader):
             root.tag).group()  # group returns the different submatches of the regex match (https://www.geeksforgeeks.org/re-matchobject-group-function-in-python-regex/)
         page_part = root[1]
         # initialize all the text Regions
-        main_text = PageLayout.MainText()
-        comments = PageLayout.CommentText()
-        decorations = PageLayout.Decorations()
+        main_text = PageLayout.Layout(layout_class=LayoutClasses.MAINTEXT)
+        comments = PageLayout.Layout(layout_class=LayoutClasses.COMMENT)
+        decorations = PageLayout.Layout(layout_class=LayoutClasses.DECORATION)
         mt_count = 0
         com_count = 0
         dec_count = 0
@@ -109,9 +109,9 @@ class JSONReader(GTReader):
     @classmethod
     def read(cls, path: Path) -> VectorGT:
         vector_gt: dict = json.load(open(path))
-        main_text = PageLayout.MainText()
-        comments = PageLayout.CommentText()
-        decorations = PageLayout.Decorations()
+        main_text = PageLayout.Layout(layout_class=LayoutClasses.MAINTEXT)
+        comments = PageLayout.Layout(layout_class=LayoutClasses.COMMENT)
+        decorations = PageLayout.Layout(layout_class=LayoutClasses.DECORATION)
         img_dim: ImageDimension = ImageDimension(vector_gt["ImageDimension"][0], vector_gt["ImageDimension"][1])
         page = vector_gt["Vector Ground Truth"]
         mt_count = 0
