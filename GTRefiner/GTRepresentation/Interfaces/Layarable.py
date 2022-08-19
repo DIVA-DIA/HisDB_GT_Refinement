@@ -7,6 +7,6 @@ class Layarable:
 
     @abstractmethod
     def layer(self, **kwargs):
-        """ Translates the vector_gt information into pixel information and stores it on the corresponding
+        """ Translates the vector_gt information into pixel information and store it on the corresponding
         :class: `LayoutClasses` layer."""
         pass

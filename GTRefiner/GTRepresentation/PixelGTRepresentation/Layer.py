@@ -13,11 +13,19 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces impo
 
 
 class Layer():
-    """ The :class: Layer class is used to represent the different levels of the :class: PixelLevelGT class. It does not
-    implement the :class: Scalable interface because Layer should only be instantiated once the resizing has been done.
+    """ The :class: `Layer` class is used to represent the different levels of the :class: `PixelLevelGT` class. It does not
+    implement the :class: `Scalable` interface because Layer should only be instantiated once the resizing has been done.
+    :param layer: binary array representing the layer
+    :type layer: numpy.ndarayy
+    :param img_dim: the size of the layer (static cannot be changed)
+    :type img_dim: ImageDimension
+    :param color: color of the layer
+    :type color: tuple
     """
 
     def __init__(self, layer: np.ndarray = None, img_dim: ImageDimension = None, color=None):
+        """Constructor Method
+        """
         self.mode = "1"
         if color is None:
             self._color = (255, 255, 255)
@@ -37,22 +45,25 @@ class Layer():
             self.img_dim: ImageDimension = ImageDimension(layer.shape[1], layer.shape[0])
 
     def unite(self, other: Layer) -> Layer:
+        """ Logical OR of each pixel of two layers. Keeps the color of the current layer.
+        :param other: Other Layer.
+        :type other: Layer
+        :return: A new Layer.
+        :rtype: Layer
+        """
         assert self.layer.shape == other.layer.shape
         is_empty = not np.any(other.layer)
         return Layer(np.array(np.logical_or(self.layer, other.layer), copy=True), color=self._color)
 
     def intersect(self, other: Layer) -> Layer:
-        """ XOR of each pixel of two layers.
+        """ XOR of each pixel of two layers. Keeps the color of the current layer.
         :param other: Other Layer.
-        :returns A new Layer."""
+        :type other: Layer
+        :return: A new Layer.
+        :rtype: Layer
+        """
         assert self.layer.shape == other.layer.shape
         return Layer(np.array(np.logical_and(self.layer, other.layer), copy=True), color=self._color)
-
-    def invert(self, other: Layer = None) -> Layer:
-        if other is None:
-            return Layer(np.invert(self.layer))
-        else:
-            return Layer(np.invert(other.layer))
 
     def paint_layer_on_img(self, img: Image, color=None) -> Image:
         """ Takes a base_img of mode RGB and overlays it with the layer of the current instance.
@@ -80,34 +91,60 @@ class Layer():
         combined[:, :, 2] = ma.where(self.layer > 0, color[2], img_as_np_array[:, :, 2])
         return Image.fromarray(combined)
 
-    def paint_layer_on_img_and_keep_colors(self, img: Image):
-        """ Overlay img with colored layer. The values > 0 from self.layer will overwrite the img, the rest of the
-        pixels are kept as are.
-        :param img:
+    def paint_layer_on_img_and_keep_colors(self, img: Image, color: Tuple = None):
+        """Overlay img with colored layer. The values > 0 from self.layer will overwrite the img, the rest of the
+        pixels are kept as are. Make sure that the layer has a color. Color of the layer can be set with set_color() or
+        the color param.
+        :param img: img for the layer to be painted on.
+        :type img: Image
+        :param color: color in which the layer should be painted on the Image
+        :type color: Image
         :return:
+        :rtype:
         """
+
+        if color is not None:
+            color = color
+        elif color is None:
+            color = self._color
         assert img.mode == "RGB"
         width, height = img.size
         y_axis_len = len(self.layer)
         assert height == y_axis_len
         # img.show() # to debug
         img_as_np_array = np.asarray(img)
-        img_as_np_array[:, :, 0] = ma.where(self.layer > 0, self._color[0], img_as_np_array[:, :, 0])
-        img_as_np_array[:, :, 1] = ma.where(self.layer > 0, self._color[1], img_as_np_array[:, :, 1])
-        img_as_np_array[:, :, 2] = ma.where(self.layer > 0, self._color[2], img_as_np_array[:, :, 2])
+        img_as_np_array[:, :, 0] = ma.where(self.layer > 0, color[0], img_as_np_array[:, :, 0])
+        img_as_np_array[:, :, 1] = ma.where(self.layer > 0, color[1], img_as_np_array[:, :, 1])
+        img_as_np_array[:, :, 2] = ma.where(self.layer > 0, color[2], img_as_np_array[:, :, 2])
         new_img = Image.fromarray(img_as_np_array)
         # new_img.show() # to debug
         return new_img
 
     @classmethod
     def bin_layer_from_rgb(cls, img: Image) -> Layer:
-        """ Returns a binary layer where every pixel equal to (0,0,0) is set to '0', every other is set to '1'."""
+        """Returns a binary layer where every pixel equal to (0,0,0) is set to '0', every other is set to '1'.
+        :param img: Image to be turned into a binary layer where (0,0,0) is set to '0', every other is set to '1'
+        :type img: Image
+        :return: A layer corresponding to the binarized image where all black pixels (0,0,0) are set to 0 and the all
+        the others are set to 1.
+        :rtype: Layer
+        """
         assert img.mode == "RGB"
         img_as_array = np.asarray(img)
         np_array = np.array(np.where(np.all(img_as_array == [0, 0, 0], axis=-1), 0, 1), copy=True).astype(dtype="bool")
         return Layer(np_array)
 
     def intersect_this_layer_with_an_rgb_img(self, img: Image) -> Image:
+        """ Perform logical and of this layer with another image. For all pixels of this binary layer that are "True",
+        keep the RGB pixel of the Image given.
+        :param img: Image to be masked with this layer, for all pixels of this binary layer that are "True",
+        keep the RGB pixel of the image given.
+        :type img: Image
+        :return: masked image.
+        :rtype: Returns Image that has kept all its pixel wehre self.layer is "True" all others are set to (0,0,0)
+        (black)
+        """
+        assert img.mode == "RGB"
         img_as_np_array = np.asarray(img)
         img_as_np_array[:, :, 0] = ma.where(self.layer > 0, img_as_np_array[:, :, 0], 0)
         img_as_np_array[:, :, 1] = ma.where(self.layer > 0, img_as_np_array[:, :, 1], 0)
@@ -149,7 +186,7 @@ class Layer():
         self.layer = np.asarray(img)
 
     def _initialize_empty_layer(self, img_dim):
-        """ nitializes a layer with a given dimension :class: `ImageDimension`. Warning shape stores width and height as
+        """ Initializes a layer with a given dimension :class: `ImageDimension`. Warning shape stores width and height as
         height and with while img_dim stores it as width and height.
         :param img_dim: ImageDimension
         """
@@ -166,13 +203,10 @@ class Layer():
 
     def img_from_layer(self, rgb: bool = False) -> Image:
         """
-        Returns an Image from the layer.
-        :param rgb: If True this class returns an RGB Pillow Image.
+        Returns an Image, either binary or in RGB-mode, from the layer.
+        :param rgb: If True this class returns an RGB Pillow Image, defaults to binary
         :return: Return a binary image from it's mask by default
         """
-        # Note: img from numpy array doesn't properly work for mode "1" (it's a bug from pillow), thus the work-around
-        #   by converting it to mode "1" in a seconds step.
-        # Image.fromarray(obj=self.layer, mode="L").convert(mode="1")
         if rgb is True:
             img = Image.new("RGB", size=self.img_dim.to_tuple())
             return self.paint_layer_on_img(img)
@@ -180,41 +214,15 @@ class Layer():
             return Image.fromarray(obj=self.layer)
 
     def set_color(self, color: Tuple):
+        """ Set color of the layer.
+        :param color:  Set color of the layer.
+        :type color: tuple
+        """
         self._color = color
 
     def set_visible(self, is_visible: bool):
+        """ Set visibility of the layer.
+        :param is_visible: Set visibility of the layer.
+        :type is_visible: bool
+        """
         self._visible = is_visible
-
-
-if __name__ == '__main__':
-
-    # Test layer
-    bin_layer: np.ndarray = np.asarray([[0, 0, 1],
-                                        [0, 1, 0]])
-
-    img_as_np_array = np.asarray([[(12, 12, 12), (100, 100, 100), (200, 200, 200)],
-                                  [(250, 250, 100), (50, 100, 100), (13, 12, 12)]])
-
-    img = Image.fromarray(img_as_np_array, "RGB")
-
-    img_dim: ImageDimension = ImageDimension(bin_layer.shape[1], bin_layer.shape[0])
-
-    layer_1 = Layer(layer=bin_layer)
-    layer_2 = Layer(img_dim=img_dim)
-
-    # test intitialisation
-    assert layer_1.layer is not None
-    assert layer_2.layer is not None
-    assert layer_1.img_dim == layer_2.img_dim
-    assert layer_1.layer.shape == layer_2.layer.shape
-    # show it
-    layer_1.show()
-    layer_2.show()
-
-    # test falty intitialisation
-    try:
-        layer_3 = Layer()
-    except AttributeError as e:
-        assert AttributeError is e
-
-    layer_4 = Layer(layer=bin_layer, img_dim=ImageDimension(10, 5))

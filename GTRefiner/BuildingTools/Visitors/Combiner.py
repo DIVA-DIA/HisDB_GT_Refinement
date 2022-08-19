@@ -11,9 +11,17 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer 
 
 
 class Combiner(Visitor):
+    """Combiner combines information from both ground truths (vector gt and pixel-based gt)."""
 
     @classmethod
     def visit_page(cls, page: Page):
+        """The default implementation of Combiner combines the vector gt and pixel gt by drawing the vector objects on
+        the according layer of the levels within the pixel gt. It takes use of the Layarable :class: `Layerable` interface.
+        :param page:
+        :type page:
+        :return:
+        :rtype:
+        """
         _layered_img = cls._layer(page)
         _combined_img = cls._combine(page, _layered_img)
 

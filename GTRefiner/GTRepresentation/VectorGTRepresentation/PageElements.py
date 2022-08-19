@@ -1,16 +1,17 @@
+from __future__ import annotations
+
+import warnings
 from abc import abstractmethod
 from typing import Tuple, List, Dict
-import warnings
 
 from PIL import Image, ImageDraw
 
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Showable, \
     Croppable, Dictionable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line, \
     Quadrilateral, Rectangle
@@ -19,20 +20,20 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.Vecto
 # TODO: accept_json(dict) methode -> json.dump(dict)
 
 class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionable):
-    """ Super class for all page elements, such as decorations & textlines. Every PageElement holds a polygon at its
-    core and should be. If further characteristics shall be added, the author suggests to use the decoration pattern.
+    """ Super class for all page elements, such as decorations & textlines. Every PageElement holds a polygon :class:
+    `Polygon`at its core. If further characteristics shall be added, we suggest to use the decoration pattern.
     :param polygon: Represents the contour of the page element.
     :type polygon: Polygon
     :param color: What color to use when drawn.
     :type color: Tuple
-    :param id: To identify the text_line. Helpful for coloring, sorting, etc. Not mandatory, default value is -1.
+    :param id: To identify the text_line. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
     :type id: int
     :param is_visible: Whether or not is should be recognized as visible to the :class: `Writer`.
     :type is_visible: bool
     """
 
     @abstractmethod
-    def __init__(self, polygon: Polygon, color: Tuple = (255, 255, 255), is_visible: bool = False, id: int = 0):
+    def __init__(self, polygon: Polygon, color: Tuple = None, is_visible: bool = False, id: int = 0):
         self.polygon: Polygon = polygon
         self.layout_class: LayoutClasses = LayoutClasses.BACKGROUND
         self._id: int = id
@@ -40,11 +41,26 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
         self._is_visible: bool = is_visible
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
+        """Resizes the current :class: `PageElement` to a given target dimension. As this class doesn't possess a image
+        dimension parameter, both the current dimension (of the page) and the target dimension (the size to be scaled
+        to) should be given.
+        :param current_dim: Current dimension
+        :type current_dim: ImageDimension
+        :param target_dim: Target dimension
+        :type target_dim: ImageDimension
+        """
         self.polygon.resize(current_dim=current_dim, target_dim=target_dim)
 
     def draw(self, drawer: ImageDraw, color: Tuple = None, outline: Tuple = None):
-        """ Draw the page element polygon with the instance color if no other coller is given. Fill it, if and only if
-        the set_filled parameter is true."""
+        """ Draw the page element :class: `PageElement` polygon with the instance color if no other color is given.
+        :param drawer: image to be drawn upon.
+        :type drawer: ImageDraw.ImageDraw
+        :param color: fill of the object. Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+        :type color: tuple
+        :param outline: outline of the object. Should only be used for illustration purposes!
+        Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+        :type outline: tuple
+        """
         if color is None:
             col = self._color
         else:
@@ -52,9 +68,29 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
         self.polygon.draw(drawer=drawer, color=col, outline=outline)
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
+        """ Crop the page element to a target dimension. Due to the nature of the ground truth document :param cut_left:
+        must be provided.
+        :param current_dim: Current dimension
+        :type current_dim: ImageDimension
+        :param target_dim: Target dimension
+        :type target_dim: ImageDimension
+        :param cut_left: Whether or not the page is cut_left or not.
+        :type cut_left: bool
+        """
         self.polygon.crop(current_dim=current_dim, target_dim=target_dim, cut_left=cut_left)
 
     def layer(self, img: Image, layers: List[Layer] = None) -> List[Layer]:
+        """ Returns a list of layers for every VectorObject of a PageElement according to the order defined chosen with
+        the implementation. (We suggest, you change it to a dict of LayoutClasses and Layers for a safer implementation.)
+        :param img: base img to be drawn upon.
+        :type img: Image
+        :param layers: layers of vector objects each drawn on a layer. This PageElement will be drawn on a new layer and added
+        to the list.
+        :type layers: List[Layer]
+        :return: layers: layers of vectorobjects (including this instance) each drawn on a layer.
+        :rtype:layers: List[Layer]
+        """
+        # TODO: make safer with LayoutClasses.
         img_dim: ImageDimension = ImageDimension(img.size[0], img.size[1])
         if not self._is_visible:
             return layers
@@ -65,30 +101,14 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
         layers.append(layer)
         return layers
 
-    # def layer(self, px_gt: PixelLevelGT):
-    # target_layers = self._get_target_layers(px_gt)
-    # self._draw_on_target_layers(target_layers=target_layers)
-    #
-    # def _get_target_layers(self, px_gt: PixelLevelGT) -> List[Layer]:
-    #     target_classes: List[LayoutClasses] = LayoutClasses.get_layout_classes_containing(self.layout_class)
-    #     target_layers: List[Layer] = []
-    #     for target_class in target_classes:
-    #         target_layers.append(px_gt.get_layer(target_class))
-    #     return target_layers
-    #
-    # def _draw_on_target_layers(self, target_layers: List[Layer]):
-    #     for layer in target_layers:
-    #         layer.draw(self)
-
     def build(self) -> Dict:
         """ Helper function to build the json file. """
         # return {self.layout_class.get_name(): self.polygon.xy} # deprecated
         return {type(self).__name__ + " Coordinates": self.polygon.xy}
 
     def show(self):
-        """ Displays the polygon of the PageElement for debugging purposes d
+        """ Displays the polygon of the PageElement for debugging purposes.
         """
-        # TODO: Maybe delete this method.
         centered_polygon: Polygon = Polygon(
             [(x - self.polygon.get_min_x(), y - self.polygon.get_min_y()) for x, y in self.polygon.xy])
         img_dim: ImageDimension = ImageDimension(width=centered_polygon.get_max_x(),
@@ -115,6 +135,10 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
                 self._color = colors[self._id % len(colors)]
 
     def get_color(self):
+        """ Returns the page element's color
+        :return: the page element's color
+        :rtype: tuple
+        """
         return self._color
 
     def get_id(self):
@@ -140,12 +164,12 @@ class PageElement(Scalable, Drawable, Showable, Croppable, Layarable, Dictionabl
         """
         return self._is_visible
 
-    def get_layout_classes(self, layout_classes: List[LayoutClasses] = None) -> List[LayoutClasses]:
-        if layout_classes is None:
-            return [self.layout_class]
-        else:
-            layout_classes.append(self.layout_class)
-            return layout_classes
+    def get_min_y(self):
+        """Getter method for the minimum y coordinate of this PageElement."""
+        return self.polygon.get_min_y()
+
+    def __lt__(self, other: PageElement):
+        return self.get_min_y() < other.get_min_y()
 
 
 class DecorationElement(PageElement):
@@ -163,11 +187,6 @@ class TextLineElements(PageElement):
     @abstractmethod
     def __init__(self, polygon: Polygon, id: int = 0):
         super().__init__(polygon, id=id)
-
-    def get_layout_classes(self, layout_classes: List[LayoutClasses] = None) -> List[LayoutClasses]:
-        layout_classes: List[LayoutClasses] = super().get_layout_classes(layout_classes)
-        layout_classes.append(self.layout_class)
-        return layout_classes
 
 
 class BaseLine(TextLineElements):
@@ -196,23 +215,33 @@ class TopLine(TextLineElements):
 
 
 class XRegion(TextLineElements):
+    """ Region to represent x-Height (or XRegion as it's called in this program) based on a top_line and the polygon of
+    the text_line
+    :param base_line: Base line (base line - some y value representing the x-height)
+    :type base_line: BaseLine
+    :param top_line: top_line: Top line (base line - some y value representing the x-height)
+    :type top_line: TopLine
+    :param id: To identify the region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+    :type id: int
+    """
 
     def __init__(self, base_line: BaseLine, top_line: TopLine, id: int = 0):
-        # sorted_baseline = [base_line.polygon.xy[1], base_line.polygon.xy[0]]
-        # top_line =
         concatenated = [top_line.polygon.xy[0], top_line.polygon.xy[1], base_line.polygon.xy[1],
                         base_line.polygon.xy[0]]
         quadrilateral = Quadrilateral(concatenated)
         super().__init__(quadrilateral, id=id)
         self.layout_class = LayoutClasses.XREGION
 
-    # def layer(self, img: Image, layers: List[Layer] = None) -> List[Layer]:
-    #     if not self.polygon.is_sorted():
-    #         raise AttributeError("Quadrilateral must be sorted. Something went wrong.")
-    #     return super().layer(img=img, layers=layers)
-
 
 class AscenderRegion(TextLineElements):
+    """ Region to represent ascenders. It is built based on a top_line and the polygon of the text_line
+    :param polygon: Textline polygon.
+    :type polygon: Polygon
+    :param top_line: Top line (base line - some y value representing the x-height)
+    :type top_line: TopLine
+    :param id: To identify the region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+    :type id: int
+    """
 
     def __init__(self, polygon: Polygon, top_line: TopLine, id: int = 0):
         min_x = polygon.get_min_x()
@@ -220,8 +249,8 @@ class AscenderRegion(TextLineElements):
         max_x = polygon.get_max_x()
         self.region = Quadrilateral([(min_x, min_y),  # left top corner
                                      (max_x, min_y),  # right top corner
-                                     top_line.polygon.get_max_x_coord(),  # right bottom corner
-                                     top_line.polygon.get_min_x_coord()  # left bottom corner
+                                     top_line.polygon.get_max_x_coord(),  # right bottom corner (ignore warning)
+                                     top_line.polygon.get_min_x_coord()  # left bottom corner (ignore warning)
                                      ])
         super().__init__(self.region, id=id)
         self.layout_class = LayoutClasses.ASCENDER
@@ -229,13 +258,21 @@ class AscenderRegion(TextLineElements):
 
 
 class DescenderRegion(TextLineElements):
+    """ Region to represent descenders. It is built based on a base_line and the polygon of the text_line
+    :param polygon: Text line polygon.
+    :type polygon: Polygon
+    :param top_line: Base line (base line - some y value representing the x-height)
+    :type top_line: BaseLine
+    :param id: To identify the region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+    :type id: int
+    """
 
     def __init__(self, polygon: Polygon, base_line: BaseLine, id: int = 0):
         min_x = polygon.get_min_x()
         max_x = polygon.get_max_x()
         max_y = polygon.get_max_y()
-        region = Quadrilateral([base_line.polygon.get_min_x_coord(),  # left top corner
-                                base_line.polygon.get_max_x_coord(),  # right top corner
+        region = Quadrilateral([base_line.polygon.get_min_x_coord(),  # left top corner (ignore warning)
+                                base_line.polygon.get_max_x_coord(),  # right top corner (ignore warning)
                                 (max_x, max_y),  # right bottom corner
                                 (min_x, max_y)  # left bottom corner
                                 ])
@@ -244,14 +281,22 @@ class DescenderRegion(TextLineElements):
 
 
 class TextRegionElement(TextLineElements):
+    """ Represents the bounding box of a Text-Region. Helps illustrate and the structure of the vector_gt.
+    :param bounding_box: bounding box of the Text-Region.
+    :type bounding_box: bounding box of the Text-Region.
+    :param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+    :type id: int
+    """
 
     def __init__(self, bounding_box: Rectangle, id: int = 0):
+
         super().__init__(bounding_box, id=id)
         self.layout_class = LayoutClasses.TEXT_REGION
 
-    def set_is_filled(self, is_filled: bool):
-        """Text Regions should not drawn as filled boxes."""
-        pass
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline: Tuple = None):
+        """ Draw the page element polygon with the instance color if no other coller is given. Fill it, if and only if
+        the set_filled parameter is true."""
+        self.polygon.draw(drawer=drawer, color=None, outline=outline, width=5) # (ignore warning)
 
 
 class TextLine(PageElement):
@@ -260,6 +305,12 @@ class TextLine(PageElement):
     :type polygon: Polygon
     :param base_line: Every :class: `TextLine` class comes with a default base_line provided by the original xml_gt.
     :type base_line: Line
+    :param color: color of the line, defaults to white
+    :type color: tuple
+    :param is_visible: set visible or invisible, defaults to true
+    :type is_visible: bool
+    :param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+    :type id: int
     """
 
     @abstractmethod
@@ -296,18 +347,24 @@ class TextLine(PageElement):
     def set_visible(self, is_visible: bool = None, vis_table: VisibilityTable = None):
         super().set_visible(is_visible=is_visible, vis_table=vis_table)
 
-    def get_layout_classes(self, layout_classes: List[LayoutClasses] = None) -> List[LayoutClasses]:
-        layout_classes: List[LayoutClasses] = super().get_layout_classes(layout_classes)
-        layout_classes = self.base_line.get_layout_classes(layout_classes)
-        return layout_classes
-
 
 class MainTextLine(TextLine):
-    """ The :class: `MainTextLine` class has no further characteristic than it's name. It instantiates the abstract super class
+    """
+    The :class: `MainTextLine` class has no further characteristic than it's name. It instantiates the abstract super class
     :class: `PageElement`.
+    :param polygon: represents the contour of the text line.
+    :type polygon: Polygon
+    :param base_line: Every :class: `TextLine` class comes with a default base_line provided by the original xml_gt.
+    :type base_line: Line
+    :param color: color of the line, defaults to white
+    :type color: tuple
+    :param is_visible: set visible or invisible, defaults to true
+    :type is_visible: bool
+    :param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+    :type id: int
     """
 
-    def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255), is_filled: bool = False,
+    def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255),
                  is_visible: bool = True, id: int = 0):
         super().__init__(polygon, base_line, color=color, is_visible=is_visible, id=id)
         self.layout_class = LayoutClasses.MAINTEXT
@@ -316,9 +373,19 @@ class MainTextLine(TextLine):
 class CommentTextLine(TextLine):
     """ The :class: `CommentTextLine` class has no further characteristic than it's name. It instantiates the abstract super class
     :class: `PageElement`.
+    :param polygon: represents the contour of the text line.
+    :type polygon: Polygon
+    :param base_line: Every :class: `TextLine` class comes with a default base_line provided by the original xml_gt.
+    :type base_line: Line
+    :param color: color of the line, defaults to white
+    :type color: tuple
+    :param is_visible: set visible or invisible, defaults to true
+    :type is_visible: bool
+    :param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+    :type id: int
     """
 
-    def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255), is_filled: bool = False,
+    def __init__(self, polygon: Polygon, base_line: BaseLine, color: Tuple = (255, 255, 255),
                  is_visible: bool = True, id: int = 0):
         super().__init__(polygon, base_line, color=color, is_visible=is_visible, id=id)
         self.layout_class = LayoutClasses.COMMENT
@@ -326,6 +393,16 @@ class CommentTextLine(TextLine):
 
 class TextLineDecoration(TextLine):
     """ Decorator class used to add further functionalities to :class: `TextLine` page elements.
+    :param polygon: represents the contour of the text line.
+    :type polygon: Polygon
+    :param base_line: Every :class: `TextLine` class comes with a default base_line provided by the original xml_gt.
+    :type base_line: Line
+    :param color: color of the line, defaults to white
+    :type color: tuple
+    :param is_visible: set visible or invisible, defaults to true
+    :type is_visible: bool
+    :param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+    :type id: int
     """
 
     @abstractmethod
@@ -452,18 +529,8 @@ class AscenderDescenderRegion(TextLineDecoration):
         self.ascender_region.set_visible(is_visible=is_visible, vis_table=vis_table)
         self.descender_region.set_visible(is_visible=is_visible, vis_table=vis_table)
 
-    def get_layout_classes(self, layout_classes: List[LayoutClasses] = None) -> List[LayoutClasses]:
-        layout_classes: List[LayoutClasses] = super().get_layout_classes(layout_classes)
-        layout_classes = self.top_line.get_layout_classes(layout_classes)
-        layout_classes = self.x_region.get_layout_classes(layout_classes)
-        layout_classes = self.ascender_region.get_layout_classes(layout_classes)
-        layout_classes = self.descender_region.get_layout_classes(layout_classes)
-        return layout_classes
 
-
-class HeadAndTailRegion(TextLine):
+class HeadAndTailRegion(TextLineDecoration):
+    """ Example for another decoration. A line could be devided into a head part (with initial) and tail part."""
     pass
 
-
-class Histogram(TextLine):
-    pass

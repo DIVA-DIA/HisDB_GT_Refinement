@@ -1,22 +1,19 @@
 from __future__ import annotations
+
 import operator
 import warnings
 from typing import List, Tuple
-from scipy.spatial import distance as dist
+
 import numpy as np
 from PIL import ImageDraw
-from copy import deepcopy
+from scipy.spatial import distance as dist
 
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Croppable, \
     Dictionable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-
-
-# TODO: outline wird immer None sein. outline wegnehmen.
-# TODO: Import shapely -> wäre toll.
 
 class Polygon(Scalable, Drawable, Croppable, Dictionable):
-    """ This class is the parent class of all vector objects used in to represent the vector ground truth.
+    """ This class is the parent class of all vector objects used to represent the vector ground truth.
     :param xy: is a polygon of 2 or more coordinates.
     :type xy: represents the coordinates [(x1,x1),(x2,y2),...] of the polygon. It's important the polygon is sorted.
     No checks are made for that. It doesn't matter if the polygon is closed or open (the last coordinate doesn't need to
@@ -32,36 +29,69 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
                 raise ValueError("Should be of python integer at instantiation")
 
     def draw(self, drawer: ImageDraw, color: Tuple = None, outline: Tuple = None):
-        """
-
+        """ Draw the vector object on a given object.
         :param drawer: Pillow drawer, can be of any mode (example "1", "RGB", "RGBA"). The color parameter must be corresponding format.
+        :type drawer: ImageDraw.ImageDraw
         :param color: Single element tuple for binary, triple tuple for RGB, quadruple tuple for RGBA (consult PILLOW Documenation for more information).
-        :param outline: Only use this parameter for illustration purposes.
-        Using it for ground truth generation is dangerous.
+        :type color: tuple
+        :param outline: Only use this parameter for illustration purposes. Using it for ground truth generation is dangerous.
+        :type outline: tuple
         :return:
+        :rtype:
         """
         drawer.polygon(xy=self.xy, outline=outline, fill=color)
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
+        """Resizes the vector object to a given target
+        dimension. As this class doesn't possess a image dimension parameter, both the current dimension (of the page)
+        and the target dimension (the size to be scaled to) must be given.
+        :param current_dim: Current dimension
+        :type current_dim: ImageDimension
+        :param target_dim: Target dimension
+        :type target_dim: ImageDimension
+        """
         scale_factor: Tuple[float, float] = current_dim.scale_factor(target_dim)
         self.xy = [tuple(map(operator.truediv, t, scale_factor)) for t in self.xy]
         self.xy = [tuple(map(round, t)) for t in self.xy]
 
     def crop(self, current_dim: ImageDimension, target_dim: ImageDimension, cut_left: bool):
+        """ Crop this vector object to a target dimension. Due to the nature of the ground truth document
+        :param cut_left: must be provided.
+        :param current_dim: Current dimension
+        :type current_dim: ImageDimension
+        :param target_dim: Target dimension
+        :type target_dim: ImageDimension
+        :param cut_left: Whether or not the page is cut_left or not.
+        :type cut_left: bool
+        """
         difference = current_dim.difference(target_dim)
         if not cut_left:
             difference = (0, difference[1])
         self.xy = self._find_and_scale_points(difference)
 
     def _find_and_scale_points(self, difference: Tuple[float, float]):
+        """  Helper method for crop().
+        :param difference: Move the points with the given difference.
+        :type difference: Tuple[int, int]
+        :return: returns the moved (cropped) coordinates of xy.
+        :rtype: tuple
+        """
         return [(x - difference[0], y - difference[1]) for x, y in self.xy]
         # return [tuple(map(operator.sub, t, difference)) for t in self.xy]
 
     def get_bbox(self) -> Rectangle:
+        """ Get bounding box of the vector object.
+        :return: returns a rectangle defining the bounding box.
+        :rtype: Rectangle
+        """
         bbox: Rectangle = Rectangle([(self.get_min_x(), self.get_min_y()), (self.get_max_x(), self.get_max_y())])
         return bbox
 
     def get_min_x(self):
+        """ Get min x coordinate of all the coordinates of this vector object.
+        :return: min x
+        :rtype: int
+        """
         min_x = float("inf")
         for coord in self.xy:
             if coord[0] < min_x:
@@ -69,6 +99,10 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
         return min_x
 
     def get_min_y(self):
+        """ Get min y coordinate of all the coordinates of this vector object.
+        :return: min y
+        :rtype: int
+        """
         min_y = float("inf")
         for coord in self.xy:
             if coord[1] < min_y:
@@ -76,6 +110,10 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
         return min_y
 
     def get_max_x(self):
+        """ Get max x coordinate of all the coordinates of this vector object.
+        :return: max x
+        :rtype: int
+        """
         max_x = 0
         for coord in self.xy:
             if coord[0] > max_x:
@@ -83,6 +121,10 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
         return max_x
 
     def get_max_y(self):
+        """ Get max y coordinate of all the coordinates of this vector object.
+        :return: max y
+        :rtype: int
+        """
         max_y = 0
         for coord in self.xy:
             if coord[1] > max_y:
@@ -123,7 +165,12 @@ class Quadrilateral(Polygon):
 
     @classmethod
     def _order_points(cls, xy):
-        # TODO: Make sure that this function works fine.
+        """ Order the points of a rectangle. This method was tested, but we can guarantee of it's proper function 100%.
+        :param xy: 4 coordinates to be sorted.
+        :type xy: tuple
+        :return: sorted coords (left upper, right upper, right lower, left lower)
+        :rtype: tuple
+        """
         # sort the points based on their x-coordinates
         as_np_array = np.asarray(xy)
         xSorted = as_np_array[np.argsort(as_np_array[:, 0]), :]
@@ -179,8 +226,8 @@ class Rectangle(Polygon):
         super().__init__(xy=xy)
         assert len(xy) == 2
 
-    def draw(self, drawer: ImageDraw, color: Tuple = None, outline = None):
-        drawer.rectangle(self.xy, outline=outline, fill=color)
+    def draw(self, drawer: ImageDraw, color: Tuple = None, outline = None, width = None):
+        drawer.rectangle(self.xy, outline=outline, fill=color, width=width)
 
 
 class Line(Polygon):
@@ -190,10 +237,9 @@ class Line(Polygon):
         assert xy[0][0] < xy[1][0]  # assert line is sorted left to right
 
     def draw(self, drawer: ImageDraw, outline=None, color: Tuple = None):
-        """ Draws a line."""
         if outline is None:
             warnings.warn("The Line vector object doesn't provide an outline due to it's nature. Use 'fill' to specify "
-                          "the color of the line. Fill default = (0, 125, 255)")
+                          "the color of the line.")
         drawer.line(self.xy, fill=color)
 
     def get_min_x_coord(self):

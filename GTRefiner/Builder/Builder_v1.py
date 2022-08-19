@@ -1,8 +1,10 @@
 from pathlib import Path
 
 from HisDB_GT_Refinement.GTRefiner.Builder.Builder import GTBuilder
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Sorter import Sorter
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Cropper import Cropper
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Grouper import Grouper
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.IllustratorVisitor import Illustrator
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Resizer import Resizer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Colorer import Colorer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Combiner import Combiner
@@ -20,12 +22,30 @@ from HisDB_GT_Refinement.GTRefiner.IO.Writer import JSONWriter, GIFWriter
 
 
 class BuilderV1(GTBuilder):
+    """This class provides an example for concrete :class: `Builder`.
+    """
 
     def __init__(self, vector_gt_path: Path, px_gt_path: Path, orig_img: Path, vis_table: Path, col_table: Path):
+        """Constructor Method
+        """
         self.page: Page = self.read(vector_gt_path=vector_gt_path, px_gt_path=px_gt_path, orig_img=orig_img,
                                     vis_table=vis_table, col_table=col_table)
 
     def read(self, vector_gt_path: Path, px_gt_path: Path, orig_img: Path, vis_table: Path, col_table: Path) -> Page:
+        """Initialization method. Take all input paths :class: `Path` and returns a :class: `Page`
+        :param vector_gt_path: path to the vector ground truth
+        :type vector_gt_path: Path
+        :param px_gt_path: path to the pixel-level ground truth
+        :type px_gt_path: Path
+        :param orig_img: path to the original image ground truth
+        :type orig_img: Path
+        :param vis_table: path to the visibility table to be applied to the ground truth :class: `Page`
+        :type vis_table: VisibilityTable
+        :param col_table: path to the color table to be applied to the ground truth :class: `Page`
+        :type col_table: ColorTable
+        :return: Returns a page :class: `Page` based on the paths :class: `Path`.
+        :rtype: Page
+        """
         super().read(vector_gt_path, px_gt_path, orig_img, vis_table, col_table)
         vector_gt: VectorGT = XMLReader.read(vector_gt_path)
         px_gt: PixelLevelGT = PxGTReader.read(px_gt_path)
@@ -53,6 +73,14 @@ class BuilderV1(GTBuilder):
         super().group(grouper)
         grouper.visit_page(self.page)
 
+    def sort(self, sorter: Sorter):
+        super().sort(sorter)
+        sorter.visit_page(page=self.page)
+
+    def illustrate(self, illustrator: Illustrator):
+        super().illustrate(illustrator)
+        illustrator.visit_page(page=self.page)
+
     def set_visible(self, visibilitor: VisibilityVisitor = VisibilityVisitor()):
         super().set_visible()
         visibilitor.visit_page(page=self.page)
@@ -66,6 +94,12 @@ class BuilderV1(GTBuilder):
         combiner.visit_page(self.page)
 
     def write(self, output_path):
+        """ Write :class: `Page` Page as JSON and GIF.
+        :param output_path:
+        :type output_path:
+        :return:
+        :rtype:
+        """
         super().write(output_path)
         JSONWriter.write(ground_truth=self.page.vector_gt, path=output_path)
         GIFWriter.write(ground_truth=self.page.px_gt.img, path=output_path)
