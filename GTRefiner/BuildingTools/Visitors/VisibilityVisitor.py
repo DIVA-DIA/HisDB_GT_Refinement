@@ -10,6 +10,7 @@ class VisibilityVisitor(Visitor):
     :type vis_table: VisibilityTable
 
     """
+
     def __init__(self, vis_table: VisibilityTable = None):
         """Constructor Method
         """

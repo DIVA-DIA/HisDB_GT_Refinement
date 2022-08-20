@@ -36,21 +36,6 @@ class AscenderDescenderDecorator(TextLineDecorator):
                 for i, elem in enumerate(region.page_elements):
                     if isinstance(elem, TextLine):
                         region.page_elements[i] = AscenderDescenderRegion(text_line=elem, x_height=self.x_height)
-    #
-    # def visitMainText(self, main_text: MainText):
-    #     if self.x_height is None:
-    #         raise ValueError("provide x_height")
-    #     for i, elem in enumerate(main_text.page_elements):
-    #         main_text[i] = AscenderDescenderRegion(text_line=elem, x_height=self.x_height)
-    #
-    # def visitCommentText(self, comment_text: CommentText):
-    #     if self.x_height is None:
-    #         raise ValueError("provide x_height")
-    #     for i, elem in enumerate(comment_text.page_elements):
-    #         comment_text[i] = AscenderDescenderRegion(text_line=elem, x_height=self.x_height)
-    #
-    # def visitDecorations(self, decorations: Decorations):
-    #     pass
 
 
 class HeadAndTailDecorator(TextLineDecorator):

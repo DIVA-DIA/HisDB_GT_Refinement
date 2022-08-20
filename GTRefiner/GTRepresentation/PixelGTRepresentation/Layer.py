@@ -196,9 +196,6 @@ class Layer():
         """ Display the image
         """
         img: Image = self.img_from_layer()
-        print("image mode" + str(img.mode))
-        print("image shape/size" + str(img.size))
-        print("self.img_dim" + str(self.img_dim))
         img.show()
 
     def img_from_layer(self, rgb: bool = False) -> Image:

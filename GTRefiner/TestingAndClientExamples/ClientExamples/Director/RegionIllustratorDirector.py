@@ -27,7 +27,7 @@ if __name__ == '__main__':
     crop_dim: ImageDimension = ImageDimension(4500, 6000)
     target_dim: ImageDimension = ImageDimension(900, 1200)
 
-    # build GT
+    # This is Director illustrates the grouping and sorting functionalities.
     builder = BuilderV1(orig_img=original, px_gt_path=pixel, vector_gt_path=vector_gt, col_table=color_table,
                         vis_table=visibility_table)
     cropper = Cropper(target_dim=crop_dim)

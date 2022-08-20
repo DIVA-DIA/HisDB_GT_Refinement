@@ -3,9 +3,6 @@ import time
 from pathlib import Path
 
 from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import *
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import *
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
@@ -186,14 +183,14 @@ def test_two_text_lines():
     decoration.set_visible(True)
 
     # create page layout
-    main_text = MainText()
+    main_text = Layout(layout_class=LayoutClasses.MAINTEXT)
     main_text.add_elem(elem=main_text_line)
     main_text.add_elem(ascender_descender_line)
 
-    comment_text = CommentText()
+    comment_text = Layout(layout_class=LayoutClasses.COMMENT)
     comment_text.add_elem(another_text_line)
 
-    decorations = Decorations()
+    decorations = Layout(layout_class=LayoutClasses.DECORATION)
     decorations.add_elem(decoration)
 
     # # test layer() in layout:
@@ -225,13 +222,13 @@ def test_two_text_lines():
 
 if __name__ == '__main__':
     # test basic merge and draw()
-    # test_merge_and_draw()
+    test_merge_and_draw()
 
     # # test on a real text line
-    # test_on_text_line()
+    test_on_text_line()
 
     # Test two textlines
-    #test_two_text_lines()
+    test_two_text_lines()
 
     # # test on real ground_truth
     test_real_gt()

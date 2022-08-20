@@ -161,8 +161,6 @@ class Quadrilateral(Polygon):
             temp = self.xy[2]
             self.xy[2] = self.xy[3]
             self.xy[3] = temp
-            if not self.is_sorted():
-                warnings.warn(f"Quadrilateral is not sorted.{xy}")
 
     @classmethod
     def _order_points(cls, xy):

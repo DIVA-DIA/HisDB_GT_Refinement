@@ -317,8 +317,8 @@ class TextRegion(Layout):
             for i, elem in enumerate(layout.page_elements[1:]):
                 prev = layout.page_elements[i].get_min_y()
                 curr = layout.page_elements[i + 1].get_min_y()
-                print(f"Layout: {layout.layout_class}, counter: {i} "
-                      f"previous y: {prev}, current y: {curr}")
+                # print(f"Layout: {layout.layout_class}, counter: {i} "
+                #       f"previous y: {prev}, current y: {curr}")
                 if reverse == False:
                     is_sorted: bool = prev <= curr
                 else:
