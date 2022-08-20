@@ -149,7 +149,7 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
 
 class Quadrilateral(Polygon):
     """
-    :param xy: 4 coords that represent a quadrilateral. which are sorted upon initialisation to ensure a useful representation with the draw method.
+    :param xy: 4 coords that represent a quadrilateral. which are sorted upon initialisation to ensure a useful
     representation with the draw method.
     """
 
@@ -158,10 +158,11 @@ class Quadrilateral(Polygon):
         super().__init__(xy)
         assert len(xy) == 4
         if not self.is_sorted():
-            warnings.warn(f"Xy is not sorted.{xy}")
             temp = self.xy[2]
             self.xy[2] = self.xy[3]
             self.xy[3] = temp
+            if not self.is_sorted():
+                warnings.warn(f"Quadrilateral is not sorted.{xy}")
 
     @classmethod
     def _order_points(cls, xy):
@@ -222,6 +223,11 @@ class Quadrilateral(Polygon):
 
 
 class Rectangle(Polygon):
+    """ Represents a rectangle
+    :param xy: 4 coords that represent a quadrilateral. which are sorted upon initialisation to ensure a useful
+    representation with the draw method.
+    :type tuple
+    """
     def __init__(self, xy):
         super().__init__(xy=xy)
         assert len(xy) == 2
@@ -231,6 +237,7 @@ class Rectangle(Polygon):
 
 
 class Line(Polygon):
+    """ Represents a line of two coordinates. """
     def __init__(self, xy):
         super().__init__(xy=xy)
         assert len(xy) == 2

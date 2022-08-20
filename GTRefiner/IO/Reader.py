@@ -15,17 +15,21 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT, RawImage
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import PageLayout
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import BaseLine
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import BaseLine, PageElement, \
+    MainTextLine, CommentTextLine, DecorationElement
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import TextRegion
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Line, Polygon
 
 
 class AbstractReader():
+    """ Interface or all reader like classes. """
 
     @classmethod
     @abstractmethod
     def read(cls, path: Path) -> Any:
+        """Read the file at given location (path).
+        """
         pass
 
 
@@ -34,6 +38,8 @@ class GTReader(AbstractReader):
     @classmethod
     @abstractmethod
     def read(cls, path: Path) -> GroundTruth:
+        """ Read the ground truth.
+        """
         pass
 
 
@@ -41,10 +47,22 @@ class XMLReader(GTReader):
 
     @classmethod
     def read(cls, path: Path) -> VectorGT:
+        """ Reade the XML base PAGE and return a vector ground truth.
+        :param path: File path to PAGE XML.
+        :type path: Path
+        :return: Vector ground truth
+        :rtype: VectorGT
+        """
         return cls._read_xml(xml_path=path)
 
     @classmethod
     def _read_xml(cls, xml_path: Path):
+        """ Helper method to read the xml file and create a vector ground truth.
+        :param xml_path: File path to PAGE XML.
+        :type xml_path: Path
+        :return: Vector ground truth
+        :rtype: VectorGT
+        """
         patt = re.compile('\{.*\}')
         # load xml
         tree = ET.parse(str(xml_path))
@@ -76,13 +94,13 @@ class XMLReader(GTReader):
                 polygon_text: str = text_line.find(ns + 'Coords').attrib['points']
                 if text_line.attrib.get("id").startswith("textline"):
                     main_text.add_elem(
-                        PageLayout.MainTextLine(Polygon(xy=cls._str_to_polygon(polygon_text)),
-                                                base_line=baseline, id = mt_count))
+                        MainTextLine(Polygon(xy=cls._str_to_polygon(polygon_text)),
+                                     base_line=baseline, id=mt_count))
                     mt_count = mt_count + 1
                 elif text_line.attrib.get("id").startswith("comment"):
                     comments.add_elem(
-                        PageLayout.CommentTextLine(Polygon(xy=cls._str_to_polygon(polygon_text)),
-                                                   base_line=baseline, id=com_count))
+                        CommentTextLine(Polygon(xy=cls._str_to_polygon(polygon_text)),
+                                        base_line=baseline, id=com_count))
                     com_count = com_count + 1
             # # must be in outer loop due to file structure
             # polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
@@ -95,7 +113,7 @@ class XMLReader(GTReader):
             if "GraphicRegion" in str(text_region.tag):
                 polygon_text: str = text_region.find(ns + 'Coords').attrib['points']
                 decorations.add_elem(
-                    PageLayout.DecorationElement(Polygon(xy=cls._str_to_polygon(polygon_text)), id=dec_count))
+                    DecorationElement(Polygon(xy=cls._str_to_polygon(polygon_text)), id=dec_count))
                 dec_count = dec_count + 1
         return VectorGT([TextRegion(main_text), TextRegion(comments), TextRegion(decorations)], img_dim=img_dimension)
 
@@ -108,6 +126,12 @@ class JSONReader(GTReader):
 
     @classmethod
     def read(cls, path: Path) -> VectorGT:
+        """ Method to read the json file and create a vector ground truth.
+        :param xml_path: File path to PAGE XML.
+        :type xml_path: Path
+        :return: Vector ground truth
+        :rtype: VectorGT
+        """
         vector_gt: dict = json.load(open(path))
         main_text = PageLayout.Layout(layout_class=LayoutClasses.MAINTEXT)
         comments = PageLayout.Layout(layout_class=LayoutClasses.COMMENT)
@@ -156,13 +180,13 @@ class JSONReader(GTReader):
                                 f"Current vector object: {base_line.polygon.xy}"
                             )
                         if layout_class is LayoutClasses.MAINTEXT:
-                            main_text.add_elem(PageLayout.MainTextLine(polygon=polygon, base_line=base_line, id=mt_count))
+                            main_text.add_elem(MainTextLine(polygon=polygon, base_line=base_line, id=mt_count))
                             mt_count = mt_count + 1
                         if layout_class is LayoutClasses.COMMENT:
-                            comments.add_elem(PageLayout.CommentTextLine(polygon=polygon, base_line=base_line, id=com_count))
+                            comments.add_elem(CommentTextLine(polygon=polygon, base_line=base_line, id=com_count))
                             com_count = com_count + 1
                     if layout_class is LayoutClasses.DECORATION:
-                        decorations.add_elem(PageLayout.DecorationElement(polygon=polygon, id=dec_count))
+                        decorations.add_elem(DecorationElement(polygon=polygon, id=dec_count))
                         dec_count = dec_count + 1
 
         return VectorGT([TextRegion(main_text), TextRegion(comments), TextRegion(decorations)], img_dim=img_dim)
@@ -180,9 +204,11 @@ class PxGTReader(GTReader):
 
     @classmethod
     def _hisdb_to_bin_images(cls, path: Path) -> PixelLevelGT:
-        """
-        Find out the different classes that are encoded in the image and convert them to binary images.
-        :return: dict of binary images Dict[LayoutClasses, Layer]
+        """Find the different classes that are encoded in the image and convert them to binary images.
+        :param path: File path to pixel based ground truth
+        :type path: Path
+        :return: pixel based ground truth
+        :rtype: PixelLevelGT
         """
         img: Image = Image.open(path).convert("RGB")
         img_array = np.asarray(img)
@@ -226,6 +252,12 @@ class VisibilityTableReader(TableReader):
 
     @classmethod
     def read(cls, path: Path) -> VisibilityTable:
+        """ Read a given json-based visibility table.
+        :param path: path to json-based visibility table
+        :type path: Path
+        :return: visibility table
+        :rtype: VisibilityTable
+        """
         data = json.load(open(path))
         data = {LayoutClasses.str_to_enum(k): v for (k, v) in data.items()}
         return VisibilityTable(data)
@@ -234,6 +266,12 @@ class VisibilityTableReader(TableReader):
 class ColorTableReader(TableReader):
     @classmethod
     def read(cls, path: Path) -> ColorTable:
+        """ Read a given json-based color table.
+        :param path: path to json-based color table
+        :type path: Path
+        :return: color table
+        :rtype: ColorTable
+        """
         data = json.load(open(path))
         data = {LayoutClasses.str_to_enum(k): list(tuple(v) for v in v) for (k, v) in data.items()}
         return ColorTable(data)

@@ -25,8 +25,7 @@ class VectorGT(GroundTruth, Dictionable, Scalable, Croppable, Drawable):
 
     def resize(self, current_dim: ImageDimension, target_dim: ImageDimension):
         """Resizes all page elements :class: `List[PageElement]` of the current :class: `LayoutClass` to a given target
-        dimension. As this class doesn't possess a image dimension parameter, both the current dimension (of the page)
-        and the target dimension (the size to be scaled to) must be given.
+        dimension.
         :param current_dim: Current dimension
         :type current_dim: ImageDimension
         :param target_dim: Target dimension

@@ -142,4 +142,7 @@ dmypy.json
 *.gif
 .DS_Store
 .idea/
-/prototype_01/Output/
+/prototype_01
+/prototype_02
+/prototype_03
+/prototype_04

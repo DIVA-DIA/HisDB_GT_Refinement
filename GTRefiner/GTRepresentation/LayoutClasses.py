@@ -45,6 +45,12 @@ class LayoutClasses(Enum):
 
     @classmethod
     def get_layout_classes_containing(cls, layout_class: LayoutClasses):
+        """ Get all layout classes containing another one (based on the string).
+        :param layout_class: target layout class
+        :type layout_class: LayoutClasses
+        :return: list of layout classes containing the target layou class as a substring.
+        :rtype: list[LayoutClasses]
+        """
         key_as_str = str(layout_class).upper().split(":")[0]
         keys: List[LayoutClasses] = []
         for l_class in LayoutClasses:
@@ -55,6 +61,12 @@ class LayoutClasses(Enum):
 
     @classmethod
     def str_to_enum(cls, enum_name: str) -> LayoutClasses:
+        """ Return the matching enum based on a string.
+        :param enum_name:
+        :type enum_name:
+        :return:
+        :rtype:
+        """
         for l_class in LayoutClasses:
             as_str = str(l_class._name_)
             if enum_name == as_str:
@@ -62,4 +74,8 @@ class LayoutClasses(Enum):
         raise ValueError("No such LayoutClass found: " + str(enum_name))
 
     def get_name(self) -> str:
+        """ Return the name of a enum instance. E.g. MAINTEXT
+        :return: Return the name
+        :rtype: str
+        """
         return self._name_

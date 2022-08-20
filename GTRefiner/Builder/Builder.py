@@ -91,7 +91,7 @@ class GTBuilder():
 
     @abstractmethod
     def combine(self, layerer: Combiner):
-        """Visit the Page with the :class: `Illustrator` given.
+        """Visit the Page with the :class: `Combiner` given.
         :param layerer: combines the two ground-truths vector-gt :class: `VectorGT` and pixel-level-gt :class:`PixelLevelGT` and
         stores the newly generated pixel-based ground-truth based on the Combiner's implementation in the page :class:`Page`.
         :type layerer: Combiner
