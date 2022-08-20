@@ -1,1 +1,0 @@
-# This script serves the purpose to test different contours methods. The goal is to input pixel-based information and
