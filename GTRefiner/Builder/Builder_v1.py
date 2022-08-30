@@ -7,7 +7,7 @@ from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Grouper import Grouper
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.IllustratorVisitor import Illustrator
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Resizer import Resizer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Colorer import Colorer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Layerer import Layerer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import TextLineDecorator
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.VisibilityVisitor import VisibilityVisitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
@@ -89,9 +89,9 @@ class BuilderV1(GTBuilder):
         super().set_color()
         colorer.visit_page(page=self.page)
 
-    def combine(self, combiner: Combiner):
-        super().combine(combiner)
-        combiner.visit_page(self.page)
+    def layer(self, layerer: Layerer):
+        super().layer(layerer)
+        layerer.visit_page(self.page)
 
     def write(self, output_path):
         """ Write :class: `Page` Page as JSON and GIF.

@@ -9,7 +9,13 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageE
 
 class Colorer(Visitor):
     """ Default implementation of Colorer sets the colors of the vector objects and the different levels of the pixel
-        ground truth
+        ground truth. Using a color table in \ac{JSON} format, a client can assign individual colors to the various
+        vector objects of the VectorGT or layers of the PixelGT. The colorer takes the responsibility of reading this
+        information and assigning it to the target elements. It supports three strategies: paint each TextElement of a
+        layout class the same, paint each TextElement of a layout class differently, or give each a different color.
+        In principle, any other coloring strategy is conceivable. To do this, the colors in the Color palette must be
+        selected accordingly. If specifics groups should have a certain color (or iteration of colors), a new Colorer can
+        be written, to introduce the desired rules.
         :param color_table: colors of color table are used to define the colors of the differenet page
         elements :class:`PageElement`, layouts :class:`Layout` and regions, :class:`Region`.
         :type color_table: ColorTable

@@ -5,7 +5,10 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable
 
 class VisibilityVisitor(Visitor):
     """ Based on a visibility table, set all elements in the vector ground-truth :class:`VectorGT` and all layers of
-    the pixel level ground-truth:class:`PixelLevelGT` to the specified boolean value.
+    the pixel level ground-truth:class:`PixelLevelGT` to the specified boolean value. Analogous to the Colorer,
+    the Visibility-Visitor reads a visibility table that defines whether a layout class should be visible or not. If the
+    user decides that only individual text regions or text elements are of interest, a new visitor can be written that
+    implements the desired functionality.
     :param vis_table: visibility table.
     :type vis_table: VisibilityTable
 
@@ -18,7 +21,7 @@ class VisibilityVisitor(Visitor):
 
     def visit_page(self, page: Page):
         """Based on a visibility table, set all elements in the vector ground-truth :class:`VectorGT` and all layers of
-    the pixel level ground-truth:class:`PixelLevelGT` to the specified boolean value.
+        the pixel level ground-truth:class:`PixelLevelGT` to the specified boolean value.
         :param page: Page that should be set visible according to the visibility table provided within the page :class:
         `Page` or can be set Visible with a custom visibility table provided by the instance (at instantiation).
         :type page: Page

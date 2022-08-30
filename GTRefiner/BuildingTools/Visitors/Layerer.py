@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
@@ -10,8 +10,11 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer 
 # won't have to care about traversing the the tree structure.
 
 
-class Combiner(Visitor):
-    """Combiner combines information from both ground truths (vector gt and pixel-based gt)."""
+class Layerer(Visitor):
+    """The Layerer Visitor is used to combine the two ground truths (vector gt and pixel-based gt). It paints the
+    desired vector objects of the vector GT onto the layers of the pixel-level GT and combines them to form an RGB
+    image. In doing so, it overlays the vector GT as a binary image on top of the combined layers of the pixel GT,
+    keeping only pixels that are visible in both the vector GT and the pixel-level GT."""
 
     @classmethod
     def visit_page(cls, page: Page):

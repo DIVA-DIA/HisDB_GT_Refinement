@@ -28,16 +28,16 @@ class BlurAndScaleResizerPxGT(Resizer):
         # blur orig image
         img = copy.deepcopy(page.px_gt.merged_levels(all_vis=True).img_from_layer())
         # greyscale
-        img.convert(mode="L")
+        img = img.convert(mode="L")
         # blur
-        raw_img = RawImage(Image.fromarray(gaussian_filter(img, sigma=sigma, truncate=truncate)))
-        #raw_img = RawImage(img)
+        #raw_img = RawImage(Image.fromarray(gaussian_filter(img, sigma=sigma, truncate=truncate)))
+        raw_img = RawImage(img)
         # raw_img.img.show()
         # resize
         raw_img.resize(current_dim=page.get_img_dim(), target_dim=self.target_dim)
         raw_img.show()
-        #array = raw_img.binarize(img=raw_img.img, bin_algo=self.algo)
-        #img = Image.fromarray(array)
+        array = raw_img.binarize(img=raw_img.img, bin_algo=self.algo)
+        img = Image.fromarray(array)
         page.px_gt.img = img
         img.show()
 
@@ -98,13 +98,13 @@ if __name__ == '__main__':
     # builder.crop(cropper=cropper)
 
     # px_gt
-    # otsu_resizer = BlurAndScaleResizerPxGT(target_dim=target_dim, algo="otsu")
-    # sauvola_resizer = BlurAndScaleResizerPxGT(target_dim=target_dim, algo="sauvola")
-    # niblack_resizer = BlurAndScaleResizerPxGT(target_dim=target_dim, algo= "niblack")
+    otsu_resizer = BlurAndScaleResizerPxGT(target_dim=target_dim, algo="otsu")
+    sauvola_resizer = BlurAndScaleResizerPxGT(target_dim=target_dim, algo="sauvola")
+    niblack_resizer = BlurAndScaleResizerPxGT(target_dim=target_dim, algo= "niblack")
 
-    otsu_resizer = BlurAndScaleResizerOrig(target_dim=target_dim, algo="otsu")
-    sauvola_resizer = BlurAndScaleResizerOrig(target_dim=target_dim, algo="sauvola")
-    niblack_resizer = BlurAndScaleResizerOrig(target_dim=target_dim, algo= "niblack")
+    # otsu_resizer = BlurAndScaleResizerOrig(target_dim=target_dim, algo="otsu")
+    # sauvola_resizer = BlurAndScaleResizerOrig(target_dim=target_dim, algo="sauvola")
+    # niblack_resizer = BlurAndScaleResizerOrig(target_dim=target_dim, algo= "niblack")
 
     builder.resize(resizer=otsu_resizer)
     builder.resize(resizer=sauvola_resizer)

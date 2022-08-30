@@ -30,7 +30,8 @@ class Table():
 # TODO: Color soll eine method .toGIFpalette() haben. ->
 class ColorTable(Table):
     """ Defines the colors for the ground truth objects (texelements of the vector gt, levels of the
-    pixel gt)
+    pixel gt). If you want to implement iterating or all different colors you need to provide a list of colors for the
+    target LayoutClass. Compare with the color tables in the Ressources/ColorTables/ directory.
     :param table: Color table
     :type table: Dict[LayoutClasses, List[Tuple]
     """

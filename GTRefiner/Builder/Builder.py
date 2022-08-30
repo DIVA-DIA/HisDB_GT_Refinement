@@ -8,7 +8,7 @@ from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Grouper import Grouper
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.IllustratorVisitor import Illustrator
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Resizer import Resizer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Colorer import Colorer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Layerer import Layerer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import TextLineDecorator
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
@@ -17,8 +17,14 @@ from HisDB_GT_Refinement.GTRefiner.IO import Writer
 logging.getLogger().setLevel(logging.INFO)
 
 class GTBuilder():
-    """ The GT Builder provides an interface for concrete builder implementations. Builders manipulate an instance
-    of :class: `Page` class.
+    """The builder provides an interface for manipulating an instance of :class: `Page` class. It serves to construct
+    the ground truth and is based on the builder design pattern. It improves code readability, complexity,
+    and thus safety by replacing large constructors with many, different, optional input parameters with an auxiliary
+    class. The auxiliary class is called Director and serves the methods provided by the builder in the desired order.
+    If a new ground truth is to be built, developers:inside can write their own directors. Methods of the Builder can be
+    called iteratively and are therefore superior to large constructors from this perspective as well. For example, if
+    page objects of the vector GT are to be regrouped first and then sorted, this can be instructed in a few lines of
+    code thanks to the builder pattern, see ClientExamples: RegionIllustratorDirector.py.
     """
     @abstractmethod
     def read(self, vector_gt_path: Path, px_gt_path: Path, orig_img: Path, vis_table: Path, col_table: Path):
@@ -90,11 +96,11 @@ class GTBuilder():
         logging.info("Setting the different color of each layout class in LayoutClasses...")
 
     @abstractmethod
-    def combine(self, layerer: Combiner):
-        """Visit the Page with the :class: `Combiner` given.
+    def layer(self, layerer: Layerer):
+        """Visit the Page with the :class: `Layerer` given.
         :param layerer: combines the two ground-truths vector-gt :class: `VectorGT` and pixel-level-gt :class:`PixelLevelGT` and
-        stores the newly generated pixel-based ground-truth based on the Combiner's implementation in the page :class:`Page`.
-        :type layerer: Combiner
+        stores the newly generated pixel-based ground-truth based on the Layerer's implementation in the page :class:`Page`.
+        :type layerer: Layerer
         """
         logging.info("Converting the VectorGT to layers in a new PixelLevelGT...")
 

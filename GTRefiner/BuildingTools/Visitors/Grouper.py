@@ -12,6 +12,12 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageL
 
 
 class Grouper(Visitor):
+    """
+    The Grouping tool works at the level of text regions. It creates, divides and combines the text elements into logical
+    (sub)groups depending on the algorithm. Currently, the Grouper module supports clustering text elements based on
+    their smallest x-coordinate (Blockgrouper) and subdividing them into blocks of close, adjacent text elements
+    (Textgrouper).
+    """
 
     @abstractmethod
     def visit_page(self, page: Page):

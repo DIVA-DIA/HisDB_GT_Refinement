@@ -3,6 +3,11 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageD
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 
 class Cropper(Visitor):
+    """ The Cropping Visitor crops the image to a desired dimension. It is possible to specify whether the page is left-
+    or right-bound. The current use of the cropping function is to get rid of useless edge pixels, but it could also be
+    used for illustration purposes or targeted cropping of text regions. The behavior is inherited through the Croppable
+    interface.
+    """
 
     def __init__(self, target_dim: ImageDimension):
         """

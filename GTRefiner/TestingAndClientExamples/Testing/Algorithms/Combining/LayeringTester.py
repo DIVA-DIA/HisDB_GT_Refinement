@@ -3,6 +3,7 @@ import time
 from pathlib import Path
 
 from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Cropper import Cropper
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import *
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import *
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
@@ -105,13 +106,15 @@ def test_real_gt():
     original_2 = Path("../../../../../CB55/img/public-test/e-codices_fmb-cb-0055_0108v_max.jpg")
     pixel_2 = Path("../../../../../CB55/pixel-level-gt/public-test/e-codices_fmb-cb-0055_0108v_max.png")
     vector_gt_2 = Path("../../../../../CB55/PAGE-gt/public-test/e-codices_fmb-cb-0055_0108v_max.xml")
-    color_table = Path("../../../../Resources/ColorTables/color_table.json")
+    color_table = Path("../../../../Resources/ColorTables/color_table_with_color_lists_2.json")
+    visibility_table = Path("../../../../Resources/VisibilityTables/visibility_table.json")
 
     builder = BuilderV1(orig_img=original_2, px_gt_path=pixel_2, vector_gt_path=vector_gt_2, col_table=color_table,
-                        vis_table=None)
+                        vis_table=visibility_table)
 
     target_dim: ImageDimension = ImageDimension(4500, 6000)
-    builder.crop(target_dim)
+    cropper = Cropper(target_dim=target_dim)
+    builder.crop(cropper=cropper)
 
     target_dim: ImageDimension = ImageDimension(1800, 2400)
 
@@ -124,7 +127,7 @@ def test_real_gt():
 
     builder.set_visible()
 
-    builder.combine()
+    builder.layer()
 
     # page: Page = builder.get_GT()
 
@@ -221,6 +224,8 @@ def test_two_text_lines():
 
 
 if __name__ == '__main__':
+    logging.warning("This tester is not up to date anymore.")
+
     # test basic merge and draw()
     test_merge_and_draw()
 

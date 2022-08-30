@@ -8,6 +8,11 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.Vecto
 
 class Resizer(Visitor):
     """Resize a page (and all it's ground-truth information, including the original image) to a target dimension.
+    The default implementation scales the PixelGT in four steps. As in the last presented strategy, first all relevant
+    text pixels are set as visible True and all others as invisible False. In the next step, the image is blurred using
+    Gaussian methods - the ground truth image is now in grayscale. Finally, the blurred image is bicubically
+    interpolated and binarized again (according to Otsu, Niblack or Sauvola). Blurring leads to a thickening of the text
+    elements. The more blurring is applied, the more the text elements merge into each other.
     :param target_dim: Target dimension
     :type target_dim: ImageDimension
     """

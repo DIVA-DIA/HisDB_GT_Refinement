@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 
 from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Combiner import Combiner
+from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Layerer import Layerer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Cropper import Cropper
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Resizer import Resizer
 from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import AscenderDescenderDecorator
@@ -45,8 +45,8 @@ if __name__ == '__main__':
     builder.page.vector_gt.show()
 
 
-    combiner = Combiner()
-    builder.combine(combiner=combiner)
+    layerer = Layerer()
+    builder.layer(layerer=layerer)
 
     page: Page = builder.get_GT()
 

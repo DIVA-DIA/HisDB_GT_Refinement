@@ -6,7 +6,13 @@ from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
 
 class Sorter(Visitor):
     """
-    Sort a given container of objects.
+    Sort a given container of objects. The text elements of the vectorized ground truth of the DIVA-HisDB are not
+    consistently sorted, which is why the Sorter should always be used if the order of the text elements matters.
+    We implement this function by having the layout and TextRegion classes both override __lt__() base-function of the
+    Python object. Thus they provide an interface for efficient sorting (thanks to Python's built-in sorting algorithms)
+    of text elements and regions. The sorter tool can be used to invoke, add to, and modify this behavior as desired.
+    The sorter goes hand in hand with the grouper tool, see module Grouper, and the alternating colorer, see module
+    Colorer.
     """
 
     @abstractmethod
