@@ -27,6 +27,22 @@ color_table: Dict = {
     # "ColoingStrategy:": {"MAINTEXT": "Unicolor", "COMMENT": "Unicolor", "DECORATION": "Unicolor"}
 }
 
+col_table_demo_2 = {'BACKGROUND': [[0, 0, 0]],
+             'COMMENT': [[177, 50, 255], [255, 50, 177], [50, 255, 177]],
+             'DECORATION': [[55, 88, 200]],
+             'COMMENT_AND_DECORATION': [[255, 255, 0]],
+             'MAINTEXT': [[255, 200, 20],[255, 200, 40],[255, 200, 60],[255, 200, 80],[255, 200, 100],[255, 200, 120],[255, 200, 140],[255, 200, 160],[255, 200, 180],[255, 200, 200]],
+             'COMMENT_AND_MAINTEXT': [[255, 0, 255]],
+             'MAINTEXT_AND_DECORATION': [[0, 255, 255]],
+             'MAINTEXT_AND_DECORATION_AND_COMMENT': [[255, 255, 255]],
+             'ASCENDER': [[250, 120, 23]],
+             'XREGION': [[30, 250, 120]],
+             'DESCENDER': [[120, 20, 250]],
+             'BASELINE': [[30, 100, 200]],
+             'TOPLINE': [[100, 30, 200]],
+             'TEXT_REGION': [[100, 100, 100]]
+             }
+
 vis_table: Dict = {
     "BACKGROUND": False,
     "COMMENT": True,
@@ -47,8 +63,8 @@ vis_table: Dict = {
 }
 if __name__ == '__main__':
     # write to json
-    file_path: Path = Path("../../../Resources/ColorTables/color_table_with_color_lists_2.json")
-    json.dump(color_table, open(file_path, "w"), indent=4)
+    file_path: Path = Path("../../../Resources/ColorTables/color_table_for_demo_2_v2.json")
+    json.dump(col_table_demo_2, open(file_path, "w"), indent=4)
 
     # # read (old) color table json and convert to {LayoutClasses: Tuple}
     # data = json.load(open(file_path))
@@ -61,7 +77,7 @@ if __name__ == '__main__':
     # print(data)
 
     # read color table json and convert to {LayoutClasses: Tuple}
-    data = json.load(open(file_path))
-    data = {LayoutClasses.str_to_enum(k): list(tuple(v) for v in v) for (k, v) in data.items()}
+    # data = json.load(open(file_path))
+    # data = {LayoutClasses.str_to_enum(k): list(tuple(v) for v in v) for (k, v) in data.items()}
     # data = {LayoutClasses.str_to_enum(k): list(tuple(tup) for tup in v) for v in (k,v) in data.items()}
-    print(data)
+    # print(data)

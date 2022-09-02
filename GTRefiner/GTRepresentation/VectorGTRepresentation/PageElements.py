@@ -296,7 +296,7 @@ class TextRegionElement(TextLineElements):
     def draw(self, drawer: ImageDraw, color: Tuple = None, outline: Tuple = None):
         """ Draw the page element polygon with the instance color if no other coller is given. Fill it, if and only if
         the set_filled parameter is true."""
-        self.polygon.draw(drawer=drawer, color=None, outline=outline, width=5) # (ignore warning)
+        self.polygon.draw(drawer=drawer, color=None, outline=outline, width=3) # (ignore warning)
 
 
 class TextLine(PageElement):

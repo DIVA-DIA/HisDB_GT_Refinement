@@ -31,9 +31,9 @@ class Illustrator(Visitor):
                               LayoutClasses.COMMENT: comment_color,
                               LayoutClasses.DECORATION: decoration_color})
     # quick and dirty visiblity table
-    vis_table = VisibilityTable({LayoutClasses.MAINTEXT: True,
+    vis_table = VisibilityTable({LayoutClasses.MAINTEXT: False,
                                  LayoutClasses.COMMENT: True,
-                                 LayoutClasses.DECORATION: True,
+                                 LayoutClasses.DECORATION: False,
                                  LayoutClasses.ASCENDER: True,
                                  LayoutClasses.DESCENDER: True,
                                  LayoutClasses.TEXT_REGION: True,

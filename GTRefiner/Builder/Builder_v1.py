@@ -18,7 +18,7 @@ from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader, PxGTReader, Image
     ColorTableReader
 
 # TODO: Execute() in Director and make everything accept "Page".
-from HisDB_GT_Refinement.GTRefiner.IO.Writer import JSONWriter, GIFWriter
+from HisDB_GT_Refinement.GTRefiner.IO.Writer import JSONWriter, GIFWriter, PNGWriter
 
 
 class BuilderV1(GTBuilder):

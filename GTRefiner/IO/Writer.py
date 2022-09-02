@@ -6,7 +6,7 @@ from PIL.Image import Image
 
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation import GroundTruth
 from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import MyImage, PixelLevelGT, RawImage
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import VectorGT
+from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
 
 
 class AbstractWriter():
@@ -89,4 +89,16 @@ class GIFWriter(ImageWriter):
         :type path: Path
         """
         Image.save(ground_truth, fp=str(path) + ".gif")
+
+class PNGWriter(ImageWriter):
+
+    @classmethod
+    def write(cls, ground_truth: Image, path: Path):
+        """ Store an image as GIF.
+        :param ground_truth: raw image to be stored
+        :type ground_truth: Image
+        :param path: Output path
+        :type path: Path
+        """
+        Image.save(ground_truth, fp=str(path) + ".png")
 

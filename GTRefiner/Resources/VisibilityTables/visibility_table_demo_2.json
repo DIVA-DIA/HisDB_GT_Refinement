@@ -1,0 +1,18 @@
+{
+    "BACKGROUND": false,
+    "COMMENT": true,
+    "DECORATION": true,
+    "COMMENT_AND_DECORATION": true,
+    "MAINTEXT": false,
+    "COMMENT_AND_MAINTEXT": true,
+    "MAINTEXT_AND_DECORATION": true,
+    "MAINTEXT_AND_DECORATION_AND_COMMENT": true,
+    "ASCENDER": true,
+    "XREGION": true,
+    "DESCENDER": true,
+    "BASELINE": true,
+    "TOPLINE": true,
+    "HEAD": true,
+    "TAIL": true,
+    "TEXT_REGION": true
+}

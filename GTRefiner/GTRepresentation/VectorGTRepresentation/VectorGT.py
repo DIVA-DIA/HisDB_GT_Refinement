@@ -59,7 +59,7 @@ class VectorGT(GroundTruth, Dictionable, Scalable, Croppable, Drawable):
                 for elem in region.page_elements:
                     elem.draw(drawer=drawer, color=color, outline=outline)
                     # drawn_vector_objects.show() # debug
-        if base_img:
+        if base_img is not None:
             base_img = base_img.convert("RGB")
             drawn_vector_objects = Image.blend(drawn_vector_objects, base_img, transparency)
         drawn_vector_objects.show()
