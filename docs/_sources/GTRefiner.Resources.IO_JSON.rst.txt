@@ -1,0 +1,10 @@
+GTRefiner.Resources.IO\_JSON package
+====================================
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.Resources.IO_JSON
+   :members:
+   :undoc-members:
+   :show-inheritance:

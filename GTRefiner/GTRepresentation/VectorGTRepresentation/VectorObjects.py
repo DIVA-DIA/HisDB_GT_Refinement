@@ -8,8 +8,8 @@ import numpy as np
 from PIL import ImageDraw
 from scipy.spatial import distance as dist
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Croppable, \
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Croppable, \
     Dictionable
 
 class Polygon(Scalable, Drawable, Croppable, Dictionable):
@@ -149,8 +149,7 @@ class Polygon(Scalable, Drawable, Croppable, Dictionable):
 
 class Quadrilateral(Polygon):
     """
-    :param xy: 4 coords that represent a quadrilateral. which are sorted upon initialisation to ensure a useful
-    representation with the draw method.
+    :param xy: 4 coords that represent a quadrilateral. which are sorted upon initialisation to ensure a useful representation with the draw method.
     """
 
     def __init__(self, xy: List[Tuple]):

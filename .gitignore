@@ -146,3 +146,6 @@ dmypy.json
 /prototype_02
 /prototype_03
 /prototype_04
+/docs/source/
+/docs/make.bat
+/docs/Makefile

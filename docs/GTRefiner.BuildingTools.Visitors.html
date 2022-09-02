@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>GTRefiner.BuildingTools.Visitors package &#8212; Ground Truth Refiner 02.09.2022 documentation</title>
+    <title>GTRefiner.BuildingTools.Visitors package &#8212; Ground-Truth Refiner 02.09.2022 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -39,35 +39,373 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
-<section id="gtrefiner-buildingtools-visitors-colorer-module">
-<h2>GTRefiner.BuildingTools.Visitors.Colorer module<a class="headerlink" href="#gtrefiner-buildingtools-visitors-colorer-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors.Colorer">
+<span id="gtrefiner-buildingtools-visitors-colorer-module"></span><h2>GTRefiner.BuildingTools.Visitors.Colorer module<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors.Colorer" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Colorer.Colorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Colorer.</span></span><span class="sig-name descname"><span class="pre">Colorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.ColorTable" title="GTRefiner.GTRepresentation.Table.ColorTable"><span class="pre">ColorTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Colorer.Colorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.BuildingTools.html#GTRefiner.BuildingTools.Visitor.Visitor" title="GTRefiner.BuildingTools.Visitor.Visitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visitor</span></code></a></p>
+<p>Default implementation of Colorer sets the colors of the vector objects and the different levels of the pixel
+ground truth. Using a color table in c{JSON} format, a client can assign individual colors to the various
+vector objects of the VectorGT or layers of the PixelGT. The colorer takes the responsibility of reading this
+information and assigning it to the target elements. It supports three strategies: paint each TextElement of a
+layout class the same, paint each TextElement of a layout class differently, or give each a different color.
+In principle, any other coloring strategy is conceivable. To do this, the colors in the Color palette must be
+selected accordingly. If specifics groups should have a certain color (or iteration of colors), a new Colorer can
+be written, to introduce the desired rules.
+:param color_table: colors of color table are used to define the colors of the differenet page
+elements <code class="xref py py-class docutils literal notranslate"><span class="pre">PageElement</span></code>, layouts <code class="xref py py-class docutils literal notranslate"><span class="pre">Layout</span></code> and regions, <code class="xref py py-class docutils literal notranslate"><span class="pre">Region</span></code>.
+:type color_table: ColorTable</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Colorer.Colorer.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Colorer.Colorer.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the colors of the ground truth information from page. Supported strategies are alternating, all the same,
+all different or any other combination of colors given in the color table. This Colorer just iterates over the
+colors given.
+:param page: Is going to be colored according to the color table from the instance of self
+:type page: Page</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-buildingtools-visitors-combiner-module">
-<h2>GTRefiner.BuildingTools.Visitors.Combiner module<a class="headerlink" href="#gtrefiner-buildingtools-visitors-combiner-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors.Cropper">
+<span id="gtrefiner-buildingtools-visitors-cropper-module"></span><h2>GTRefiner.BuildingTools.Visitors.Cropper module<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors.Cropper" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Cropper.Cropper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Cropper.</span></span><span class="sig-name descname"><span class="pre">Cropper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Cropper.Cropper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.BuildingTools.html#GTRefiner.BuildingTools.Visitor.Visitor" title="GTRefiner.BuildingTools.Visitor.Visitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visitor</span></code></a></p>
+<p>The Cropping Visitor crops the image to a desired dimension. It is possible to specify whether the page is left-
+or right-bound. The current use of the cropping function is to get rid of useless edge pixels, but it could also be
+used for illustration purposes or targeted cropping of text regions. The behavior is inherited through the Croppable
+interface.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Cropper.Cropper.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Cropper.Cropper.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default implementation of Cropper
+:param page: Crops all elements of page :class: <cite>Page</cite> to a given target dimension, where a page can be cut
+left or cut right. This is figured out algorithmically.
+:type page: Page</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-buildingtools-visitors-cropper-module">
-<h2>GTRefiner.BuildingTools.Visitors.Cropper module<a class="headerlink" href="#gtrefiner-buildingtools-visitors-cropper-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors.Grouper">
+<span id="gtrefiner-buildingtools-visitors-grouper-module"></span><h2>GTRefiner.BuildingTools.Visitors.Grouper module<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors.Grouper" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Grouper.BlockGrouper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Grouper.</span></span><span class="sig-name descname"><span class="pre">BlockGrouper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><span class="pre">LayoutClasses</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Grouper.BlockGrouper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.BuildingTools.Visitors.Grouper.Grouper" title="GTRefiner.BuildingTools.Visitors.Grouper.Grouper"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grouper</span></code></a></p>
+<p>Groups the elements of the :class: <cite>Layout</cite> given into different blocks depending on their minimal x-coordinate.
+Takes use of the np.histogram to group into different bins.
+:param layout_class: Layout-class to be grouped.
+:type layout_class: LayoutClasses</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Grouper.BlockGrouper.group">
+<span class="sig-name descname"><span class="pre">group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion"><span class="pre">TextRegion</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion"><span class="pre">TextRegion</span></a></span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Grouper.BlockGrouper.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect clusters based on x value of page elements.
+:param region: region to be sorted.
+:type region: TextRegion
+:param bins: number of x-oriented bins, defaults to 6
+:type bins: int
+:return: returns the given amount of bins (or less) see numpy documentation
+:rtype: List[PageElement]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Grouper.BlockGrouper.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Grouper.BlockGrouper.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Groups all the elements of the layout-class :class: <cite>LayoutClasses</cite> of this instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Grouper.Grouper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Grouper.</span></span><span class="sig-name descname"><span class="pre">Grouper</span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Grouper.Grouper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.BuildingTools.html#GTRefiner.BuildingTools.Visitor.Visitor" title="GTRefiner.BuildingTools.Visitor.Visitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visitor</span></code></a></p>
+<p>The Grouping tool works at the level of text regions. It creates, divides and combines the text elements into logical
+(sub)groups depending on the algorithm. Currently, the Grouper module supports clustering text elements based on
+their smallest x-coordinate (Blockgrouper) and subdividing them into blocks of close, adjacent text elements
+(Textgrouper).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Grouper.Grouper.group">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion"><span class="pre">TextRegion</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion"><span class="pre">TextRegion</span></a></span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Grouper.Grouper.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Groups all layouts  class: <cite>Layout</cite> within a region class: <cite>TextRegion</cite>.
+:param region: Region to be (re-)grouped
+:type region: TextRegion
+:return: grouped Region
+:rtype: TextRegion</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Grouper.Grouper.visit_page">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Grouper.Grouper.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>No default implementation available for the Grouper.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Grouper.ThresholdGrouper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Grouper.</span></span><span class="sig-name descname"><span class="pre">ThresholdGrouper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><span class="pre">LayoutClasses</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Grouper.ThresholdGrouper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.BuildingTools.Visitors.Grouper.Grouper" title="GTRefiner.BuildingTools.Visitors.Grouper.Grouper"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grouper</span></code></a></p>
+<p>Threshold grouper splits regions if their elements are too far apart (only if both the x and y threshold are
+exceeded).
+:param x_threshold: x threshold in pixels to define determin if an element should be split off.
+:type x_threshold: int
+:param y_threshold: y threshold in pixels to define determin if an element should be split off.
+:type y_threshold: int
+:param layout_class: Layout-class to be grouped.
+:type layout_class: LayoutClasses</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Grouper.ThresholdGrouper.group">
+<span class="sig-name descname"><span class="pre">group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion"><span class="pre">TextRegion</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion"><span class="pre">TextRegion</span></a></span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Grouper.ThresholdGrouper.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits regions if their elements are too far apart (only if both the x and y threshold are
+exceeded). Warning: Make sure regions are sorted in either ascending or descending order the way a text is read.
+:param region: region to be grouped
+:type region: TextRegion</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Grouper.ThresholdGrouper.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Grouper.ThresholdGrouper.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Groups all the elements of the layout-class :class: <cite>LayoutClasses</cite> of this instance.
+:param page: page to be grouped
+:type page: Page</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-buildingtools-visitors-grouper-module">
-<h2>GTRefiner.BuildingTools.Visitors.Grouper module<a class="headerlink" href="#gtrefiner-buildingtools-visitors-grouper-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors.IllustratorVisitor">
+<span id="gtrefiner-buildingtools-visitors-illustratorvisitor-module"></span><h2>GTRefiner.BuildingTools.Visitors.IllustratorVisitor module<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors.IllustratorVisitor" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.IllustratorVisitor.</span></span><span class="sig-name descname"><span class="pre">Illustrator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">background:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/opt/miniconda3/envs/BachelorThesis/lib/python3.8/site-packages/PIL/Image.py'&gt;</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_table:</span> <span class="pre">~GTRefiner.GTRepresentation.Table.ColorTable</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_table:</span> <span class="pre">~GTRefiner.GTRepresentation.Table.VisibilityTable</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline:</span> <span class="pre">~typing.Tuple</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.BuildingTools.html#GTRefiner.BuildingTools.Visitor.Visitor" title="GTRefiner.BuildingTools.Visitor.Visitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visitor</span></code></a></p>
+<p>Illustrator serves for visualizing processes.
+:param background: If you want the vector gt to be drawn on a background, specify the image
+:type background: Image
+:param color_table: If you want another color table than the quick and dirty specified in this class
+:type color_table: ColorTable
+:param vis_table: If you want another vis table than the quick and dirty specified in this class
+:type vis_table: VisibilityTable
+:param outline: Specify the outline color here, if None is given no outline will be drawn.
+:type outline: tuple</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.color_table">
+<span class="sig-name descname"><span class="pre">color_table</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;GTRefiner.GTRepresentation.Table.ColorTable</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.color_table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.comment_color">
+<span class="sig-name descname"><span class="pre">comment_color</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[(255,</span> <span class="pre">20,</span> <span class="pre">255)]</span></em><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.comment_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.decoration_color">
+<span class="sig-name descname"><span class="pre">decoration_color</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[(20,</span> <span class="pre">255,</span> <span class="pre">255)]</span></em><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.decoration_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.main_text_color">
+<span class="sig-name descname"><span class="pre">main_text_color</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[(10,</span> <span class="pre">20,</span> <span class="pre">255)]</span></em><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.main_text_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.vis_table">
+<span class="sig-name descname"><span class="pre">vis_table</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;GTRefiner.GTRepresentation.Table.VisibilityTable</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.vis_table" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.IllustratorVisitor.Illustrator.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Illustrate the page.
+:param page: page to illustrate
+:type page: Page
+:return: If a background is given its going to be blended.
+:rtype: Image</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-buildingtools-visitors-illustratorvisitor-module">
-<h2>GTRefiner.BuildingTools.Visitors.IllustratorVisitor module<a class="headerlink" href="#gtrefiner-buildingtools-visitors-illustratorvisitor-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors.Layerer">
+<span id="gtrefiner-buildingtools-visitors-layerer-module"></span><h2>GTRefiner.BuildingTools.Visitors.Layerer module<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors.Layerer" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Layerer.Layerer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Layerer.</span></span><span class="sig-name descname"><span class="pre">Layerer</span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Layerer.Layerer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.BuildingTools.html#GTRefiner.BuildingTools.Visitor.Visitor" title="GTRefiner.BuildingTools.Visitor.Visitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visitor</span></code></a></p>
+<p>The Layerer Visitor is used to combine the two ground truths (vector gt and pixel-based gt). It paints the
+desired vector objects of the vector GT onto the layers of the pixel-level GT and combines them to form an RGB
+image. In doing so, it overlays the vector GT as a binary image on top of the combined layers of the pixel GT,
+keeping only pixels that are visible in both the vector GT and the pixel-level GT.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Layerer.Layerer.visit_page">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Layerer.Layerer.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default implementation of Combiner combines the vector gt and pixel gt by drawing the vector objects on
+the according layer of the levels within the pixel gt. It takes use of the Layarable :class: <cite>Layerable</cite> interface.
+:param page:
+:type page:
+:return:
+:rtype:</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-buildingtools-visitors-resizer-module">
-<h2>GTRefiner.BuildingTools.Visitors.Resizer module<a class="headerlink" href="#gtrefiner-buildingtools-visitors-resizer-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors.Resizer">
+<span id="gtrefiner-buildingtools-visitors-resizer-module"></span><h2>GTRefiner.BuildingTools.Visitors.Resizer module<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors.Resizer" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Resizer.Resizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Resizer.</span></span><span class="sig-name descname"><span class="pre">Resizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Resizer.Resizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.BuildingTools.html#GTRefiner.BuildingTools.Visitor.Visitor" title="GTRefiner.BuildingTools.Visitor.Visitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visitor</span></code></a></p>
+<p>Resize a page (and all it’s ground-truth information, including the original image) to a target dimension.
+The default implementation scales the PixelGT in four steps. As in the last presented strategy, first all relevant
+text pixels are set as visible True and all others as invisible False. In the next step, the image is blurred using
+Gaussian methods - the ground truth image is now in grayscale. Finally, the blurred image is bicubically
+interpolated and binarized again (according to Otsu, Niblack or Sauvola). Blurring leads to a thickening of the text
+elements. The more blurring is applied, the more the text elements merge into each other.
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Resizer.Resizer.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Resizer.Resizer.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resize a page (and all it’s ground-truth information, including the original image) to a target dimension.
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-buildingtools-visitors-sorter-module">
-<h2>GTRefiner.BuildingTools.Visitors.Sorter module<a class="headerlink" href="#gtrefiner-buildingtools-visitors-sorter-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors.Sorter">
+<span id="gtrefiner-buildingtools-visitors-sorter-module"></span><h2>GTRefiner.BuildingTools.Visitors.Sorter module<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors.Sorter" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Sorter.AscendingSorter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Sorter.</span></span><span class="sig-name descname"><span class="pre">AscendingSorter</span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Sorter.AscendingSorter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.BuildingTools.Visitors.Sorter.Sorter" title="GTRefiner.BuildingTools.Visitors.Sorter.Sorter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sorter</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Sorter.AscendingSorter.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Sorter.AscendingSorter.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort all elems of a region in ascending order (ascending = lowest y value first).
+:param page: page to be sorted.
+:type page: Page</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Sorter.DescendingSorter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Sorter.</span></span><span class="sig-name descname"><span class="pre">DescendingSorter</span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Sorter.DescendingSorter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.BuildingTools.Visitors.Sorter.Sorter" title="GTRefiner.BuildingTools.Visitors.Sorter.Sorter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sorter</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Sorter.DescendingSorter.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Sorter.DescendingSorter.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort all elems of a region in descending order (descending = highest y value first).
+:param page: page to be sorted.
+:type page: Page</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Sorter.Sorter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.Sorter.</span></span><span class="sig-name descname"><span class="pre">Sorter</span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Sorter.Sorter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.BuildingTools.html#GTRefiner.BuildingTools.Visitor.Visitor" title="GTRefiner.BuildingTools.Visitor.Visitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visitor</span></code></a></p>
+<p>Sort a given container of objects. The text elements of the vectorized ground truth of the DIVA-HisDB are not
+consistently sorted, which is why the Sorter should always be used if the order of the text elements matters.
+We implement this function by having the layout and TextRegion classes both override __lt__() base-function of the
+Python object. Thus they provide an interface for efficient sorting (thanks to Python’s built-in sorting algorithms)
+of text elements and regions. The sorter tool can be used to invoke, add to, and modify this behavior as desired.
+The sorter goes hand in hand with the grouper tool, see module Grouper, and the alternating colorer, see module
+Colorer.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.Sorter.Sorter.visit_page">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.Sorter.Sorter.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visit the page and apply the new behaviour of the concrete implementation of this Visitor :class:
+<cite>Visitor</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-buildingtools-visitors-textlinedecorator-module">
-<h2>GTRefiner.BuildingTools.Visitors.TextLineDecorator module<a class="headerlink" href="#gtrefiner-buildingtools-visitors-textlinedecorator-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors.TextLineDecorator">
+<span id="gtrefiner-buildingtools-visitors-textlinedecorator-module"></span><h2>GTRefiner.BuildingTools.Visitors.TextLineDecorator module<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors.TextLineDecorator" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.TextLineDecorator.AscenderDescenderDecorator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.TextLineDecorator.</span></span><span class="sig-name descname"><span class="pre">AscenderDescenderDecorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.TextLineDecorator.AscenderDescenderDecorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator" title="GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineDecorator</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x_height</strong> (<em>int</em>) – Based on this int value and a baseline provided by the TextLine element calculate Ascenders, Descenders and x-Height (Rectangles).</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.TextLineDecorator.AscenderDescenderDecorator.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.TextLineDecorator.AscenderDescenderDecorator.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate all TextLine instaces elements of page.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.TextLineDecorator.HeadAndTailDecorator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.TextLineDecorator.</span></span><span class="sig-name descname"><span class="pre">HeadAndTailDecorator</span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.TextLineDecorator.HeadAndTailDecorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator" title="GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineDecorator</span></code></a></p>
+<p>“Example of another Decorator Class”</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.TextLineDecorator.HistogramDecorator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.TextLineDecorator.</span></span><span class="sig-name descname"><span class="pre">HistogramDecorator</span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.TextLineDecorator.HistogramDecorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator" title="GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineDecorator</span></code></a></p>
+<p>“Example of another Decorator Class”</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.TextLineDecorator.</span></span><span class="sig-name descname"><span class="pre">TextLineDecorator</span></span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.BuildingTools.html#GTRefiner.BuildingTools.Visitor.Visitor" title="GTRefiner.BuildingTools.Visitor.Visitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visitor</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator.visit_page">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.TextLineDecorator.TextLineDecorator.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate textline elements of page.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-buildingtools-visitors-visibilityvisitor-module">
-<h2>GTRefiner.BuildingTools.Visitors.VisibilityVisitor module<a class="headerlink" href="#gtrefiner-buildingtools-visitors-visibilityvisitor-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors.VisibilityVisitor">
+<span id="gtrefiner-buildingtools-visitors-visibilityvisitor-module"></span><h2>GTRefiner.BuildingTools.Visitors.VisibilityVisitor module<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors.VisibilityVisitor" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.VisibilityVisitor.VisibilityVisitor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.BuildingTools.Visitors.VisibilityVisitor.</span></span><span class="sig-name descname"><span class="pre">VisibilityVisitor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.VisibilityVisitor.VisibilityVisitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.BuildingTools.html#GTRefiner.BuildingTools.Visitor.Visitor" title="GTRefiner.BuildingTools.Visitor.Visitor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Visitor</span></code></a></p>
+<p>Based on a visibility table, set all elements in the vector ground-truth <code class="xref py py-class docutils literal notranslate"><span class="pre">VectorGT</span></code> and all layers of
+the pixel level ground-truth:class:<cite>PixelLevelGT</cite> to the specified boolean value. Analogous to the Colorer,
+the Visibility-Visitor reads a visibility table that defines whether a layout class should be visible or not. If the
+user decides that only individual text regions or text elements are of interest, a new visitor can be written that
+implements the desired functionality.
+:param vis_table: visibility table.
+:type vis_table: VisibilityTable</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.BuildingTools.Visitors.VisibilityVisitor.VisibilityVisitor.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Page.Page" title="GTRefiner.GTRepresentation.Page.Page"><span class="pre">Page</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.BuildingTools.Visitors.VisibilityVisitor.VisibilityVisitor.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Based on a visibility table, set all elements in the vector ground-truth <code class="xref py py-class docutils literal notranslate"><span class="pre">VectorGT</span></code> and all layers of
+the pixel level ground-truth:class:<cite>PixelLevelGT</cite> to the specified boolean value.
+:param page: Page that should be set visible according to the visibility table provided within the page :class:
+<cite>Page</cite> or can be set Visible with a custom visibility table provided by the instance (at instantiation).
+:type page: Page</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.BuildingTools.Visitors">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-GTRefiner.BuildingTools.Visitors" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -78,7 +416,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Ground Truth Refiner</a></h1>
+<h1 class="logo"><a href="index.html">Ground-Truth Refiner</a></h1>
 
 
 
@@ -90,7 +428,7 @@
 <h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GTRefiner</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">HisDB_GT_Refinement</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="GTRefiner.html">GTRefiner package</a></li>
 </ul>
 </li>
@@ -100,7 +438,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="modules.html">GTRefiner</a><ul>
+  <li><a href="modules.html">HisDB_GT_Refinement</a><ul>
   <li><a href="GTRefiner.html">GTRefiner package</a><ul>
   <li><a href="GTRefiner.BuildingTools.html">GTRefiner.BuildingTools package</a><ul>
       <li>Previous: <a href="GTRefiner.BuildingTools.html" title="previous chapter">GTRefiner.BuildingTools package</a></li>

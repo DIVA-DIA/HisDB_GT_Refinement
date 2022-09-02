@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>GTRefiner.GTRepresentation.PixelGTRepresentation package &#8212; Ground-Truth Refiner 02.09.2022 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GTRefiner.GTRepresentation.VectorGTRepresentation package" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html" />
+    <link rel="prev" title="GTRefiner.GTRepresentation.Interfaces package" href="GTRefiner.GTRepresentation.Interfaces.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="gtrefiner-gtrepresentation-pixelgtrepresentation-package">
+<h1>GTRefiner.GTRepresentation.PixelGTRepresentation package<a class="headerlink" href="#gtrefiner-gtrepresentation-pixelgtrepresentation-package" title="Permalink to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-GTRefiner.GTRepresentation.PixelGTRepresentation.Layer">
+<span id="gtrefiner-gtrepresentation-pixelgtrepresentation-layer-module"></span><h2>GTRefiner.GTRepresentation.PixelGTRepresentation.Layer module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.PixelGTRepresentation.Layer" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.</span></span><span class="sig-name descname"><span class="pre">Layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The :class: <cite>Layer</cite> class is used to represent the different levels of the :class: <cite>PixelLevelGT</cite> class. It does not
+implement the :class: <cite>Scalable</cite> interface because Layer should only be instantiated once the resizing has been done.
+:param layer: binary array representing the layer
+:type layer: numpy.ndarayy
+:param img_dim: the size of the layer (static cannot be changed)
+:type img_dim: ImageDimension
+:param color: color of the layer
+:type color: tuple</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.bin_layer_from_rgb">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bin_layer_from_rgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.bin_layer_from_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a binary layer where every pixel equal to (0,0,0) is set to ‘0’, every other is set to ‘1’.
+:param img: Image to be turned into a binary layer where (0,0,0) is set to ‘0’, every other is set to ‘1’
+:type img: Image
+:return: A layer corresponding to the binarized image where all black pixels (0,0,0) are set to 0 and the all
+the others are set to 1.
+:rtype: Layer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_elem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable"><span class="pre">Drawable</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.draw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.img_from_layer">
+<span class="sig-name descname"><span class="pre">img_from_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgb</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.img_from_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an Image, either binary or in RGB-mode, from the layer.
+:param rgb: If True this class returns an RGB Pillow Image, defaults to binary
+:return: Return a binary image from it’s mask by default</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.intersect">
+<span class="sig-name descname"><span class="pre">intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.intersect" title="Permalink to this definition">¶</a></dt>
+<dd><p>XOR of each pixel of two layers. Keeps the color of the current layer.
+:param other: Other Layer.
+:type other: Layer
+:return: A new Layer.
+:rtype: Layer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.intersect_this_layer_with_an_rgb_img">
+<span class="sig-name descname"><span class="pre">intersect_this_layer_with_an_rgb_img</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.intersect_this_layer_with_an_rgb_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform logical and of this layer with another image. For all pixels of this binary layer that are “True”,
+keep the RGB pixel of the Image given.
+:param img: Image to be masked with this layer, for all pixels of this binary layer that are “True”,
+keep the RGB pixel of the image given.
+:type img: Image
+:return: masked image.
+:rtype: Returns Image that has kept all its pixel wehre self.layer is “True” all others are set to (0,0,0)
+(black)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.merge_and_draw">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">merge_and_draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.merge_and_draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merges a list of layers onto a Pillow :class: <cite>Image</cite> Image while keeping their :param
+color: attribute. If only one layer is given, it will return it as a RGB Image.
+:param layers: The first layer in the list must be the base-layer. If only one layer is given.
+:type layers: List[Layer]The base-layer contains the base-object, the object that should be represented on the final Image.
+:param img: When given, it will draw the merged layers on this image.
+:type img: Image
+:return Image: return a Pillow :class: <cite>Image</cite> Image with moder RGB</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.paint_layer_on_img">
+<span class="sig-name descname"><span class="pre">paint_layer_on_img</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.paint_layer_on_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a base_img of mode RGB and overlays it with the layer of the current instance.
+Pixels corresponding to 0 are set to black (0,0,0). Pixels corresponding to 1 are kept.
+:param img: Image to be masked.
+:return: Masked Image with (0,0,0) where layer is 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.paint_layer_on_img_and_keep_colors">
+<span class="sig-name descname"><span class="pre">paint_layer_on_img_and_keep_colors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.paint_layer_on_img_and_keep_colors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overlay img with colored layer. The values &gt; 0 from self.layer will overwrite the img, the rest of the
+pixels are kept as are. Make sure that the layer has a color. Color of the layer can be set with set_color() or
+the color param.
+:param img: img for the layer to be painted on.
+:type img: Image
+:param color: color in which the layer should be painted on the Image
+:type color: Image
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.set_color">
+<span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set color of the layer.
+:param color:  Set color of the layer.
+:type color: tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.set_visible">
+<span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set visibility of the layer.
+:param is_visible: Set visibility of the layer.
+:type is_visible: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.unite">
+<span class="sig-name descname"><span class="pre">unite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer.unite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logical OR of each pixel of two layers. Keeps the color of the current layer.
+:param other: Other Layer.
+:type other: Layer
+:return: A new Layer.
+:rtype: Layer</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT">
+<span id="gtrefiner-gtrepresentation-pixelgtrepresentation-pixelgt-module"></span><h2>GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.</span></span><span class="sig-name descname"><span class="pre">MyImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/opt/miniconda3/envs/BachelorThesis/lib/python3.8/site-packages/PIL/Image.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.GroundTruth.GroundTruth" title="GTRefiner.GTRepresentation.GroundTruth.GroundTruth"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroundTruth</span></code></a></p>
+<p>Wraper class for the pillow image and functionalities to manipulate it.
+:param img: ground truth image
+:type img: Image</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage.binarize">
+<span class="sig-name descname"><span class="pre">binarize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/opt/miniconda3/envs/BachelorThesis/lib/python3.8/site-packages/PIL/Image.py'&gt;</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_algo:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'otsu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage.binarize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binarize the given image to based on either otsu, sauvola or niblack.
+:param img: img to be binarized
+:type img: Image to binarize, defaults to self.img
+:param bin_algo: either otsu, sauvola or niblack. Otsu binarizes base on a global threshhold, sauvola and
+niblack on a local threshold (based on a window size).
+:type bin_algo: str
+:param kwargs: if other than default parameters of sauvola or niblack should be used (see scikit documentation)
+:type kwargs: Any
+:return: returns a numpy array
+:rtype: ndarray</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crops the image of this instance to a target dimension. Cuts the off the black part on either the right or
+left side. Designed to be used before resizing ground truth. Suggested dimension is ImageDimension(4500, 6000).
+:param current_dim: Not used in this method
+:type current_dim: ImageDimension
+:param target_dim:  Target dimension the cropped image should have
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the left or right part of the image should be cut off.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bicubic scaling of the ground-truth image based on a current dimension and a target dimension.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the image of the raw img (debugging purposes).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.</span></span><span class="sig-name descname"><span class="pre">PixelLevelGT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/opt/miniconda3/envs/BachelorThesis/lib/python3.8/site-packages/PIL/Image.py'&gt;</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_dim:</span> <span class="pre">~GTRefiner.GTRepresentation.ImageDimension.ImageDimension</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage" title="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">MyImage</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crops the image of this instance to a target dimension. Cuts the off the black part on either the right or
+left side. Designed to be used before resizing ground truth. Suggested dimension is ImageDimension(4500, 6000).
+:param current_dim: Not used in this method
+:type current_dim: ImageDimension
+:param target_dim:  Target dimension the cropped image should have
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the left or right part of the image should be cut off.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.get_layer">
+<span class="sig-name descname"><span class="pre">get_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><span class="pre">LayoutClasses</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.get_layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the layer with the given layout_class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.merged_levels">
+<span class="sig-name descname"><span class="pre">merged_levels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visibility_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_vis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.merged_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only using this method will the client get the right pixel-gt.
+:param visibility_table: If a only certain layers are of interest they can be modified with a custom visibility
+table.
+:type visibility_table: VisibilityTable
+:param all_vis: given this parameter, it merges all layers.
+:type all_vis: bool
+:return: returns a binary layer
+:rtype: Layer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the pixel ground-truths image and all levels (layers) of the instance in four steps. First, it blurs
+the binary image. Then it uses the bicubic scaling algorithm of Pillow (provided by the super-class RawImage),
+followed by binarizing it. Same procedure is applied to every layer. Is supposed to be applied exactly once.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.set_color">
+<span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.ColorTable" title="GTRefiner.GTRepresentation.Table.ColorTable"><span class="pre">ColorTable</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the color.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.set_visible">
+<span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the is_visible field.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sho all the merged layers of the pixel_gt.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.RawImage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.</span></span><span class="sig-name descname"><span class="pre">RawImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/opt/miniconda3/envs/BachelorThesis/lib/python3.8/site-packages/PIL/Image.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.RawImage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage" title="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.MyImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">MyImage</span></code></a></p>
+<p>Raw image of the dataset.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.RawImage.get_cut_side">
+<span class="sig-name descname"><span class="pre">get_cut_side</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.RawImage.get_cut_side" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the orientation of the Page. If the page is left-oriented return true,
+if it’s right-oriented return false.
+:return: bool</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-GTRefiner.GTRepresentation.PixelGTRepresentation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-GTRefiner.GTRepresentation.PixelGTRepresentation" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ground-Truth Refiner</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">HisDB_GT_Refinement</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="GTRefiner.html">GTRefiner package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">HisDB_GT_Refinement</a><ul>
+  <li><a href="GTRefiner.html">GTRefiner package</a><ul>
+  <li><a href="GTRefiner.GTRepresentation.html">GTRefiner.GTRepresentation package</a><ul>
+      <li>Previous: <a href="GTRefiner.GTRepresentation.Interfaces.html" title="previous chapter">GTRefiner.GTRepresentation.Interfaces package</a></li>
+      <li>Next: <a href="GTRefiner.GTRepresentation.VectorGTRepresentation.html" title="next chapter">GTRefiner.GTRepresentation.VectorGTRepresentation package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Max Gregor Haller.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/GTRefiner.GTRepresentation.PixelGTRepresentation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

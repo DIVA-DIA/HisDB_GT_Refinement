@@ -3,7 +3,7 @@ from abc import abstractmethod
 from pathlib import Path
 from typing import Any, Dict, Tuple, List
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 
 
 class Table():

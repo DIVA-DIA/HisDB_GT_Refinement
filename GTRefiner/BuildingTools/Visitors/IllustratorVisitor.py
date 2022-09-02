@@ -3,12 +3,12 @@ from typing import Tuple
 
 from PIL import ImageDraw, Image
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Colorer import Colorer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.VisibilityVisitor import VisibilityVisitor
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
+from GTRefiner.BuildingTools.Visitor import Visitor
+from GTRefiner.BuildingTools.Visitors.Colorer import Colorer
+from GTRefiner.BuildingTools.Visitors.VisibilityVisitor import VisibilityVisitor
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
 
 
 class Illustrator(Visitor):

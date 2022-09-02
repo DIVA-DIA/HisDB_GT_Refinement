@@ -2,7 +2,7 @@ from typing import List
 import unittest
 import copy
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import *
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import *
 
 if __name__ == '__main__':
     # vector_objects

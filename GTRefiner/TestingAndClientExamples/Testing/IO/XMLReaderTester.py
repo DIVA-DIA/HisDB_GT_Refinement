@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Layerer import Layerer
-from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader
+from GTRefiner.BuildingTools.Visitors.Layerer import Layerer
+from GTRefiner.IO.Reader import XMLReader
 
 if __name__ == '__main__':
     # read it

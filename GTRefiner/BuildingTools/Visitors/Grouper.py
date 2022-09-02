@@ -4,11 +4,11 @@ from typing import List
 
 import numpy as np
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import Layout, TextRegion
+from GTRefiner.BuildingTools.Visitor import Visitor
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import Layout, TextRegion
 
 
 class Grouper(Visitor):

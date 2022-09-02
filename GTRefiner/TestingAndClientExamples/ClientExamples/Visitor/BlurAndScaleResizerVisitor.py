@@ -9,11 +9,11 @@ from datetime import datetime
 from PIL import Image
 from scipy.ndimage import gaussian_filter
 
-from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Resizer import Resizer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import sigma, truncate, RawImage
+from GTRefiner.Builder.Builder_v1 import BuilderV1
+from GTRefiner.BuildingTools.Visitors.Resizer import Resizer
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import sigma, truncate, RawImage
 
 
 # VISITOR

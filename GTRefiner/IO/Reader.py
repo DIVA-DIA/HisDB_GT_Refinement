@@ -8,18 +8,18 @@ from typing import Any, Dict, List, Tuple
 
 from PIL import Image
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT, RawImage
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation import PageLayout
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import BaseLine, PageElement, \
+from GTRefiner.GTRepresentation.GroundTruth import GroundTruth
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
+from GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT, RawImage
+from GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
+from GTRefiner.GTRepresentation.VectorGTRepresentation import PageLayout
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import BaseLine, PageElement, \
     MainTextLine, CommentTextLine, DecorationElement
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import TextRegion
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Line, Polygon
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import TextRegion
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Line, Polygon
 
 
 class AbstractReader():

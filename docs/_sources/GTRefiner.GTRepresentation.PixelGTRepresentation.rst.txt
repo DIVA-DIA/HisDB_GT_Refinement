@@ -1,0 +1,29 @@
+GTRefiner.GTRepresentation.PixelGTRepresentation package
+========================================================
+
+Submodules
+----------
+
+GTRefiner.GTRepresentation.PixelGTRepresentation.Layer module
+-------------------------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.PixelGTRepresentation.Layer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT module
+---------------------------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.GTRepresentation.PixelGTRepresentation
+   :members:
+   :undoc-members:
+   :show-inheritance:

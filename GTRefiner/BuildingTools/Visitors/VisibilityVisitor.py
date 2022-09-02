@@ -1,6 +1,6 @@
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable
+from GTRefiner.BuildingTools.Visitor import Visitor
+from GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.GTRepresentation.Table import VisibilityTable
 
 
 class VisibilityVisitor(Visitor):

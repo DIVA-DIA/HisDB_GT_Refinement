@@ -3,11 +3,11 @@ from typing import List
 
 from PIL import Image, ImageDraw
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Rectangle, \
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Rectangle, \
     Line, Quadrilateral
-from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader
+from GTRefiner.IO.Reader import XMLReader
 
 
 def test_basic_quadr_instanciation():

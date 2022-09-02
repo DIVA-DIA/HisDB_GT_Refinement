@@ -1,7 +1,7 @@
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import *
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT, RawImage
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
+from GTRefiner.GTRepresentation.Interfaces.GTInterfaces import *
+from GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT, RawImage
+from GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
 
 
 class Page(Scalable, Croppable, Showable):

@@ -1,0 +1,45 @@
+GTRefiner.GTRepresentation.VectorGTRepresentation package
+=========================================================
+
+Submodules
+----------
+
+GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements module
+---------------------------------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout module
+-------------------------------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT module
+-----------------------------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects module
+----------------------------------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.GTRepresentation.VectorGTRepresentation
+   :members:
+   :undoc-members:
+   :show-inheritance:

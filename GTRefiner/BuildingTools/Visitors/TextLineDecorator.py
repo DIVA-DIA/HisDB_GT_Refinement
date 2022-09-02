@@ -1,8 +1,8 @@
 from abc import abstractmethod
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import TextLine, \
+from GTRefiner.BuildingTools.Visitor import Visitor
+from GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import TextLine, \
     AscenderDescenderRegion
 
 
@@ -11,14 +11,14 @@ class TextLineDecorator(Visitor):
     @classmethod
     @abstractmethod
     def visit_page(self, page: Page):
-        """Decorate textline elements of page."""
+        """Decorate textline elements of page.
+        """
         pass
 
 
 class AscenderDescenderDecorator(TextLineDecorator):
     """
-    :param x_height: Based on this int value and a baseline provided by the TextLine element calculate Ascenders,
-    Descenders and x-Height (Rectangles).
+    :param x_height: Based on this int value and a baseline provided by the TextLine element calculate Ascenders, Descenders and x-Height (Rectangles).
     :type x_height: int
     """
 

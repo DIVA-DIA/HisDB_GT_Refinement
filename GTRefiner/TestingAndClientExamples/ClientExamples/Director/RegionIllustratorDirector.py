@@ -5,13 +5,13 @@ from pathlib import Path
 
 from PIL import Image
 
-from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Cropper import Cropper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Grouper import ThresholdGrouper, BlockGrouper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.IllustratorVisitor import Illustrator
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Sorter import DescendingSorter
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.Builder.Builder_v1 import BuilderV1
+from GTRefiner.BuildingTools.Visitors.Cropper import Cropper
+from GTRefiner.BuildingTools.Visitors.Grouper import ThresholdGrouper, BlockGrouper
+from GTRefiner.BuildingTools.Visitors.IllustratorVisitor import Illustrator
+from GTRefiner.BuildingTools.Visitors.Sorter import DescendingSorter
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 
 if __name__ == '__main__':
     start = time.time()

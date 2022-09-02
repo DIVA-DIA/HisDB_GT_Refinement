@@ -4,10 +4,26 @@ GTRefiner.TestingAndClientExamples.ClientExamples.Director package
 Submodules
 ----------
 
-GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerV1 module
---------------------------------------------------------------------------------------
+GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerDemo1 module
+-----------------------------------------------------------------------------------------
 
-.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerV1
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerDemo1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerDemo2 module
+-----------------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerDemo2
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerDemo3 module
+-----------------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerDemo3
    :members:
    :undoc-members:
    :show-inheritance:

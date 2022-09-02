@@ -6,14 +6,14 @@ from typing import Tuple, List, Dict
 
 from PIL import Image, ImageDraw
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Showable, \
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable, Drawable, Showable, \
     Croppable, Dictionable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line, \
+from GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
+from GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line, \
     Quadrilateral, Rectangle
 
 

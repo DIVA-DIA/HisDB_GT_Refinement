@@ -1,6 +1,16 @@
 GTRefiner.GTRepresentation package
 ==================================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   GTRefiner.GTRepresentation.Interfaces
+   GTRefiner.GTRepresentation.PixelGTRepresentation
+   GTRefiner.GTRepresentation.VectorGTRepresentation
+
 Submodules
 ----------
 

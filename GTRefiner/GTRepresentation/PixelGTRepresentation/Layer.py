@@ -8,8 +8,8 @@ import warnings
 from PIL import Image, ImageDraw
 from numpy import ma
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Drawable
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Drawable
 
 
 class Layer():

@@ -1,6 +1,6 @@
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.BuildingTools.Visitor import Visitor
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.Page import Page
 
 class Cropper(Visitor):
     """ The Cropping Visitor crops the image to a desired dimension. It is possible to specify whether the page is left-

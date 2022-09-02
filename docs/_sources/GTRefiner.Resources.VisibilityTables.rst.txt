@@ -1,0 +1,10 @@
+GTRefiner.Resources.VisibilityTables package
+============================================
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.Resources.VisibilityTables
+   :members:
+   :undoc-members:
+   :show-inheritance:

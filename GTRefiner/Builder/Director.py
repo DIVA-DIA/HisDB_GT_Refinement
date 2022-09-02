@@ -1,8 +1,8 @@
 from abc import abstractmethod
 from pathlib import Path
 
-from HisDB_GT_Refinement.GTRefiner.Builder import Builder
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
+from GTRefiner.Builder import Builder
+from GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
 
 
 class Director:

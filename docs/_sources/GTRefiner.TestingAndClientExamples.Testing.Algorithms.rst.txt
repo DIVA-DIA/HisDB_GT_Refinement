@@ -9,25 +9,6 @@ Subpackages
 
    GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining
 
-Submodules
-----------
-
-GTRefiner.TestingAndClientExamples.Testing.Algorithms.LayerTester module
-------------------------------------------------------------------------
-
-.. automodule:: GTRefiner.TestingAndClientExamples.Testing.Algorithms.LayerTester
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-GTRefiner.TestingAndClientExamples.Testing.Algorithms.StupidLayererTester module
---------------------------------------------------------------------------------
-
-.. automodule:: GTRefiner.TestingAndClientExamples.Testing.Algorithms.StupidLayererTester
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 

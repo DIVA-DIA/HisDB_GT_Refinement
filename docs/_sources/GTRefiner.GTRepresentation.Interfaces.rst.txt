@@ -1,0 +1,29 @@
+GTRefiner.GTRepresentation.Interfaces package
+=============================================
+
+Submodules
+----------
+
+GTRefiner.GTRepresentation.Interfaces.GTInterfaces module
+---------------------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.Interfaces.GTInterfaces
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.GTRepresentation.Interfaces.Layarable module
+------------------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.Interfaces.Layarable
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.GTRepresentation.Interfaces
+   :members:
+   :undoc-members:
+   :show-inheritance:

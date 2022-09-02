@@ -1,6 +1,18 @@
 GTRefiner.Resources package
 ===========================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   GTRefiner.Resources.ColorTables
+   GTRefiner.Resources.IO_JSON
+   GTRefiner.Resources.NewGTs
+   GTRefiner.Resources.ResizedGT
+   GTRefiner.Resources.VisibilityTables
+
 Module contents
 ---------------
 

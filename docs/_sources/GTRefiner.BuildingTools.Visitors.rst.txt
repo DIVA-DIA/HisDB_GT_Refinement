@@ -12,14 +12,6 @@ GTRefiner.BuildingTools.Visitors.Colorer module
    :undoc-members:
    :show-inheritance:
 
-GTRefiner.BuildingTools.Visitors.Combiner module
-------------------------------------------------
-
-.. automodule:: GTRefiner.BuildingTools.Visitors.Combiner
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 GTRefiner.BuildingTools.Visitors.Cropper module
 -----------------------------------------------
 
@@ -40,6 +32,14 @@ GTRefiner.BuildingTools.Visitors.IllustratorVisitor module
 ----------------------------------------------------------
 
 .. automodule:: GTRefiner.BuildingTools.Visitors.IllustratorVisitor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.BuildingTools.Visitors.Layerer module
+-----------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.Layerer
    :members:
    :undoc-members:
    :show-inheritance:

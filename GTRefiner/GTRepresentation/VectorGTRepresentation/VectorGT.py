@@ -4,10 +4,10 @@ import numpy as np
 from PIL import Image
 from PIL import ImageDraw
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Dictionable, Scalable, Croppable, \
+from GTRefiner.GTRepresentation.GroundTruth import GroundTruth
+from GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Dictionable, Scalable, Croppable, \
     Drawable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import TextRegion, ImageDimension
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import TextRegion, ImageDimension
 
 
 class VectorGT(GroundTruth, Dictionable, Scalable, Croppable, Drawable):

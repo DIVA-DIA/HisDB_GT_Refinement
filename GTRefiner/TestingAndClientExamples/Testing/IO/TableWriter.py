@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Dict
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
 
 color_table: Dict = {
     "BACKGROUND": [(0, 0, 0)],

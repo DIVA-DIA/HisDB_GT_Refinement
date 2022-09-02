@@ -1,0 +1,1116 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>GTRefiner.GTRepresentation.VectorGTRepresentation package &#8212; Ground-Truth Refiner 02.09.2022 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GTRefiner.IO package" href="GTRefiner.IO.html" />
+    <link rel="prev" title="GTRefiner.GTRepresentation.PixelGTRepresentation package" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="gtrefiner-gtrepresentation-vectorgtrepresentation-package">
+<h1>GTRefiner.GTRepresentation.VectorGTRepresentation package<a class="headerlink" href="#gtrefiner-gtrepresentation-vectorgtrepresentation-package" title="Permalink to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements">
+<span id="gtrefiner-gtrepresentation-vectorgtrepresentation-pageelements-module"></span><h2>GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">AscenderDescenderRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine"><span class="pre">TextLine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineDecoration</span></code></a></p>
+<p>Decorator of Textline which adds an x-region, ascender- and descender-region.
+:param text_line: Textline to be decorated.
+:param top_line: Represents the top line of x_region.
+:type top_line: Line
+:param x_region: Denotes the region for little x.
+:type x_region: Quadrilateral
+:param ascender_region: Denotes the region of ascenders.
+:type ascender_region: Quadrilateral
+:param descender_region: Denotes the region of descenders.
+:type descender_region: Quadrilateral
+The rest of the parameters are used to give custom colors to each of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code> vectorobjects for
+debugging purposes the different fields have.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to build the json file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop the page element to a target dimension. Due to the nature of the ground truth document :param cut_left:
+must be provided.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the page is cut_left or not.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the page element :class: <cite>PageElement</cite> polygon with the instance color if no other color is given.
+:param drawer: image to be drawn upon.
+:type drawer: ImageDraw.ImageDraw
+:param color: fill of the object. Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type color: tuple
+:param outline: outline of the object. Should only be used for illustration purposes!
+Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type outline: tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.layer">
+<span class="sig-name descname"><span class="pre">layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of layers for every VectorObject of a PageElement according to the order defined chosen with
+the implementation. (We suggest, you change it to a dict of LayoutClasses and Layers for a safer implementation.)
+:param img: base img to be drawn upon.
+:type img: Image
+:param layers: layers of vector objects each drawn on a layer. This PageElement will be drawn on a new layer and added
+to the list.
+:type layers: List[Layer]
+:return: layers: layers of vectorobjects (including this instance) each drawn on a layer.
+:rtype:layers: List[Layer]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the current :class: <cite>PageElement</cite> to a given target dimension. As this class doesn’t possess a image
+dimension parameter, both the current dimension (of the page) and the target dimension (the size to be scaled
+to) should be given.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.set_color">
+<span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.ColorTable" title="GTRefiner.GTRepresentation.Table.ColorTable"><span class="pre">ColorTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the color.
+:param color: What color to use when drawn.
+:type color: Tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.set_visible">
+<span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the is_visible field.
+:param is_visible: Whether or not is should be recognized as visible
+:type is_visible: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderDescenderRegion.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the polygon of the PageElement for debugging purposes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderRegion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">AscenderRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><span class="pre">Polygon</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TopLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TopLine"><span class="pre">TopLine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.AscenderRegion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineElements</span></code></a></p>
+<p>Region to represent ascenders. It is built based on a top_line and the polygon of the text_line
+:param polygon: Textline polygon.
+:type polygon: Polygon
+:param top_line: Top line (base line - some y value representing the x-height)
+:type top_line: TopLine
+:param id: To identify the region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+:type id: int</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">BaseLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line"><span class="pre">Line</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineElements</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine.set_visible">
+<span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the is_visible field.
+:param is_visible: Whether or not is should be recognized as visible
+:type is_visible: bool</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.CommentTextLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">CommentTextLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><span class="pre">Polygon</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine"><span class="pre">BaseLine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.CommentTextLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLine</span></code></a></p>
+<p>The :class: <cite>CommentTextLine</cite> class has no further characteristic than it’s name. It instantiates the abstract super class
+:class: <cite>PageElement</cite>.
+:param polygon: represents the contour of the text line.
+:type polygon: Polygon
+:param base_line: Every :class: <cite>TextLine</cite> class comes with a default base_line provided by the original xml_gt.
+:type base_line: Line
+:param color: color of the line, defaults to white
+:type color: tuple
+:param is_visible: set visible or invisible, defaults to true
+:type is_visible: bool
+:param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+:type id: int</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.DecorationElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">DecorationElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><span class="pre">Polygon</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.DecorationElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageElement</span></code></a></p>
+<p>The :class: <cite>DecorationElement</cite> class has no further characteristic than it’s name. It instantiates the abstract super class
+:class: <cite>PageElement</cite>.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.DescenderRegion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">DescenderRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><span class="pre">Polygon</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine"><span class="pre">BaseLine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.DescenderRegion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineElements</span></code></a></p>
+<p>Region to represent descenders. It is built based on a base_line and the polygon of the text_line
+:param polygon: Text line polygon.
+:type polygon: Polygon
+:param top_line: Base line (base line - some y value representing the x-height)
+:type top_line: BaseLine
+:param id: To identify the region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+:type id: int</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.HeadAndTailRegion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">HeadAndTailRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine"><span class="pre">TextLine</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.HeadAndTailRegion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineDecoration</span></code></a></p>
+<p>Example for another decoration. A line could be devided into a head part (with initial) and tail part.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.MainTextLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">MainTextLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><span class="pre">Polygon</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine"><span class="pre">BaseLine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.MainTextLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLine</span></code></a></p>
+<p>The :class: <cite>MainTextLine</cite> class has no further characteristic than it’s name. It instantiates the abstract super class
+:class: <cite>PageElement</cite>.
+:param polygon: represents the contour of the text line.
+:type polygon: Polygon
+:param base_line: Every :class: <cite>TextLine</cite> class comes with a default base_line provided by the original xml_gt.
+:type base_line: Line
+:param color: color of the line, defaults to white
+:type color: tuple
+:param is_visible: set visible or invisible, defaults to true
+:type is_visible: bool
+:param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+:type id: int</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">PageElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><span class="pre">Polygon</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scalable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drawable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Showable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Showable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Showable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Croppable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.Layarable.Layarable" title="GTRefiner.GTRepresentation.Interfaces.Layarable.Layarable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layarable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Dictionable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Dictionable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dictionable</span></code></a></p>
+<p>Super class for all page elements, such as decorations &amp; textlines. Every PageElement holds a polygon :class:
+<cite>Polygon`at its core. If further characteristics shall be added, we suggest to use the decoration pattern.
+:param polygon: Represents the contour of the page element.
+:type polygon: Polygon
+:param color: What color to use when drawn.
+:type color: Tuple
+:param id: To identify the text_line. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+:type id: int
+:param is_visible: Whether or not is should be recognized as visible to the :class: `Writer</cite>.
+:type is_visible: bool</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to build the json file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop the page element to a target dimension. Due to the nature of the ground truth document :param cut_left:
+must be provided.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the page is cut_left or not.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the page element :class: <cite>PageElement</cite> polygon with the instance color if no other color is given.
+:param drawer: image to be drawn upon.
+:type drawer: ImageDraw.ImageDraw
+:param color: fill of the object. Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type color: tuple
+:param outline: outline of the object. Should only be used for illustration purposes!
+Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type outline: tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.get_color">
+<span class="sig-name descname"><span class="pre">get_color</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.get_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the page element’s color
+:return: the page element’s color
+:rtype: tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.get_id">
+<span class="sig-name descname"><span class="pre">get_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.get_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.get_min_y">
+<span class="sig-name descname"><span class="pre">get_min_y</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.get_min_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter method for the minimum y coordinate of this PageElement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.is_visible">
+<span class="sig-name descname"><span class="pre">is_visible</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.is_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter-method for the is_visible field.
+:return: Whether or not is should be recognized as visible</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.layer">
+<span class="sig-name descname"><span class="pre">layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of layers for every VectorObject of a PageElement according to the order defined chosen with
+the implementation. (We suggest, you change it to a dict of LayoutClasses and Layers for a safer implementation.)
+:param img: base img to be drawn upon.
+:type img: Image
+:param layers: layers of vector objects each drawn on a layer. This PageElement will be drawn on a new layer and added
+to the list.
+:type layers: List[Layer]
+:return: layers: layers of vectorobjects (including this instance) each drawn on a layer.
+:rtype:layers: List[Layer]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the current :class: <cite>PageElement</cite> to a given target dimension. As this class doesn’t possess a image
+dimension parameter, both the current dimension (of the page) and the target dimension (the size to be scaled
+to) should be given.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.set_color">
+<span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.ColorTable" title="GTRefiner.GTRepresentation.Table.ColorTable"><span class="pre">ColorTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the color.
+:param color: What color to use when drawn.
+:type color: Tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.set_visible">
+<span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the is_visible field.
+:param is_visible: Whether or not is should be recognized as visible
+:type is_visible: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the polygon of the PageElement for debugging purposes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">TextLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><span class="pre">Polygon</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine"><span class="pre">BaseLine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageElement</span></code></a></p>
+<p>Represents all PageElements with text line characteristics. Examples are comment lines and main-text lines.
+:param polygon: represents the contour of the text line.
+:type polygon: Polygon
+:param base_line: Every :class: <cite>TextLine</cite> class comes with a default base_line provided by the original xml_gt.
+:type base_line: Line
+:param color: color of the line, defaults to white
+:type color: tuple
+:param is_visible: set visible or invisible, defaults to true
+:type is_visible: bool
+:param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+:type id: int</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to build the json file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop the page element to a target dimension. Due to the nature of the ground truth document :param cut_left:
+must be provided.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the page is cut_left or not.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the page element :class: <cite>PageElement</cite> polygon with the instance color if no other color is given.
+:param drawer: image to be drawn upon.
+:type drawer: ImageDraw.ImageDraw
+:param color: fill of the object. Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type color: tuple
+:param outline: outline of the object. Should only be used for illustration purposes!
+Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type outline: tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.layer">
+<span class="sig-name descname"><span class="pre">layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer" title="GTRefiner.GTRepresentation.PixelGTRepresentation.Layer.Layer"><span class="pre">Layer</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of layers for every VectorObject of a PageElement according to the order defined chosen with
+the implementation. (We suggest, you change it to a dict of LayoutClasses and Layers for a safer implementation.)
+:param img: base img to be drawn upon.
+:type img: Image
+:param layers: layers of vector objects each drawn on a layer. This PageElement will be drawn on a new layer and added
+to the list.
+:type layers: List[Layer]
+:return: layers: layers of vectorobjects (including this instance) each drawn on a layer.
+:rtype:layers: List[Layer]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the current :class: <cite>PageElement</cite> to a given target dimension. As this class doesn’t possess a image
+dimension parameter, both the current dimension (of the page) and the target dimension (the size to be scaled
+to) should be given.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.set_color">
+<span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.ColorTable" title="GTRefiner.GTRepresentation.Table.ColorTable"><span class="pre">ColorTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the color.
+:param color: What color to use when drawn.
+:type color: Tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.set_visible">
+<span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the is_visible field.
+:param is_visible: Whether or not is should be recognized as visible
+:type is_visible: bool</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">TextLineDecoration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine"><span class="pre">TextLine</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLine"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLine</span></code></a></p>
+<p>Decorator class used to add further functionalities to :class: <cite>TextLine</cite> page elements.
+:param polygon: represents the contour of the text line.
+:type polygon: Polygon
+:param base_line: Every :class: <cite>TextLine</cite> class comes with a default base_line provided by the original xml_gt.
+:type base_line: Line
+:param color: color of the line, defaults to white
+:type color: tuple
+:param is_visible: set visible or invisible, defaults to true
+:type is_visible: bool
+:param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+:type id: int</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.crop">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop the page element to a target dimension. Due to the nature of the ground truth document :param cut_left:
+must be provided.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the page is cut_left or not.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.draw">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the page element :class: <cite>PageElement</cite> polygon with the instance color if no other color is given.
+:param drawer: image to be drawn upon.
+:type drawer: ImageDraw.ImageDraw
+:param color: fill of the object. Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type color: tuple
+:param outline: outline of the object. Should only be used for illustration purposes!
+Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type outline: tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.resize">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the current :class: <cite>PageElement</cite> to a given target dimension. As this class doesn’t possess a image
+dimension parameter, both the current dimension (of the page) and the target dimension (the size to be scaled
+to) should be given.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.set_color">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.ColorTable" title="GTRefiner.GTRepresentation.Table.ColorTable"><span class="pre">ColorTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the color.
+:param color: What color to use when drawn.
+:type color: Tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.set_visible">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the is_visible field.
+:param is_visible: Whether or not is should be recognized as visible
+:type is_visible: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.show">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineDecoration.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the polygon of the PageElement for debugging purposes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">TextLineElements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><span class="pre">Polygon</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageElement</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextRegionElement">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">TextRegionElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounding_box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Rectangle" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Rectangle"><span class="pre">Rectangle</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextRegionElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineElements</span></code></a></p>
+<p>Represents the bounding box of a Text-Region. Helps illustrate and the structure of the vector_gt.
+:param bounding_box: bounding box of the Text-Region.
+:type bounding_box: bounding box of the Text-Region.
+:param id: To identify the text region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+:type id: int</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextRegionElement.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextRegionElement.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the page element polygon with the instance color if no other coller is given. Fill it, if and only if
+the set_filled parameter is true.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TopLine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">TopLine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine"><span class="pre">BaseLine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TopLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineElements</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TopLine.set_visible">
+<span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TopLine.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the is_visible field.
+:param is_visible: Whether or not is should be recognized as visible
+:type is_visible: bool</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.XRegion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.</span></span><span class="sig-name descname"><span class="pre">XRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.BaseLine"><span class="pre">BaseLine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TopLine" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TopLine"><span class="pre">TopLine</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.XRegion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextLineElements"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextLineElements</span></code></a></p>
+<p>Region to represent x-Height (or XRegion as it’s called in this program) based on a top_line and the polygon of
+the text_line
+:param base_line: Base line (base line - some y value representing the x-height)
+:type base_line: BaseLine
+:param top_line: top_line: Top line (base line - some y value representing the x-height)
+:type top_line: TopLine
+:param id: To identify the region. Helpful for coloring, sorting, etc. Not mandatory, default value is 0.
+:type id: int</p>
+</dd></dl>
+
+</section>
+<section id="module-GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout">
+<span id="gtrefiner-gtrepresentation-vectorgtrepresentation-pagelayout-module"></span><h2>GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.</span></span><span class="sig-name descname"><span class="pre">Layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page_elements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement"><span class="pre">PageElement</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><span class="pre">LayoutClasses</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scalable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drawable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Croppable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Dictionable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Dictionable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dictionable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.Layarable.Layarable" title="GTRefiner.GTRepresentation.Interfaces.Layarable.Layarable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layarable</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>page_elements</strong> (<em>List</em><em>[</em><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement"><em>PageElement</em></a><em>]</em>) – List of all page elements of a layout (e.g. comment text lines or decorations).</p></li>
+<li><p><strong>layout_class</strong> (<a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><em>LayoutClasses</em></a>) – The class of the layout (e.g. COMMENT or DECORATION)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.add_elem">
+<span class="sig-name descname"><span class="pre">add_elem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">elem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.PageElement"><span class="pre">PageElement</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.add_elem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append an element to this layout. Can also be done with the built-in function append, however this method is
+is safer.
+:param elem:
+:type elem:
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Introduces the behaviour of a JSON compliant represenation. The returned dictionary is supposed to be stored
+in a JSON file.
+:return: Dictionary of all the vector objects of interest.
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop all page elements of this layout to a target dimension. Due to the nature of the ground truth document
+:param cut_left: must be provided.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the page is cut_left or not.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>If layout is visible, draw all page elements of this layout on the given image in a certain color and
+outline.
+:param drawer: image to be drawn upon.
+:type drawer: ImageDraw.ImageDraw
+:param color: fill of the object. Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type color: tuple
+:param outline: outline of the object. Should only be used for illustration purposes!
+Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type outline: tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.get_region_bbox">
+<span class="sig-name descname"><span class="pre">get_region_bbox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextRegionElement" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextRegionElement"><span class="pre">TextRegionElement</span></a></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.get_region_bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamically returns a TextRegion element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.layer">
+<span class="sig-name descname"><span class="pre">layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a image of all layers for every PageElement according to the order chosen with
+the implementation. (We suggest, you change it to a dict of LayoutClasses and Layers for a safer implementation.)
+:param img: base img to be drawn upon.
+:type img: Image
+TODO: Make safer with dict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.merge">
+<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout"><span class="pre">Layout</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge this layout with another one. Doesn’t do any layout_class checks. Client must be sure that they are
+both of the same layout class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes all page elements :class: <cite>List[PageElement]</cite> of the current :class: <cite>LayoutClass</cite> to a given target
+dimension. As this class doesn’t possess a image dimension parameter, both the current dimension (of the page)
+and the target dimension (the size to be scaled to) must be given.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.set_color">
+<span class="sig-name descname"><span class="pre">set_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.ColorTable" title="GTRefiner.GTRepresentation.Table.ColorTable"><span class="pre">ColorTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the color.
+:param color: What color to use when drawn.
+:type color: Tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.set_visible">
+<span class="sig-name descname"><span class="pre">set_visible</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_visible</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout.set_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter-method for the is_visible field.
+:param is_visible: Whether or not is should be recognized as visible
+:type is_visible: bool</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.</span></span><span class="sig-name descname"><span class="pre">TextRegion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout"><span class="pre">Layout</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_regions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout"><span class="pre">Layout</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layout</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.add_region">
+<span class="sig-name descname"><span class="pre">add_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.Layout"><span class="pre">Layout</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.add_region" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a layout to the region. Doesn’t do any layout_class checks. Client must be sure that they are
+both of the same layout class.
+:param layout: Layout to be added to the region.
+:type layout: Layout</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Introduces the behaviour of a JSON compliant represenation. The returned dictionary is supposed to be stored
+in a JSON file.
+:return: Dictionary of all the vector objects of interest.
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.get_region_bbox">
+<span class="sig-name descname"><span class="pre">get_region_bbox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextRegionElement" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements.TextRegionElement"><span class="pre">TextRegionElement</span></a></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.get_region_bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dynamically returns a TextRegion element.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.layer">
+<span class="sig-name descname"><span class="pre">layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a image of all layers for every layout on the corresponding layer according to the order chosen with
+the implementation.
+:param img: base img to be drawn upon.
+:type img: Image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.sort_layout_elements">
+<span class="sig-name descname"><span class="pre">sort_layout_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion.sort_layout_elements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sorts the page_elements of a text_region by the min y value of the page elements.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT">
+<span id="gtrefiner-gtrepresentation-vectorgtrepresentation-vectorgt-module"></span><h2>GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.</span></span><span class="sig-name descname"><span class="pre">VectorGT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion" title="GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout.TextRegion"><span class="pre">TextRegion</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.GroundTruth.GroundTruth" title="GTRefiner.GTRepresentation.GroundTruth.GroundTruth"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroundTruth</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Dictionable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Dictionable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dictionable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scalable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Croppable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drawable</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Introduces the behaviour of a JSON compliant represenation. The returned dictionary is supposed to be stored
+in a JSON file.
+:return: Dictionary of all the vector objects of interest.
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop all page elements of this vector gt to a target dimension. Due to the nature of the ground truth document
+:param cut_left: must be provided.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the page is cut_left or not.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.ImageDraw'</span> <span class="pre">from</span> <span class="pre">'/opt/miniconda3/envs/BachelorThesis/lib/python3.8/site-packages/PIL/ImageDraw.py'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color:</span> <span class="pre">~typing.Optional[~typing.Tuple]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>For all visible layouts and pagelements, draw them on given image in a certain color and
+outline.
+TODO: What’s the difference of this method to the layer method?
+:param drawer: image to be drawn upon.
+:type drawer: ImageDraw.ImageDraw
+:param color: fill of the object. Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type color: tuple
+:param outline: outline of the object. Should only be used for illustration purposes!
+Can be of any mode that pillow understands (e.g. RGBA, 1, L, RGB).
+:type outline: tuple</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.get_dim">
+<span class="sig-name descname"><span class="pre">get_dim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.get_dim" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Return the dimension of this vector_gt</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension">ImageDimension</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.layer">
+<span class="sig-name descname"><span class="pre">layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw all visible page_elements of all visible layers of all visible regions on an image.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes all page elements :class: <cite>List[PageElement]</cite> of the current :class: <cite>LayoutClass</cite> to a given target
+dimension.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_img:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/opt/miniconda3/envs/BachelorThesis/lib/python3.8/site-packages/PIL/Image.py'&gt;</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparency=0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color:</span> <span class="pre">~typing.Tuple</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline:</span> <span class="pre">~typing.Tuple</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Illustrate the vector ground truth according to the clients needs (especially useful for debugging).
+:param base_img: If given, this image will be the base image where the vector objects are drawn upon.
+:type base_img: Image
+:param transparency: The factor to which the layers should be overlayed. A value smaller than 0.5 prioritizes
+the base img. A value bigger than 05. prioritizes the vector objects.
+:type transparency: int
+:param color: color the page elements should be drawn in. We suggest you use a color table and :class: <cite>Colorer</cite>
+to color the elements individually.
+:type color: tuple
+:param outline: Outline of the vector objects to be drawn (illustrated).
+:type outline: tuple
+:return:
+:rtype:</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects">
+<span id="gtrefiner-gtrepresentation-vectorgtrepresentation-vectorobjects-module"></span><h2>GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.</span></span><span class="sig-name descname"><span class="pre">Line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a></p>
+<p>Represents a line of two coordinates.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the vector object on a given object.
+:param drawer: Pillow drawer, can be of any mode (example “1”, “RGB”, “RGBA”). The color parameter must be corresponding format.
+:type drawer: ImageDraw.ImageDraw
+:param color: Single element tuple for binary, triple tuple for RGB, quadruple tuple for RGBA (consult PILLOW Documenation for more information).
+:type color: tuple
+:param outline: Only use this parameter for illustration purposes. Using it for ground truth generation is dangerous.
+:type outline: tuple
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line.get_max_x_coord">
+<span class="sig-name descname"><span class="pre">get_max_x_coord</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line.get_max_x_coord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line.get_min_x_coord">
+<span class="sig-name descname"><span class="pre">get_min_x_coord</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Line.get_min_x_coord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.</span></span><span class="sig-name descname"><span class="pre">Polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scalable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Drawable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drawable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Croppable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Dictionable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Dictionable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dictionable</span></code></a></p>
+<p>This class is the parent class of all vector objects used to represent the vector ground truth.
+:param xy: is a polygon of 2 or more coordinates.
+:type xy: represents the coordinates [(x1,x1),(x2,y2),…] of the polygon. It’s important the polygon is sorted.
+No checks are made for that. It doesn’t matter if the polygon is closed or open (the last coordinate doesn’t need to
+be the first coordinate).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop this vector object to a target dimension. Due to the nature of the ground truth document
+:param cut_left: must be provided.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the page is cut_left or not.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the vector object on a given object.
+:param drawer: Pillow drawer, can be of any mode (example “1”, “RGB”, “RGBA”). The color parameter must be corresponding format.
+:type drawer: ImageDraw.ImageDraw
+:param color: Single element tuple for binary, triple tuple for RGB, quadruple tuple for RGBA (consult PILLOW Documenation for more information).
+:type color: tuple
+:param outline: Only use this parameter for illustration purposes. Using it for ground truth generation is dangerous.
+:type outline: tuple
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_bbox">
+<span class="sig-name descname"><span class="pre">get_bbox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Rectangle" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Rectangle"><span class="pre">Rectangle</span></a></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_bbox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get bounding box of the vector object.
+:return: returns a rectangle defining the bounding box.
+:rtype: Rectangle</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_max_x">
+<span class="sig-name descname"><span class="pre">get_max_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_max_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get max x coordinate of all the coordinates of this vector object.
+:return: max x
+:rtype: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_max_y">
+<span class="sig-name descname"><span class="pre">get_max_y</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_max_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get max y coordinate of all the coordinates of this vector object.
+:return: max y
+:rtype: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_min_x">
+<span class="sig-name descname"><span class="pre">get_min_x</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_min_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get min x coordinate of all the coordinates of this vector object.
+:return: min x
+:rtype: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_min_y">
+<span class="sig-name descname"><span class="pre">get_min_y</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.get_min_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get min y coordinate of all the coordinates of this vector object.
+:return: min y
+:rtype: int</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the vector object to a given target
+dimension. As this class doesn’t possess a image dimension parameter, both the current dimension (of the page)
+and the target dimension (the size to be scaled to) must be given.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.</span></span><span class="sig-name descname"><span class="pre">Quadrilateral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xy</strong> – 4 coords that represent a quadrilateral. which are sorted upon initialisation to ensure a useful representation with the draw method.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop this vector object to a target dimension. Due to the nature of the ground truth document
+:param cut_left: must be provided.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the page is cut_left or not.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the vector object on a given object.
+:param drawer: Pillow drawer, can be of any mode (example “1”, “RGB”, “RGBA”). The color parameter must be corresponding format.
+:type drawer: ImageDraw.ImageDraw
+:param color: Single element tuple for binary, triple tuple for RGB, quadruple tuple for RGBA (consult PILLOW Documenation for more information).
+:type color: tuple
+:param outline: Only use this parameter for illustration purposes. Using it for ground truth generation is dangerous.
+:type outline: tuple
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral.is_sorted">
+<span class="sig-name descname"><span class="pre">is_sorted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral.is_sorted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.html#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Quadrilateral.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the vector object to a given target
+dimension. As this class doesn’t possess a image dimension parameter, both the current dimension (of the page)
+and the target dimension (the size to be scaled to) must be given.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Rectangle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.</span></span><span class="sig-name descname"><span class="pre">Rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a></p>
+<p>Represents a rectangle
+:param xy: 4 coords that represent a quadrilateral. which are sorted upon initialisation to ensure a useful
+representation with the draw method.
+:type tuple</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Rectangle.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drawer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ImageDraw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects.Rectangle.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the vector object on a given object.
+:param drawer: Pillow drawer, can be of any mode (example “1”, “RGB”, “RGBA”). The color parameter must be corresponding format.
+:type drawer: ImageDraw.ImageDraw
+:param color: Single element tuple for binary, triple tuple for RGB, quadruple tuple for RGBA (consult PILLOW Documenation for more information).
+:type color: tuple
+:param outline: Only use this parameter for illustration purposes. Using it for ground truth generation is dangerous.
+:type outline: tuple
+:return:
+:rtype:</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-GTRefiner.GTRepresentation.VectorGTRepresentation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-GTRefiner.GTRepresentation.VectorGTRepresentation" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ground-Truth Refiner</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">HisDB_GT_Refinement</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="GTRefiner.html">GTRefiner package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">HisDB_GT_Refinement</a><ul>
+  <li><a href="GTRefiner.html">GTRefiner package</a><ul>
+  <li><a href="GTRefiner.GTRepresentation.html">GTRefiner.GTRepresentation package</a><ul>
+      <li>Previous: <a href="GTRefiner.GTRepresentation.PixelGTRepresentation.html" title="previous chapter">GTRefiner.GTRepresentation.PixelGTRepresentation package</a></li>
+      <li>Next: <a href="GTRefiner.IO.html" title="next chapter">GTRefiner.IO package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Max Gregor Haller.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/GTRefiner.GTRepresentation.VectorGTRepresentation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

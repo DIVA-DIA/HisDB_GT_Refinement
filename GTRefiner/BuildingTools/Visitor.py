@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.GTRepresentation.Page import Page
 
 
 class Visitor:

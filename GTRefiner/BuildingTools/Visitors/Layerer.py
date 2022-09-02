@@ -1,8 +1,8 @@
 from PIL import Image, ImageDraw
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
+from GTRefiner.BuildingTools.Visitor import Visitor
+from GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
 
 
 # Layerer successfully draws maintext, comments and decorations on the px_gt. However, it's difficult for the layerer to

@@ -2,13 +2,13 @@ import logging
 import time
 from pathlib import Path
 
-from HisDB_GT_Refinement.GTRefiner.Builder.Builder_v1 import BuilderV1
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Cropper import Cropper
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import *
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import *
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon
-from HisDB_GT_Refinement.GTRefiner.IO.Reader import ColorTableReader
+from GTRefiner.Builder.Builder_v1 import BuilderV1
+from GTRefiner.BuildingTools.Visitors.Cropper import Cropper
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import *
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout import *
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon
+from GTRefiner.IO.Reader import ColorTableReader
 
 
 def center_polygon(polygon: Polygon, min_x=None, min_y=None):

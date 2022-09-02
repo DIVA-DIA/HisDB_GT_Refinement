@@ -20,26 +20,10 @@ GTRefiner.TestingAndClientExamples.Testing.GTRepresentation.EnumTester module
    :undoc-members:
    :show-inheritance:
 
-GTRefiner.TestingAndClientExamples.Testing.GTRepresentation.LayerTester module
-------------------------------------------------------------------------------
-
-.. automodule:: GTRefiner.TestingAndClientExamples.Testing.GTRepresentation.LayerTester
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 GTRefiner.TestingAndClientExamples.Testing.GTRepresentation.PageElementTester module
 ------------------------------------------------------------------------------------
 
 .. automodule:: GTRefiner.TestingAndClientExamples.Testing.GTRepresentation.PageElementTester
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-GTRefiner.TestingAndClientExamples.Testing.GTRepresentation.TestVectorObjects module
-------------------------------------------------------------------------------------
-
-.. automodule:: GTRefiner.TestingAndClientExamples.Testing.GTRepresentation.TestVectorObjects
    :members:
    :undoc-members:
    :show-inheritance:

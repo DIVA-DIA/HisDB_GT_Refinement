@@ -1,0 +1,10 @@
+GTRefiner.Resources.ResizedGT package
+=====================================
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.Resources.ResizedGT
+   :members:
+   :undoc-members:
+   :show-inheritance:

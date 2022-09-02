@@ -2,17 +2,17 @@ from pathlib import Path
 from abc import abstractmethod
 import logging
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Sorter import Sorter
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Cropper import Cropper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Grouper import Grouper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.IllustratorVisitor import Illustrator
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Resizer import Resizer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Colorer import Colorer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Layerer import Layerer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import TextLineDecorator
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.IO import Writer
+from GTRefiner.BuildingTools.Visitors.Sorter import Sorter
+from GTRefiner.BuildingTools.Visitors.Cropper import Cropper
+from GTRefiner.BuildingTools.Visitors.Grouper import Grouper
+from GTRefiner.BuildingTools.Visitors.IllustratorVisitor import Illustrator
+from GTRefiner.BuildingTools.Visitors.Resizer import Resizer
+from GTRefiner.BuildingTools.Visitors.Colorer import Colorer
+from GTRefiner.BuildingTools.Visitors.Layerer import Layerer
+from GTRefiner.BuildingTools.Visitors.TextLineDecorator import TextLineDecorator
+from GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
+from GTRefiner.IO import Writer
 
 logging.getLogger().setLevel(logging.INFO)
 

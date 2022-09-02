@@ -1,24 +1,24 @@
 from pathlib import Path
 
-from HisDB_GT_Refinement.GTRefiner.Builder.Builder import GTBuilder
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Sorter import Sorter
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Cropper import Cropper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Grouper import Grouper
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.IllustratorVisitor import Illustrator
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Resizer import Resizer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Colorer import Colorer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.Layerer import Layerer
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.TextLineDecorator import TextLineDecorator
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitors.VisibilityVisitor import VisibilityVisitor
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT, RawImage
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
-from HisDB_GT_Refinement.GTRefiner.IO.Reader import XMLReader, PxGTReader, ImageReader, VisibilityTableReader, \
+from GTRefiner.Builder.Builder import GTBuilder
+from GTRefiner.BuildingTools.Visitors.Sorter import Sorter
+from GTRefiner.BuildingTools.Visitors.Cropper import Cropper
+from GTRefiner.BuildingTools.Visitors.Grouper import Grouper
+from GTRefiner.BuildingTools.Visitors.IllustratorVisitor import Illustrator
+from GTRefiner.BuildingTools.Visitors.Resizer import Resizer
+from GTRefiner.BuildingTools.Visitors.Colorer import Colorer
+from GTRefiner.BuildingTools.Visitors.Layerer import Layerer
+from GTRefiner.BuildingTools.Visitors.TextLineDecorator import TextLineDecorator
+from GTRefiner.BuildingTools.Visitors.VisibilityVisitor import VisibilityVisitor
+from GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import PixelLevelGT, RawImage
+from GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
+from GTRefiner.IO.Reader import XMLReader, PxGTReader, ImageReader, VisibilityTableReader, \
     ColorTableReader
 
 # TODO: Execute() in Director and make everything accept "Page".
-from HisDB_GT_Refinement.GTRefiner.IO.Writer import JSONWriter, GIFWriter, PNGWriter
+from GTRefiner.IO.Writer import JSONWriter, GIFWriter, PNGWriter
 
 
 class BuilderV1(GTBuilder):

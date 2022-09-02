@@ -1,7 +1,8 @@
-GTRefiner
-=========
+HisDB_GT_Refinement
+===================
 
 .. toctree::
    :maxdepth: 4
 
    GTRefiner
+   prototype_03

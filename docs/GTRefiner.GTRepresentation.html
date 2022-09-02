@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>GTRefiner.GTRepresentation package &#8212; Ground Truth Refiner 02.09.2022 documentation</title>
+    <title>GTRefiner.GTRepresentation package &#8212; Ground-Truth Refiner 02.09.2022 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -16,7 +16,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="GTRefiner.IO package" href="GTRefiner.IO.html" />
+    <link rel="next" title="GTRefiner.GTRepresentation.Interfaces package" href="GTRefiner.GTRepresentation.Interfaces.html" />
     <link rel="prev" title="GTRefiner.BuildingTools.Visitors package" href="GTRefiner.BuildingTools.Visitors.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -36,26 +36,337 @@
             
   <section id="gtrefiner-gtrepresentation-package">
 <h1>GTRefiner.GTRepresentation package<a class="headerlink" href="#gtrefiner-gtrepresentation-package" title="Permalink to this heading">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html">GTRefiner.GTRepresentation.Interfaces package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#module-GTRefiner.GTRepresentation.Interfaces.GTInterfaces">GTRefiner.GTRepresentation.Interfaces.GTInterfaces module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#module-GTRefiner.GTRepresentation.Interfaces.Layarable">GTRefiner.GTRepresentation.Interfaces.Layarable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#module-GTRefiner.GTRepresentation.Interfaces">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html">GTRefiner.GTRepresentation.PixelGTRepresentation package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#module-GTRefiner.GTRepresentation.PixelGTRepresentation.Layer">GTRefiner.GTRepresentation.PixelGTRepresentation.Layer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#module-GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT">GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#module-GTRefiner.GTRepresentation.PixelGTRepresentation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html">GTRefiner.GTRepresentation.VectorGTRepresentation package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#module-GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements">GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#module-GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout">GTRefiner.GTRepresentation.VectorGTRepresentation.PageLayout module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#module-GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT">GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#module-GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects">GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#module-GTRefiner.GTRepresentation.VectorGTRepresentation">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
 </section>
-<section id="gtrefiner-gtrepresentation-groundtruth-module">
-<h2>GTRefiner.GTRepresentation.GroundTruth module<a class="headerlink" href="#gtrefiner-gtrepresentation-groundtruth-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.GTRepresentation.GroundTruth">
+<span id="gtrefiner-gtrepresentation-groundtruth-module"></span><h2>GTRefiner.GTRepresentation.GroundTruth module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.GroundTruth" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.GroundTruth.GroundTruth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.GroundTruth.</span></span><span class="sig-name descname"><span class="pre">GroundTruth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.GroundTruth.GroundTruth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scalable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Showable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Showable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Showable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Croppable</span></code></a></p>
+<p>GroundTruth is an abstract class that provides the provides the common interface for ground-truth classes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.GroundTruth.GroundTruth.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.GroundTruth.GroundTruth.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crop all ground truth information of this ground truth to a target dimension. Due to the nature of the ground
+truth document.
+:param cut_left: must be provided.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension
+:param cut_left: Whether or not the page is cut_left or not.
+:type cut_left: bool</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.GroundTruth.GroundTruth.get_dim">
+<span class="sig-name descname"><span class="pre">get_dim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.GroundTruth.GroundTruth.get_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ground truth’s dimension.
+:return: dimension of the ground truth.
+:rtype: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.GroundTruth.GroundTruth.resize">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">current_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_dim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.GroundTruth.GroundTruth.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes all ground-truth information of the current :class: <cite>LayoutClass</cite> to a given target
+dimension.
+:param current_dim: Current dimension
+:type current_dim: ImageDimension
+:param target_dim: Target dimension
+:type target_dim: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.GroundTruth.GroundTruth.show">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.GroundTruth.GroundTruth.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Illustrate the ground truth.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-gtrepresentation-imagedimension-module">
-<h2>GTRefiner.GTRepresentation.ImageDimension module<a class="headerlink" href="#gtrefiner-gtrepresentation-imagedimension-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.GTRepresentation.ImageDimension">
+<span id="gtrefiner-gtrepresentation-imagedimension-module"></span><h2>GTRefiner.GTRepresentation.ImageDimension module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.ImageDimension" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.ImageDimension.ImageDimension">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.ImageDimension.</span></span><span class="sig-name descname"><span class="pre">ImageDimension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.ImageDimension.ImageDimension.difference">
+<span class="sig-name descname"><span class="pre">difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension.difference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used solely for cropping. Calculates the difference for which a vector object has to be moved given another target dimension.
+:param other: other dimension
+:type other: ImageDimension
+:return: the difference in x,y as float tuple.
+:rtype: tuple</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.ImageDimension.ImageDimension.height">
+<span class="sig-name descname"><span class="pre">height</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension.height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.ImageDimension.ImageDimension.scale_factor">
+<span class="sig-name descname"><span class="pre">scale_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension" title="GTRefiner.GTRepresentation.ImageDimension.ImageDimension"><span class="pre">ImageDimension</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension.scale_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for resizing. Gives the scale factor for which a given ground truth object should be resized.
+:param other: target dimension.
+:type other: ImageDimension
+:return: list of width scale factor and height scale factor
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.ImageDimension.ImageDimension.to_tuple">
+<span class="sig-name descname"><span class="pre">to_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension.to_tuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the dimension as a tuple
+:return: Width and height
+:rtype: tuple</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.ImageDimension.ImageDimension.width">
+<span class="sig-name descname"><span class="pre">width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.ImageDimension.ImageDimension.width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-gtrepresentation-layoutclasses-module">
-<h2>GTRefiner.GTRepresentation.LayoutClasses module<a class="headerlink" href="#gtrefiner-gtrepresentation-layoutclasses-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.GTRepresentation.LayoutClasses">
+<span id="gtrefiner-gtrepresentation-layoutclasses-module"></span><h2>GTRefiner.GTRepresentation.LayoutClasses module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.LayoutClasses" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.LayoutClasses.</span></span><span class="sig-name descname"><span class="pre">LayoutClasses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Represents the different levels of the pixel level ground truth. Essential to the program. Must changed if further
+classes should to be added.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.ASCENDER">
+<span class="sig-name descname"><span class="pre">ASCENDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">16</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.ASCENDER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.BACKGROUND">
+<span class="sig-name descname"><span class="pre">BACKGROUND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.BACKGROUND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.BASELINE">
+<span class="sig-name descname"><span class="pre">BASELINE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">22</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.BASELINE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.COMMENT">
+<span class="sig-name descname"><span class="pre">COMMENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.COMMENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.COMMENT_AND_DECORATION">
+<span class="sig-name descname"><span class="pre">COMMENT_AND_DECORATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.COMMENT_AND_DECORATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.COMMENT_AND_MAINTEXT">
+<span class="sig-name descname"><span class="pre">COMMENT_AND_MAINTEXT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.COMMENT_AND_MAINTEXT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.DECORATION">
+<span class="sig-name descname"><span class="pre">DECORATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.DECORATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.DESCENDER">
+<span class="sig-name descname"><span class="pre">DESCENDER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.DESCENDER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.HEAD">
+<span class="sig-name descname"><span class="pre">HEAD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">26</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.HEAD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.MAINTEXT">
+<span class="sig-name descname"><span class="pre">MAINTEXT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.MAINTEXT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.MAINTEXT_AND_DECORATION">
+<span class="sig-name descname"><span class="pre">MAINTEXT_AND_DECORATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">12</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.MAINTEXT_AND_DECORATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.MAINTEXT_AND_DECORATION_AND_COMMENT">
+<span class="sig-name descname"><span class="pre">MAINTEXT_AND_DECORATION_AND_COMMENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.MAINTEXT_AND_DECORATION_AND_COMMENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.TAIL">
+<span class="sig-name descname"><span class="pre">TAIL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">28</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.TAIL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.TEXT_REGION">
+<span class="sig-name descname"><span class="pre">TEXT_REGION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">255</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.TEXT_REGION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.TOPLINE">
+<span class="sig-name descname"><span class="pre">TOPLINE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.TOPLINE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.XREGION">
+<span class="sig-name descname"><span class="pre">XREGION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">18</span></em><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.XREGION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.get_layout_classes_containing">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_layout_classes_containing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><span class="pre">LayoutClasses</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.get_layout_classes_containing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all layout classes containing another one (based on the string).
+:param layout_class: target layout class
+:type layout_class: LayoutClasses
+:return: list of layout classes containing the target layou class as a substring.
+:rtype: list[LayoutClasses]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the name of a enum instance. E.g. MAINTEXT
+:return: Return the name
+:rtype: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.str_to_enum">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">str_to_enum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enum_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><span class="pre">LayoutClasses</span></a></span></span><a class="headerlink" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses.str_to_enum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the matching enum based on a string.
+:param enum_name:
+:type enum_name:
+:return:
+:rtype:</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-gtrepresentation-page-module">
-<h2>GTRefiner.GTRepresentation.Page module<a class="headerlink" href="#gtrefiner-gtrepresentation-page-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.GTRepresentation.Page">
+<span id="gtrefiner-gtrepresentation-page-module"></span><h2>GTRefiner.GTRepresentation.Page module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.Page" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.Page.Page">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.Page.</span></span><span class="sig-name descname"><span class="pre">Page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector_gt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.VectorGTRepresentation.html#GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT" title="GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT.VectorGT"><span class="pre">VectorGT</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">px_gt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT" title="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.PixelLevelGT"><span class="pre">PixelLevelGT</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="GTRefiner.GTRepresentation.PixelGTRepresentation.html#GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.RawImage" title="GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT.RawImage"><span class="pre">RawImage</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">vis_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.Table.VisibilityTable" title="GTRefiner.GTRepresentation.Table.VisibilityTable"><span class="pre">VisibilityTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#GTRefiner.GTRepresentation.Table.ColorTable" title="GTRefiner.GTRepresentation.Table.ColorTable"><span class="pre">ColorTable</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.Page.Page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Scalable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scalable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Croppable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Croppable</span></code></a>, <a class="reference internal" href="GTRefiner.GTRepresentation.Interfaces.html#GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Showable" title="GTRefiner.GTRepresentation.Interfaces.GTInterfaces.Showable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Showable</span></code></a></p>
+<p>Stores all ground truth information of an image (including the original image, the vector gt and the pixel-based
+ground truth) and provides basic functionality for its manipulation such as scalability, croppability and
+showability.
+:param vector_gt: Stores polyogons of the various text elements (maintextline, decoration, textregion, etc.)
+:type vector_gt: VectorGT
+:param px_gt: Stores the original pixel level ground truth and its different information levels as :class: <cite>Layers</cite>.
+:type px_gt: PixelLevelGT
+:param raw_img: Stores the original image.
+:type raw_img: RawImage
+:param vis_table: Defines the visibility for the ground truth objects (texelements of the vector gt, levels of the
+pixel gt)
+:type vis_table: VisibilityTable
+:param col_table: Defines the colors for the ground truth objects (texelements of the vector gt, levels of the
+pixel gt)
+:type col_table: ColorTable</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.Page.Page.get_img_dim">
+<span class="sig-name descname"><span class="pre">get_img_dim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.Page.Page.get_img_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ground truth’s dimension.
+:return: dimension of the ground truth.
+:rtype: ImageDimension</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.Page.Page.visit_page">
+<span class="sig-name descname"><span class="pre">visit_page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visitor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.Page.Page.visit_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts visitors to manipulate the page and add further functionalities.
+:param visitor: manipulates the page (or invokes it’s methods) to add specific behaviour
+:type visitor: Visitor</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="gtrefiner-gtrepresentation-table-module">
-<h2>GTRefiner.GTRepresentation.Table module<a class="headerlink" href="#gtrefiner-gtrepresentation-table-module" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.GTRepresentation.Table">
+<span id="gtrefiner-gtrepresentation-table-module"></span><h2>GTRefiner.GTRepresentation.Table module<a class="headerlink" href="#module-GTRefiner.GTRepresentation.Table" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.Table.ColorTable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.Table.</span></span><span class="sig-name descname"><span class="pre">ColorTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><span class="pre">LayoutClasses</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.Table.ColorTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.Table.Table" title="GTRefiner.GTRepresentation.Table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></p>
+<p>Defines the colors for the ground truth objects (texelements of the vector gt, levels of the
+pixel gt). If you want to implement iterating or all different colors you need to provide a list of colors for the
+target LayoutClass. Compare with the color tables in the Ressources/ColorTables/ directory.
+:param table: Color table
+:type table: Dict[LayoutClasses, List[Tuple]</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.Table.Table">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.Table.</span></span><span class="sig-name descname"><span class="pre">Table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><span class="pre">LayoutClasses</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.Table.Table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Provides the base class for layout class :class: <cite>LayoutClasses</cite> based dictionaries. Can be dumped to JSON file.
+:param table: Dictionary of layout classes
+:type table: Dict[LayoutClasses, Any]</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.Table.Table.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PosixPath('../../Resources/some_table.json')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.Table.Table.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dumps the the table to json file with a given file path.
+:param file_path: Output file path
+:type file_path: Path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="GTRefiner.GTRepresentation.Table.VisibilityTable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GTRefiner.GTRepresentation.Table.</span></span><span class="sig-name descname"><span class="pre">VisibilityTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses" title="GTRefiner.GTRepresentation.LayoutClasses.LayoutClasses"><span class="pre">LayoutClasses</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#GTRefiner.GTRepresentation.Table.VisibilityTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#GTRefiner.GTRepresentation.Table.Table" title="GTRefiner.GTRepresentation.Table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></p>
+<p>Defines the visibility for the ground truth objects (texelements of the vector gt, levels of the
+pixel gt).
+:param table: Visibility table
+:type table: Dict[LayoutClasses, bool]</p>
+</dd></dl>
+
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<section id="module-GTRefiner.GTRepresentation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-GTRefiner.GTRepresentation" title="Permalink to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -66,7 +377,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Ground Truth Refiner</a></h1>
+<h1 class="logo"><a href="index.html">Ground-Truth Refiner</a></h1>
 
 
 
@@ -78,7 +389,7 @@
 <h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">GTRefiner</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">HisDB_GT_Refinement</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="GTRefiner.html">GTRefiner package</a></li>
 </ul>
 </li>
@@ -88,10 +399,10 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="modules.html">GTRefiner</a><ul>
+  <li><a href="modules.html">HisDB_GT_Refinement</a><ul>
   <li><a href="GTRefiner.html">GTRefiner package</a><ul>
       <li>Previous: <a href="GTRefiner.BuildingTools.Visitors.html" title="previous chapter">GTRefiner.BuildingTools.Visitors package</a></li>
-      <li>Next: <a href="GTRefiner.IO.html" title="next chapter">GTRefiner.IO package</a></li>
+      <li>Next: <a href="GTRefiner.GTRepresentation.Interfaces.html" title="next chapter">GTRefiner.GTRepresentation.Interfaces package</a></li>
   </ul></li>
   </ul></li>
   </ul></li>

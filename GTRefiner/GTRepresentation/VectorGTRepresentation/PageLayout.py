@@ -4,14 +4,14 @@ from typing import List
 
 from PIL import ImageDraw, Image
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import *
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement, \
+from GTRefiner.GTRepresentation.Interfaces.GTInterfaces import *
+from GTRefiner.GTRepresentation.Interfaces.Layarable import Layarable
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
+from GTRefiner.GTRepresentation.Table import ColorTable, VisibilityTable
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import PageElement, \
     TextRegionElement
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Rectangle
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Rectangle
 
 
 # TODO: Test the get_bbox() method.

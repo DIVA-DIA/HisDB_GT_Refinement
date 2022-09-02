@@ -7,11 +7,11 @@ from PIL import ImageDraw, ImageFont, Image, ImageOps
 from scipy.ndimage import gaussian_filter
 from skimage.filters.thresholding import threshold_otsu, threshold_niblack, threshold_sauvola
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.GroundTruth import GroundTruth
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
+from GTRefiner.GTRepresentation.GroundTruth import GroundTruth
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.GTRepresentation.PixelGTRepresentation.Layer import Layer
+from GTRefiner.GTRepresentation.Table import VisibilityTable, ColorTable
 
 sigma = 4
 truncate = 12

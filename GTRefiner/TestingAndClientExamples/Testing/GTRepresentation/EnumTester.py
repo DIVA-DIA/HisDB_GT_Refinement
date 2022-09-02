@@ -1,7 +1,7 @@
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import \
+from GTRefiner.GTRepresentation.LayoutClasses import LayoutClasses
+from GTRefiner.GTRepresentation.VectorGTRepresentation.PageElements import \
     MainTextLine, BaseLine
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorObjects import Polygon, Line
 
 if __name__ == '__main__':
     text_line_polygon: Polygon = Polygon(

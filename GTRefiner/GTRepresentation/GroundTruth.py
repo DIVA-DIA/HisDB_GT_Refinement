@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.ImageDimension import ImageDimension
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable,Showable, Croppable
+from GTRefiner.GTRepresentation.ImageDimension import ImageDimension
+from GTRefiner.GTRepresentation.Interfaces.GTInterfaces import Scalable,Showable, Croppable
 
 
 class GroundTruth(Scalable, Showable, Croppable):

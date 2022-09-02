@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
-from HisDB_GT_Refinement.GTRefiner.BuildingTools.Visitor import Visitor
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.Page import Page
+from GTRefiner.BuildingTools.Visitor import Visitor
+from GTRefiner.GTRepresentation.Page import Page
 
 
 class Sorter(Visitor):

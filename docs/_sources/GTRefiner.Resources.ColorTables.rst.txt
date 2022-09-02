@@ -1,0 +1,10 @@
+GTRefiner.Resources.ColorTables package
+=======================================
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.Resources.ColorTables
+   :members:
+   :undoc-members:
+   :show-inheritance:

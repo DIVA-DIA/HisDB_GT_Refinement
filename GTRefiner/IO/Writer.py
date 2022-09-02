@@ -4,9 +4,9 @@ from pathlib import Path
 
 from PIL.Image import Image
 
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation import GroundTruth
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import MyImage, PixelLevelGT, RawImage
-from HisDB_GT_Refinement.GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
+from GTRefiner.GTRepresentation import GroundTruth
+from GTRefiner.GTRepresentation.PixelGTRepresentation.PixelGT import MyImage, PixelLevelGT, RawImage
+from GTRefiner.GTRepresentation.VectorGTRepresentation.VectorGT import VectorGT
 
 
 class AbstractWriter():
