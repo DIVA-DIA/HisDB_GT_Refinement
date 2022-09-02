@@ -1,0 +1,29 @@
+GTRefiner.BuildingTools package
+===============================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   GTRefiner.BuildingTools.Visitors
+
+Submodules
+----------
+
+GTRefiner.BuildingTools.Visitor module
+--------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.BuildingTools
+   :members:
+   :undoc-members:
+   :show-inheritance:

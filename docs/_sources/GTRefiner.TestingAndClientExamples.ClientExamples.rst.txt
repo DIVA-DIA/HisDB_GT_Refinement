@@ -1,0 +1,30 @@
+GTRefiner.TestingAndClientExamples.ClientExamples package
+=========================================================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   GTRefiner.TestingAndClientExamples.ClientExamples.Director
+   GTRefiner.TestingAndClientExamples.ClientExamples.Visitor
+
+Submodules
+----------
+
+GTRefiner.TestingAndClientExamples.ClientExamples.MinorityAndMajorityWins module
+--------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.MinorityAndMajorityWins
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples
+   :members:
+   :undoc-members:
+   :show-inheritance:

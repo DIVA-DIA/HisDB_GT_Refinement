@@ -1,0 +1,45 @@
+GTRefiner.TestingAndClientExamples.Testing.IO package
+=====================================================
+
+Submodules
+----------
+
+GTRefiner.TestingAndClientExamples.Testing.IO.GIFReaderTester module
+--------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.IO.GIFReaderTester
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.Testing.IO.ReadAndWritingTester module
+-------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.IO.ReadAndWritingTester
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.Testing.IO.TableWriter module
+----------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.IO.TableWriter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.Testing.IO.XMLReaderTester module
+--------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.IO.XMLReaderTester
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.IO
+   :members:
+   :undoc-members:
+   :show-inheritance:

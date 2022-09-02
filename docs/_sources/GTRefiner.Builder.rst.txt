@@ -1,0 +1,37 @@
+GTRefiner.Builder package
+=========================
+
+Submodules
+----------
+
+GTRefiner.Builder.Builder module
+--------------------------------
+
+.. automodule:: GTRefiner.Builder.Builder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.Builder.Builder\_v1 module
+------------------------------------
+
+.. automodule:: GTRefiner.Builder.Builder_v1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.Builder.Director module
+---------------------------------
+
+.. automodule:: GTRefiner.Builder.Director
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.Builder
+   :members:
+   :undoc-members:
+   :show-inheritance:

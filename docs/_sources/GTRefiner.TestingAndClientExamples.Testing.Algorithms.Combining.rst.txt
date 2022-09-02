@@ -1,0 +1,53 @@
+GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining package
+=======================================================================
+
+Submodules
+----------
+
+GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.LayeringTester module
+-------------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.LayeringTester
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.TestCombiner module
+-----------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.TestCombiner
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.bin\_layer\_from\_rgb\_tester module
+----------------------------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.bin_layer_from_rgb_tester
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.masking\_easy module
+------------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.masking_easy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.testnumpy module
+--------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining.testnumpy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing.Algorithms.Combining
+   :members:
+   :undoc-members:
+   :show-inheritance:

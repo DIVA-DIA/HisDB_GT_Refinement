@@ -1,0 +1,23 @@
+GTRefiner package
+=================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   GTRefiner.Builder
+   GTRefiner.BuildingTools
+   GTRefiner.GTRepresentation
+   GTRefiner.IO
+   GTRefiner.Resources
+   GTRefiner.TestingAndClientExamples
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner
+   :members:
+   :undoc-members:
+   :show-inheritance:

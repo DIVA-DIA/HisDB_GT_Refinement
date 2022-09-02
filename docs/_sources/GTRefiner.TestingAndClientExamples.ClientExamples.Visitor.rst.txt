@@ -1,0 +1,21 @@
+GTRefiner.TestingAndClientExamples.ClientExamples.Visitor package
+=================================================================
+
+Submodules
+----------
+
+GTRefiner.TestingAndClientExamples.ClientExamples.Visitor.BlurAndScaleResizerVisitor module
+-------------------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Visitor.BlurAndScaleResizerVisitor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Visitor
+   :members:
+   :undoc-members:
+   :show-inheritance:

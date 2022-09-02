@@ -1,0 +1,10 @@
+GTRefiner.Resources package
+===========================
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.Resources
+   :members:
+   :undoc-members:
+   :show-inheritance:

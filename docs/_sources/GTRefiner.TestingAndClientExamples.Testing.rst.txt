@@ -1,0 +1,20 @@
+GTRefiner.TestingAndClientExamples.Testing package
+==================================================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   GTRefiner.TestingAndClientExamples.Testing.Algorithms
+   GTRefiner.TestingAndClientExamples.Testing.GTRepresentation
+   GTRefiner.TestingAndClientExamples.Testing.IO
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.Testing
+   :members:
+   :undoc-members:
+   :show-inheritance:

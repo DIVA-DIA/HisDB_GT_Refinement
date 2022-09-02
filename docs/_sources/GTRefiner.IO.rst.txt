@@ -1,0 +1,29 @@
+GTRefiner.IO package
+====================
+
+Submodules
+----------
+
+GTRefiner.IO.Reader module
+--------------------------
+
+.. automodule:: GTRefiner.IO.Reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.IO.Writer module
+--------------------------
+
+.. automodule:: GTRefiner.IO.Writer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.IO
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,53 @@
+GTRefiner.GTRepresentation package
+==================================
+
+Submodules
+----------
+
+GTRefiner.GTRepresentation.GroundTruth module
+---------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.GroundTruth
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.GTRepresentation.ImageDimension module
+------------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.ImageDimension
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.GTRepresentation.LayoutClasses module
+-----------------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.LayoutClasses
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.GTRepresentation.Page module
+--------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.Page
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.GTRepresentation.Table module
+---------------------------------------
+
+.. automodule:: GTRefiner.GTRepresentation.Table
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.GTRepresentation
+   :members:
+   :undoc-members:
+   :show-inheritance:

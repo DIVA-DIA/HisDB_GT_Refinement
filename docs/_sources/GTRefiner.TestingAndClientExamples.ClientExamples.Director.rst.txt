@@ -1,0 +1,37 @@
+GTRefiner.TestingAndClientExamples.ClientExamples.Director package
+==================================================================
+
+Submodules
+----------
+
+GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerV1 module
+--------------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Director.GroundTruthRefinerV1
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.ClientExamples.Director.RegionIllustratorDirector module
+-------------------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Director.RegionIllustratorDirector
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.TestingAndClientExamples.ClientExamples.Director.ResizingIllustratorDirector module
+---------------------------------------------------------------------------------------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Director.ResizingIllustratorDirector
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.TestingAndClientExamples.ClientExamples.Director
+   :members:
+   :undoc-members:
+   :show-inheritance:

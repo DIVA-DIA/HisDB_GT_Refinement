@@ -1,0 +1,85 @@
+GTRefiner.BuildingTools.Visitors package
+========================================
+
+Submodules
+----------
+
+GTRefiner.BuildingTools.Visitors.Colorer module
+-----------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.Colorer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.BuildingTools.Visitors.Combiner module
+------------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.Combiner
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.BuildingTools.Visitors.Cropper module
+-----------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.Cropper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.BuildingTools.Visitors.Grouper module
+-----------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.Grouper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.BuildingTools.Visitors.IllustratorVisitor module
+----------------------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.IllustratorVisitor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.BuildingTools.Visitors.Resizer module
+-----------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.Resizer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.BuildingTools.Visitors.Sorter module
+----------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.Sorter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.BuildingTools.Visitors.TextLineDecorator module
+---------------------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.TextLineDecorator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+GTRefiner.BuildingTools.Visitors.VisibilityVisitor module
+---------------------------------------------------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors.VisibilityVisitor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: GTRefiner.BuildingTools.Visitors
+   :members:
+   :undoc-members:
+   :show-inheritance:
