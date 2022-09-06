@@ -1,5 +1,6 @@
 name: BachelorThesis
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - blas=1.0
@@ -8,8 +9,8 @@ dependencies:
   - brunsli=0.1
   - bzip2=1.0.8
   - c-ares=1.18.1
-  - ca-certificates=2022.4.26
-  - certifi=2021.10.8
+  - ca-certificates=2022.6.15
+  - certifi=2022.6.15
   - cfitsio=3.470
   - charls=2.2.0
   - cloudpickle=2.0.0
@@ -27,6 +28,8 @@ dependencies:
   - lcms2=2.12
   - lerc=3.0
   - libaec=1.0.4
+  - libblas=3.9.0
+  - libcblas=3.9.0
   - libcurl=7.82.0
   - libcxx=12.0.0
   - libdeflate=1.8
@@ -34,6 +37,7 @@ dependencies:
   - libev=4.33
   - libffi=3.3
   - libgfortran=3.0.1
+  - liblapack=3.9.0
   - libnghttp2=1.46.0
   - libpng=1.6.37
   - libssh2=1.10.0
@@ -50,11 +54,10 @@ dependencies:
   - mkl_random=1.2.2
   - ncurses=6.3
   - networkx=2.7.1
-  - numpy=1.21.2
-  - numpy-base=1.21.2
+  - numpy=1.22.0
   - olefile=0.46
   - openjpeg=2.4.0
-  - openssl=1.1.1n
+  - openssl=1.1.1q
   - packaging=21.3
   - partd=1.2.0
   - pillow=8.4.0
@@ -62,6 +65,7 @@ dependencies:
   - psutil=5.8.0
   - pyparsing=3.0.4
   - python=3.8.12
+  - python_abi=3.8
   - pywavelets=1.3.0
   - pyyaml=6.0
   - readline=8.1
