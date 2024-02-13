@@ -1,4 +1,4 @@
-### Abstract
+### Ground-Truth Refiner
 
 The paper introduces a software tool developed for refining the ground truth data of the DIVA-HisDB dataset, which is used for training machine learning models on historical document analysis. The software, implemented in Python, offers various tools for manipulating and representing images and ground truths, facilitating the addition of new layout classes, resizing, cropping, and more, thereby providing a flexible and extendable framework for researchers. It aims to improve the efficiency and reusability of ground truth development for historical documents, emphasizing a user-friendly architecture that allows for custom algorithm implementation for document analysis. The approach addresses challenges in document image analysis (DIA) by offering a solution that mitigates the need for extensive manual ground truth annotation, leveraging vector and pixel-based ground truth representations, and introducing functionalities for image processing and manipulation.
 
